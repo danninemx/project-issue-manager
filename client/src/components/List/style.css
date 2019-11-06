@@ -1,3 +1,7 @@
+.list-group-item {
+  margin-bottom: 0.2rem;
+}
+
 .list-group-item p {
   font-size: 16px;
 }

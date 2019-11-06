@@ -25,9 +25,8 @@ class Home extends Component {
   getBooks = () => {
     API.getBooks(this.state.q)
       .then(res =>
-        // {console.log(res)}
         this.setState({
-          books: res.data.items
+          books: res.data
         })
       )
       .catch(() =>
@@ -64,9 +63,9 @@ class Home extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1 className="text-center">
-                <strong>Google Books Search</strong>
+                <strong>(React) Google Books Search</strong>
               </h1>
-              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
+              <h2 className="text-center">Search for and Save Books of Interest.</h2>
             </Jumbotron>
           </Col>
           <Col size="md-12">
@@ -90,8 +89,7 @@ class Home extends Component {
                       title={book.volumeInfo.title}
                       subtitle={book.volumeInfo.subtitle}
                       link={book.volumeInfo.infoLink}
-                      // authors={book.volumeInfo.authors.join(", ")}
-                      authors={book.volumeInfo.authors}
+                      authors={book.volumeInfo.authors.join(", ")}
                       description={book.volumeInfo.description}
                       image={book.volumeInfo.imageLinks.thumbnail}
                       Button={() => (

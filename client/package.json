@@ -1,12 +1,13 @@
 {
-  "name": "mern",
+  "name": "react-google-books",
   "version": "0.1.0",
-  "description": "Mern Demo",
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1"
   },
   "scripts": {

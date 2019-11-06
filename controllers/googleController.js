@@ -5,8 +5,8 @@ module.exports = {
   // Call this to query the Google Books API and return only the entries that have not yet been saved
   findAll: function (req, res) {
     const { query: params } = req;
-    console.log(`\n req was ${req} \n`);
-    console.log(`\n params was ${params} \n`);
+    console.log('req was :', req);
+    console.log('params was :', params);
     axios
       .get("https://www.googleapis.com/books/v1/volumes", {
         params
@@ -23,7 +23,7 @@ module.exports = {
             result.volumeInfo.imageLinks.thumbnail
         )
       )
-      // Query existing books collection. For each book, compare the id to remove duplicates from the result
+      // Query existing books collection. For each book, compare the id to remove saved books from the result display
       .then(apiBooks =>
         db.Book.find().then(dbBooks =>
           apiBooks.filter(apiBook =>

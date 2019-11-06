@@ -12,23 +12,20 @@ class Saved extends Component {
     books: []
   };
 
-  // Runs on load/update
   componentDidMount() {
     this.getSavedBooks();
   }
 
-  // Call this to run API method for getting all saved books
   getSavedBooks = () => {
     API.getSavedBooks()
-      .then(res => { console.log(`\n getSavedBooks returned : ${res}`) }
-        // this.setState({
-        //   books: res.data
-        // })
+      .then(res =>
+        this.setState({
+          books: res.data
+        })
       )
       .catch(err => console.log(err));
   };
 
-  // Call this delete button event handler to run API method for deleting a book with this id
   handleBookDelete = id => {
     API.deleteBook(id).then(res => this.getSavedBooks());
   };
@@ -40,9 +37,9 @@ class Saved extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1 className="text-center">
-                <strong>Google Books Search</strong>
+                <strong>(React) Google Books Search</strong>
               </h1>
-              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
+              <h2 className="text-center">Search for and Save Books of Interest.</h2>
             </Jumbotron>
           </Col>
         </Row>
@@ -57,8 +54,7 @@ class Saved extends Component {
                       title={book.title}
                       subtitle={book.subtitle}
                       link={book.link}
-                      // authors={book.authors.join(", ")}
-                      authors={book.authors}
+                      authors={book.authors.join(", ")}
                       description={book.description}
                       image={book.image}
                       Button={() => (
@@ -73,8 +69,8 @@ class Saved extends Component {
                   ))}
                 </List>
               ) : (
-                  <h2 className="text-center">No Saved Books</h2>
-                )}
+                <h2 className="text-center">No Saved Books</h2>
+              )}
             </Card>
           </Col>
         </Row>
