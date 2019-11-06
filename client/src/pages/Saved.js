@@ -3,7 +3,7 @@ import Jumbotron from "../components/Jumbotron";
 import Card from "../components/Card";
 import Book from "../components/Book";
 import Footer from "../components/Footer";
-import API from "../API";
+import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 
@@ -12,20 +12,23 @@ class Saved extends Component {
     books: []
   };
 
+  // Runs on load/update
   componentDidMount() {
     this.getSavedBooks();
   }
 
+  // Call this to run API method for getting all saved books
   getSavedBooks = () => {
     API.getSavedBooks()
-      .then(res =>
-        this.setState({
-          books: res.data
-        })
+      .then(res => { console.log(`\n getSavedBooks returned : ${res}`) }
+        // this.setState({
+        //   books: res.data
+        // })
       )
       .catch(err => console.log(err));
   };
 
+  // Call this delete button event handler to run API method for deleting a book with this id
   handleBookDelete = id => {
     API.deleteBook(id).then(res => this.getSavedBooks());
   };
@@ -37,9 +40,9 @@ class Saved extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1 className="text-center">
-                <strong>(React) Google Books Search</strong>
+                <strong>Google Books Search</strong>
               </h1>
-              <h2 className="text-center">Search for and Save Books of Interest.</h2>
+              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
             </Jumbotron>
           </Col>
         </Row>
@@ -54,7 +57,8 @@ class Saved extends Component {
                       title={book.title}
                       subtitle={book.subtitle}
                       link={book.link}
-                      authors={book.authors.join(", ")}
+                      // authors={book.authors.join(", ")}
+                      authors={book.authors}
                       description={book.description}
                       image={book.image}
                       Button={() => (

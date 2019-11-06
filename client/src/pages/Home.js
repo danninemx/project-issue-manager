@@ -4,7 +4,7 @@ import Card from "../components/Card";
 import Form from "../components/Form";
 import Book from "../components/Book";
 import Footer from "../components/Footer";
-import API from "../API";
+import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 
@@ -66,7 +66,7 @@ class Home extends Component {
               <h1 className="text-center">
                 <strong>Google Books Search</strong>
               </h1>
-              <h2 className="text-center">The Bookstore of the Future, Today</h2>
+              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
             </Jumbotron>
           </Col>
           <Col size="md-12">
@@ -90,7 +90,8 @@ class Home extends Component {
                       title={book.volumeInfo.title}
                       subtitle={book.volumeInfo.subtitle}
                       link={book.volumeInfo.infoLink}
-                      authors={book.volumeInfo.authors.join(", ")}
+                      // authors={book.volumeInfo.authors.join(", ")}
+                      authors={book.volumeInfo.authors}
                       description={book.volumeInfo.description}
                       image={book.volumeInfo.imageLinks.thumbnail}
                       Button={() => (
