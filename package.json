@@ -1,7 +1,7 @@
 {
-  "name": "google-books-search-2",
+  "name": "google-books-search-3",
   "version": "1.0.0",
-  "description": "google-books-search",
+  "description": "Template: Mern Demo",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",

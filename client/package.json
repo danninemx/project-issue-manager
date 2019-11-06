@@ -1,7 +1,7 @@
 {
-  "name": "google-books-search-client",
+  "name": "mern",
   "version": "0.1.0",
-  "description": "Copied from Mern Demo",
+  "description": "Mern Demo",
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
