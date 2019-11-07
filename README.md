@@ -14,7 +14,7 @@
 
 Welcome to Bookgle!
 
-Bookgle is a full-stack SPA(Single Page Application) that allows users to search, save and preview books online.
+Bookgle is a full-stack SPA (Single Page Application) that allows users to search, save and preview books online.
 
 The front-end was developed with React Router to maximize efficacy of component-driven design.
 
@@ -26,7 +26,7 @@ The front-end was developed with React Router to maximize efficacy of component-
 
 ## Instructions <a name="instructions"></a>
 
-#### 1. Visit the [deployed page](https://bookgle.herokuapp.com).
+### 1. Visit the [deployed page](https://bookgle.herokuapp.com).
 
 Alternatively, user can install the app locally via GitHub, Node and NPM/Yarn:
 
@@ -36,7 +36,7 @@ npm i     # or yarn
 npm start # or yarn run start
 ```
 
-#### 2. Search for a book.
+### 2. Search for a book.
 
 Entering a keyword and pressing "Search" will query Google Books for matching books, then display the following for each:
 
@@ -52,7 +52,7 @@ Entering a keyword and pressing "Search" will query Google Books for matching bo
 
 These properties are also saved in the database.
 
-#### 3. Additional actions
+### 3. Additional actions
 
 Once a search has returned some results, user can:
 
