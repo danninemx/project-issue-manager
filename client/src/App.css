@@ -5,7 +5,8 @@ p {
   font-family: sans-serif;
 }
 
-i.fa {
+/* i tags whose class starts with "fa" for Font Awesome */
+i[class^="fa"] {
   margin-right: 0.4rem;
 }
 
