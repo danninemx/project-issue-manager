@@ -18,6 +18,8 @@ Bookgle is a full-stack SPA(Single Page Application) that allows users to search
 
 The front-end was developed with React Router to maximize efficacy of component-driven design.
 
+---
+
 ![bookgle-recording](./client/public/bookgle-recording.gif)
 
 ---
