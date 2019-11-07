@@ -35,4 +35,21 @@
     </noscript>
     <div id="root"></div>
   </body>
+
+  <!-- Socket.io -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  let socket = io.connect('http://localhost:3001' || 'http://localhost:3000');
+  
+  socket.on('connect', function (data) {
+    // console.log(data);
+    // socket.emit('my other event', { my: 'data 2' });
+  });
+
+  // socket.on('signon', function(data) {
+  //   alert(data);
+  // })
+
+</script>
+
 </html>

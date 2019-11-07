@@ -27,6 +27,7 @@
     "express": "^4.16.3",
     "if-env": "^1.0.4",
     "mongoose": "^5.3.16",
-    "set-value": "^3.0.1"
+    "set-value": "^3.0.1",
+    "socket.io": "^2.3.0"
   }
 }
