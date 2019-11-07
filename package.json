@@ -26,7 +26,7 @@
     "axios": "^0.18.1",
     "express": "^4.16.3",
     "if-env": "^1.0.4",
-    "mongoose": "^5.3.16",
+    "mongoose": ">=5.7.5",
     "set-value": "^3.0.1",
     "socket.io": "^2.3.0"
   }
