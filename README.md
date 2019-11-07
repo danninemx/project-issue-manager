@@ -1,4 +1,4 @@
-# [Bookgle](https://bookgle.herokuapp.com)
+# <a href="https://bookgle.herokuapp.com"><img src="https://github.com/danninemx/google-books-search/blob/master/client/src/components/Nav/bookgle-logo.png/" alt="bookgle-logo" width="277" height="84"></a>
 
 ## Table of Contents
 
@@ -11,9 +11,6 @@
 ---
 
 ## Overview <a name="overview"></a>
-
-<!-- ![bookgle-logo](./client/src/components/Nav/bookgle-logo.png?v=277) -->
-<img src="https://github.com/danninemx/google-books-search/blob/master/client/src/components/Nav/bookgle-logo.png/" alt="bookgle-logo" width="277" height="84">
 
 Welcome to Bookgle!
 
