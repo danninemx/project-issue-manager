@@ -1,6 +1,9 @@
 * {
   font-family: "Lato";
 }
+body {
+  background-color: azure;
+}
 p {
   font-family: sans-serif;
 }
