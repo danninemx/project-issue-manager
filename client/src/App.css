@@ -1,0 +1,77 @@
+* {
+  font-family: "Lato";
+}
+p {
+  font-family: sans-serif;
+}
+
+i.fa {
+  margin-right: 0.4rem;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) and (orientation: portrait) {
+  h1.text-center {
+    font-size: 1.6rem;
+  }
+  h2.text-center {
+    font-size: 1rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (orientation: portrait) {
+  h1.text-center {
+    font-size: 3.5rem;
+  }
+  h2.text-center {
+    font-size: 2rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (orientation: portrait) {
+  h1.text-center {
+    font-size: 3.5rem;
+  }
+  h2.text-center {
+    font-size: 2rem;
+  }
+}
+
+/*---------------------------*/
+/* Horizontal/landscape only */
+/*---------------------------*/
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) and (orientation: landscape) {
+  h1.text-center {
+    font-size: 1.5rem;
+  }
+  h2.text-center {
+    font-size: 1rem;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (orientation: landscape) {
+  h1.text-center {
+    font-size: 3.5rem;
+  }
+  h2.text-center {
+    font-size: 2rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (orientation: landscape) {
+  h1.text-center {
+    font-size: 3.5rem;
+  }
+  h2.text-center {
+    font-size: 2rem;
+  }
+}

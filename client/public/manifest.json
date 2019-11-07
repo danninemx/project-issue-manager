@@ -1,10 +1,10 @@
 {
-  "short_name": "React Google Books Search",
-  "name": "React Google Books Search",
+  "short_name": "Bookgle",
+  "name": "Google Books Search",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192",
+      "src": "book.gif",
+      "sizes": "64x64",
       "type": "image/png"
     }
   ],

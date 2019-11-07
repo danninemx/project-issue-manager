@@ -1,3 +1,66 @@
+# [Bookgle](https://bookgle.herokuapp.com)
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Instructions](#instructions)
+- [Technologies](#technologies)
+- [Future Development](#future)
+- [Developer](#team)
+
+---
+
+## Overview <a name="overview"></a>
+
+This is a full-stack application that allows users to search, save and preview books online.
+
+It was created with React to demonstrate component-based UI development, component state management, and user event handling.
+
+![clicky-game-screenshot](./public/bookgle.png)
+
+## Instructions <a name="instructions"></a>
+
+#### 1. Player visits the [deployed page](https://danninemx.github.io/clicky-game/).
+
+Alternatively, user can install the app locally via GitHub, Node and NPM:
+
+```js
+git clone https://github.com/danninemx/clicky-game.git
+npm i
+npm start
+```
+
+#### 2. Player is prompted to select heroes to defend earth.
+
+Rules of the game:
+
+- The win condition is to select 12 unique heroes in a row.
+- The cards will randomly shuffle with every click.
+- If you click on the same hero twice, your points will reset.
+
+#### 3. Aim to gain 12 points for victory! Earth 1 : Aliens 0.
+
+---
+
+## Technologies <a name="technologies"></a>
+
+- [Node.js](https://nodejs.org/en/)
+- [NPM: GitHub Pages](https://www.npmjs.com/package/gh-pages)
+- [React](https://github.com/facebookincubator/create-react-app)
+
+---
+
+## Future Development <a name="future"></a>
+
+- Additional themes and difficulty settings
+- Hall of fame for high scorers
+
+---
+
+## Developer <a name="team"></a>
+
+- [Danny Kim](https://github.com/danninemx)
+
 # Google Books Search
 
 ### Overview

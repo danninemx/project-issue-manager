@@ -15,6 +15,7 @@ class Home extends Component {
     message: "Search For A Book To Begin"
   };
 
+  // Call this onChange
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -22,6 +23,7 @@ class Home extends Component {
     });
   };
 
+  // Call this to run API method getBooks
   getBooks = () => {
     API.getBooks(this.state.q)
       .then(res =>
@@ -37,11 +39,13 @@ class Home extends Component {
       );
   };
 
+  // Call this to handle submit button click
   handleFormSubmit = event => {
     event.preventDefault();
     this.getBooks();
   };
 
+  // Call this to run API method saveBook
   handleBookSave = id => {
     const book = this.state.books.find(book => book.id === id);
 
@@ -63,9 +67,9 @@ class Home extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1 className="text-center">
-                <strong>(React) Google Books Search</strong>
+                <strong>Google Books Search</strong>
               </h1>
-              <h2 className="text-center">Search for and Save Books of Interest.</h2>
+              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
             </Jumbotron>
           </Col>
           <Col size="md-12">
@@ -80,7 +84,7 @@ class Home extends Component {
         </Row>
         <Row>
           <Col size="md-12">
-            <Card title="Results">
+            <Card title="Results" icon="far fa-list-ul">
               {this.state.books.length ? (
                 <List>
                   {this.state.books.map(book => (

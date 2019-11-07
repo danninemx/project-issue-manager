@@ -12,20 +12,25 @@ class Saved extends Component {
     books: []
   };
 
+  // Runs on load/update
   componentDidMount() {
     this.getSavedBooks();
   }
 
+  // Call this to run API method for getting all saved books
   getSavedBooks = () => {
     API.getSavedBooks()
-      .then(res =>
+      .then(res => {
+        console.log(`\n getSavedBooks returned : ${res}`);
         this.setState({
           books: res.data
         })
+      }
       )
       .catch(err => console.log(err));
   };
 
+  // Call this delete button event handler to run API method for deleting a book with this id
   handleBookDelete = id => {
     API.deleteBook(id).then(res => this.getSavedBooks());
   };
@@ -37,15 +42,15 @@ class Saved extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1 className="text-center">
-                <strong>(React) Google Books Search</strong>
+                <strong>Google Books Search</strong>
               </h1>
-              <h2 className="text-center">Search for and Save Books of Interest.</h2>
+              <h2 className="text-center">Search and Save Your Favorite Books.</h2>
             </Jumbotron>
           </Col>
         </Row>
         <Row>
           <Col size="md-12">
-            <Card title="Saved Books" icon="download">
+            <Card title="Saved Books" icon="archive">
               {this.state.books.length ? (
                 <List>
                   {this.state.books.map(book => (
@@ -54,7 +59,8 @@ class Saved extends Component {
                       title={book.title}
                       subtitle={book.subtitle}
                       link={book.link}
-                      authors={book.authors.join(", ")}
+                      // authors={book.authors.join(", ")}
+                      authors={book.authors}
                       description={book.description}
                       image={book.image}
                       Button={() => (
@@ -69,8 +75,8 @@ class Saved extends Component {
                   ))}
                 </List>
               ) : (
-                <h2 className="text-center">No Saved Books</h2>
-              )}
+                  <h2 className="text-center">No Saved Books</h2>
+                )}
             </Card>
           </Col>
         </Row>

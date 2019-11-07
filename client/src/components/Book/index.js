@@ -14,7 +14,7 @@ function Book({ title, subtitle, authors, link, description, image, Button }) {
         <Col size="md-4">
           <div className="btn-container">
             <a className="btn btn-light" target="_blank" rel="noopener noreferrer" href={link}>
-              View
+              Details
             </a>
             <Button />
           </div>
@@ -22,7 +22,7 @@ function Book({ title, subtitle, authors, link, description, image, Button }) {
       </Row>
       <Row>
         <Col size="md-6">
-          <p className="font-italic small">Written by {authors}</p>
+          <p className="font-italic small">Author(s): {authors}</p>
         </Col>
       </Row>
       <Row>
