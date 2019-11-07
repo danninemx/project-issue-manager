@@ -79,8 +79,8 @@ Once a search has returned some results, user can:
 
 ## Future Development <a name="future"></a>
 
-- Profile personaliztion
-- Additional sources and/or media types
+- Additional data sources and media types
+- Profile personalization
 - Share function
 - User notification
 
