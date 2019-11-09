@@ -46,9 +46,10 @@ This product seeks to fill the market void of freemium issue tracker of the vari
       <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 3" height="450">
    </p>
 
-<p align="center">
+<!-- <p align="center">
   <img width="460" height="300" src="http://www.fillmurray.com/460/300">
-</p>
+</p> -->
+
 ---
 
 ### Project Scope
