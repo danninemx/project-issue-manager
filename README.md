@@ -28,6 +28,10 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 ---
 
+<iframe style="border: none;" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FW5G1KDq5mUv39uNlqwC3bC%2FUntitled%3Fnode-id%3D11%253A1" allowfullscreen></iframe>
+
+---
+
 ### Project Scope
 
 #### In Scope Functionality
@@ -55,10 +59,11 @@ The current development plans are as follows:
 
 #### Sprint 1 (11/8 - 11/12)
 
-- Layout design
-- Project description (-11/9)
+- ~~Project description (-11/9)~~
 - ~~Plan formulation (-11/9)~~
 - ~~UI mockup creation (-11/9)~~
+- Frontend(React components, CSS) setup
+- Determine dataflow
 
 #### Sprint 2 (11/13 - 11/19)
 
@@ -80,6 +85,7 @@ The current development plans are as follows:
 
 #### Other
 
+- Feedback adoption
 - **12/5: Presentation**
 - **12/11: Demo Day**
 
