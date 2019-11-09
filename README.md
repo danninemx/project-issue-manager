@@ -34,15 +34,15 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 ####1. Dashboard
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" align="center" height="400"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" align="center" height="500"></div>
 
 ####2. Issues
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" align="center" height="400"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" align="center" height="500"></div>
 
 ####3. Tracker
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="400"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="500"></div>
 
 ---
 
