@@ -16,6 +16,8 @@ This is a development project for a software issue management application. ("bug
 
 It will be a full-stack MERN application with MVC design.
 
+---
+
 ### Objectives and Target Consumer
 
 This product seeks to fill the market void of freemium issue tracker of the variety, primarily seeking to serve:
@@ -23,6 +25,8 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 - Independent/non-professional software developers
 - SMB (Small and Medium Size Businesses) Managers
 - Bootstrap entrepreneurs
+
+---
 
 ### Project Scope
 
@@ -42,6 +46,8 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 - Using OAuth for user signup and login
 - Incorporate broader project management contexts
 - Implement realtime bi-directional communication between reporter and developer
+
+---
 
 #### Development
 
