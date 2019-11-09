@@ -49,36 +49,36 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 ---
 
-#### Development
+### Development
 
 The current development plans are as follows:
 
-### Sprint 1 (11/8 - 11/12)
+#### Sprint 1 (11/8 - 11/12)
 
 - Layout design
 - Project description (-11/9)
 - ~~Plan formulation (-11/9)~~
 - ~~UI mockup creation (-11/9)~~
 
-### Sprint 2 (11/13 - 11/19)
+#### Sprint 2 (11/13 - 11/19)
 
 - Core features development
 - Deployment
 - **Produce and deploy working MVP (11/19)**
 
-### Sprint 3 (11/20 - 11/27)
+#### Sprint 3 (11/20 - 11/27)
 
 - Functionality improvement
 - UI implementation
 - Debug
 
-### Sprint 4 (11/28 - 12/4)
+#### Sprint 4 (11/28 - 12/4)
 
 - UI completion
 - Final debug
 - **Presentation dry run (12/3)**
 
-### Other
+#### Other
 
 - **12/5: Presentation**
 - **12/11: Demo Day**
