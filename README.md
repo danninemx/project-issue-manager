@@ -28,7 +28,17 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 ---
 
-<iframe style="border: none;" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FW5G1KDq5mUv39uNlqwC3bC%2FUntitled%3Fnode-id%3D11%253A1" allowfullscreen></iframe>
+### UI Mockup
+
+- Interactive Mockup: [Figma link](https://www.figma.com/file/W5G1KDq5mUv39uNlqwC3bC/Untitled?node-id=0%3A1)
+
+1. Dashboard
+   ![dashboard](./public/Desktop - 1.png)
+   <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" align="center" height="500">
+
+2. Issues
+
+3. Tracker
 
 ---
 
