@@ -36,11 +36,11 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
    <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" height="450"></div>
 
-#### 2. Issues
+#### 2. Submit Issue
 
    <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" height="450"></div>
 
-#### 3. Tracker
+#### 3. Track Issue
 
    <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="450"></div>
 
@@ -111,9 +111,11 @@ The current development plans are as follows:
 
 #### 1. Visitor submits an issue submission form
 
-A new visitor can submit an issue anonymously to a listed organization and leave. This will create a tracker on the backend and notify the organization.
+A new visitor can submit an issue anonymously to a listed organization and leave.
+This will create a tracker on the backend and notify the organization.
 
-but will be prompted to sign up for progress updates. If agreed, visitor is taken to signup and subsequently to the issues dashboard.
+Upon submission, visitor will be prompted to sign up for progress updates.
+If agreed, visitor is taken to signup and subsequently to the issues dashboard.
 
 Visitors that have already signed up can log in to submit another tracked issue or check progress on one.
 
