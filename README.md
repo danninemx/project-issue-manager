@@ -32,17 +32,17 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 - Interactive Mockup: [Figma link](https://www.figma.com/file/W5G1KDq5mUv39uNlqwC3bC/Untitled?node-id=0%3A1)
 
-####1. Dashboard
+#### 1. Dashboard
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" align="center" height="500"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" height="450"></div>
 
-####2. Issues
+#### 2. Issues
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" align="center" height="500"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" height="450"></div>
 
-####3. Tracker
+#### 3. Tracker
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="500"></div>
+   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="450"></div>
 
 ---
 
