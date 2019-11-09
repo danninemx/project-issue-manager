@@ -1,6 +1,6 @@
-# <a href="https://bookgle.herokuapp.com"><img src="https://github.com/danninemx/google-books-search/blob/master/client/src/components/Nav/bookgle-logo.png/" alt="bookgle-logo" width="277" height="84"></a>
+# Software Issue Tracker
 
-## Table of Contents
+## Plans
 
 - [Overview](#overview)
 - [Instructions](#instructions)
@@ -12,52 +12,118 @@
 
 ## Overview <a name="overview"></a>
 
-Welcome to Bookgle!
+This is a development project for a software issue management application. ("bug tracker")
 
-Bookgle is a full-stack SPA (Single Page Application) that allows users to search, save and preview books online.
+It will be a full-stack MERN application with MVC design.
 
-The front-end was developed with React Router to maximize efficacy of component-driven design.
+### Objectives and Target Consumer
 
----
+This product seeks to fill the market void of freemium issue tracker of the variety, primarily seeking to serve:
 
-![bookgle-recording](./client/public/bookgle-recording.gif)
+- Independent/non-professional software developers
+- SMB (Small and Medium Size Businesses) Managers
+- Bootstrap entrepreneurs
+
+### Project Scope
+
+#### In Scope Functionality
+
+- Creating login account for user
+- Providing different capabilities for reporters and developer
+- Using API to route user to appropriate view
+- Providing issue submission form that feeds issues into a tracker a la kanban board
+- Adding, updating, and deleting reported issues to/from a database
+- Tracking historical changes in an issue's status, reporter, assignment, etc.
+- Generating and sending of emails related to issues
+- Querying the database for issues
+
+#### Out of Scope Functionality
+
+- Using OAuth for user signup and login
+- Incorporate broader project management contexts
+- Implement realtime bi-directional communication between reporter and developer
+
+#### Development
+
+The current development plans are as follows:
+
+### Sprint 1 (11/8 - 11/12)
+
+- Layout design
+- Project description (-11/9)
+- ~~Plan formulation (-11/9)~~
+- ~~UI mockup creation (-11/9)~~
+
+### Sprint 2 (11/13 - 11/19)
+
+- Core features development
+- Deployment
+- **Produce and deploy working MVP (11/19)**
+
+### Sprint 3 (11/20 - 11/27)
+
+- Functionality improvement
+- UI implementation
+- Debug
+
+### Sprint 4 (11/28 - 12/4)
+
+- UI completion
+- Final debug
+- **Presentation dry run (12/3)**
+
+### Other
+
+- **12/5: Presentation**
+- **12/11: Demo Day**
 
 ---
 
 ## Instructions <a name="instructions"></a>
 
-### 1. Visit the [deployed page](https://bookgle.herokuapp.com).
+### Visitor
 
-Alternatively, user can install the app locally via GitHub, Node and NPM/Yarn:
+#### 1. Visitor submits an issue submission form
 
-```js
-git clone https://github.com/danninemx/google-books-search.git
-npm i     # or yarn
-npm start # or yarn run start
-```
+A new visitor can submit an issue anonymously to a listed organization and leave. This will create a tracker on the backend and notify the organization.
 
-### 2. Search for a book.
+but will be prompted to sign up for progress updates. If agreed, visitor is taken to signup and subsequently to the issues dashboard.
 
-Entering a keyword and pressing "Search" will query Google Books for matching books, then display the following for each:
+Visitors that have already signed up can log in to submit another tracked issue or check progress on one.
 
-- `Title` - Title of the book from the Google Books API
+#### 2. Visitor reviews issue on reporter dashboard
 
-- `Authors` - The books's author(s) as returned from the Google Books API
+Once signed-up, visitor can log into the web dashboard to submit new issues and/or search/review the status on accessible issues.
 
-- `Description` - The book's description as returned from the Google Books API
+#### 3. Visitor receives status update on issue
 
-- `Image` - The Book's thumbnail image as returned from the Google Books API
+During or after the implementation of resolution, the developer would communicate the status of the issue to mark progress or closure.
 
-- `Link` - The Book's information link as returned from the Google Books API
+---
 
-These properties are also saved in the database.
+### Developer
 
-### 3. Additional actions
+#### 1. Developer visits the company dashboard.
 
-Once a search has returned some results, user can:
+A new developer from a new organization can create an account for both the organization and him/herself.
 
-- View the details on Google Books website
-- Save a book to the "Saved" page or remove it
+All other developers can simply log in.
+
+When an issue is submitted to an organization, it opens an issue ticket and notifies the main user(s) by email.
+
+#### 2. Developer assigns and addresses issue.
+
+Developers will process the submitted issue through its lifecycle in the following general sequence:
+
+1. Assess reported issue
+2. Identify owner and assign issue
+3. Implement resolution
+4. Inform reporter of status update
+5. Close issue on tracker
+
+#### 3. Analyze, Learn and Repeat.
+
+The dashboard will continue to provide a high-level issue summary,
 
 ---
 
@@ -70,6 +136,7 @@ Once a search has returned some results, user can:
 - [NPM: Mongoose](https://www.npmjs.com/package/mongoose)
 - [NPM: Set-Value](https://www.npmjs.com/package/set-value)
 - [NPM: Socket.io](https://www.npmjs.com/package/socket.io)
+- [Material-UI](https://material-ui.com)
 - [React](https://github.com/facebookincubator/create-react-app)
 - [React Router](https://www.npmjs.com/package/react-router-dom)
 - [Heroku](https://heroku.com)
@@ -79,10 +146,11 @@ Once a search has returned some results, user can:
 
 ## Future Development <a name="future"></a>
 
-- Additional data sources and media types
-- Profile personalization
-- Share function
-- User notification
+- Comprehensive project issue contexts
+- Project Management-specific features
+- Permissions control
+- Data science components
+- Single-tenancy(dedicated) edition
 
 ---
 
