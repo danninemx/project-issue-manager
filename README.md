@@ -34,16 +34,21 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 #### 1. Dashboard
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" height="450"></div>
+   <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 1.png/" alt="mockup 1" height="450"></p>
 
 #### 2. Submit Issue
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 1" height="450"></div>
+   <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 2.png/" alt="mockup 2" height="450"></p>
 
 #### 3. Track Issue
 
-   <div><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 1" align="center" height="450"></div>
+   <p align="center">
+      <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 3" height="450">
+   </p>
 
+<p align="center">
+  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
+</p>
 ---
 
 ### Project Scope
