@@ -1,4 +1,4 @@
-# Software Issue Tracker
+# Software Issue Manager
 
 ## Plans
 
@@ -45,10 +45,6 @@ This product seeks to fill the market void of freemium issue tracker of the vari
    <p align="center">
       <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/public/Desktop - 3.png/" alt="mockup 3" height="450">
    </p>
-
-<!-- <p align="center">
-  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
-</p> -->
 
 ---
 
@@ -163,18 +159,20 @@ The dashboard will continue to provide a high-level issue summary,
 
 ## Technologies <a name="technologies"></a>
 
-- [Node.js](https://nodejs.org/en/)
-- [NPM: Axios](https://www.npmjs.com/package/axios)
-- [NPM: Express](https://www.npmjs.com/package/express)
-- [NPM: If-Env](https://www.npmjs.com/package/if-env)
-- [NPM: Mongoose](https://www.npmjs.com/package/mongoose)
-- [NPM: Set-Value](https://www.npmjs.com/package/set-value)
-- [NPM: Socket.io](https://www.npmjs.com/package/socket.io)
-- [Material-UI](https://material-ui.com)
-- [React](https://github.com/facebookincubator/create-react-app)
-- [React Router](https://www.npmjs.com/package/react-router-dom)
-- [Heroku](https://heroku.com)
-- [Heroku Add-on: mLab MongoDB](https://elements.heroku.com/addons/mongolab)
+| Technology/Dependency Used                                                 | Purpose                        |
+| -------------------------------------------------------------------------- | ------------------------------ |
+| [Heroku](https://heroku.com)                                               | Deployment: Hosting            |
+| [Heroku Add-on: mLab MongoDB](https://elements.heroku.com/addons/mongolab) | Deployment: Database support   |
+| [Node.js](https://nodejs.org/en/)                                          | JavaScript runtime environment |
+| [NPM: Axios](https://www.npmjs.com/package/axios)                          | API call                       |
+| [NPM: Express](https://www.npmjs.com/package/express)                      | Server                         |
+| [NPM: If-Env](https://www.npmjs.com/package/if-env)                        | Server                         |
+| [NPM: Mongoose](https://www.npmjs.com/package/mongoose)                    | Database                       |
+| [NPM: Set-Value](https://www.npmjs.com/package/set-value)                  | Server                         |
+| [NPM: Socket.io](https://www.npmjs.com/package/socket.io)                  | Notification                   |
+| [NPM: Socket.io-client](https://www.npmjs.com/package/socket.io-client)    | Notification                   |
+| [React](https://github.com/facebookincubator/create-react-app)             | Rendering                      |
+| [React Router](https://www.npmjs.com/package/react-router-dom)             | Routing                        |
 
 ---
 
