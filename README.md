@@ -163,6 +163,7 @@ The dashboard will continue to provide a high-level issue summary,
 | -------------------------------------------------------------------------- | ------------------------------ |
 | [Heroku](https://heroku.com)                                               | Deployment: Hosting            |
 | [Heroku Add-on: mLab MongoDB](https://elements.heroku.com/addons/mongolab) | Deployment: Database support   |
+| [Material UI](https://material-ui.com/)                                    | Frontend                       |
 | [Node.js](https://nodejs.org/en/)                                          | JavaScript runtime environment |
 | [NPM: Axios](https://www.npmjs.com/package/axios)                          | API call                       |
 | [NPM: Express](https://www.npmjs.com/package/express)                      | Server                         |

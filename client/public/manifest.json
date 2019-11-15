@@ -1,6 +1,6 @@
 {
-  "short_name": "Bookgle",
-  "name": "Google Books Search",
+  "short_name": "Bug Tracker",
+  "name": "Project Issue Manager",
   "icons": [
     {
       "src": "book.gif",
