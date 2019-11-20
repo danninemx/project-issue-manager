@@ -71,7 +71,7 @@ This product seeks to fill the market void of freemium issue tracker of the vari
 
 ### Development
 
-The current development plans are as follows:
+The current development plans for 11/8/2019 - 12/11/2019 are as follows:
 
 #### Sprint 1 (11/8 - 11/12)
 
