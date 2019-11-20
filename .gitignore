@@ -1,5 +1,4 @@
-backup
-RMW-clone
+.env
 
 # dependencies
 node_modules

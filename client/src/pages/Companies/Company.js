@@ -1,5 +1,5 @@
 import EditActivity from 'rmw-shell/lib/containers/Activities/EditActivity'
-import Form from '../../components/Forms/Company'
+import Form from '../../components/old/Forms/Company'
 import React from 'react'
 import { injectIntl } from 'react-intl'
 

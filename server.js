@@ -5,6 +5,17 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+/*
+//-----------------//
+// Dotenv testing  //
+//-----------------//
+require('dotenv').config();
+console.log("\n Environment variables :", process.env);
+
+// let API_Key = process.env.Firebase_apiKey;
+let API_Key = process.env.API_KEY;
+console.log("\n API_Key : ", API_Key);
+*/
 
 //-----------------//
 // Socket.io setup //
@@ -25,20 +36,9 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  // socket.emit('signon', 'Welcome to Bookgle');
-
-  // socket.broadcast.emit('user just connected');
-
-  // socket.on('connect', function (data) {
-  //   console.log(data);
-  // });
-
-  // socket.on('my other event', function (data) {
-  //   console.log(data);
-  // });
-
-  // socket.emit('news', { hello: 'world1' });
-
+  /*
+  Implement alert/messaging here
+  */
 
 });
 

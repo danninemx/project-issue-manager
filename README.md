@@ -78,13 +78,13 @@ The current development plans are as follows:
 - ~~Project description (-11/9)~~
 - ~~Plan formulation (-11/9)~~
 - ~~UI mockup creation (-11/9)~~
-- Frontend(React components, CSS) setup
-- Determine dataflow
+- ~~Frontend(React components, CSS) setup (-11/12)~~
+- ~~Determine dataflow (-11/12)~~
 
 #### Sprint 2 (11/13 - 11/19)
 
-- Core features development
-- Deployment
+- ~~Core features development (-11/19)~~
+- ~~Deployment (-11/19)~~
 - **Produce and deploy working MVP (11/19)**
 
 #### Sprint 3 (11/20 - 11/27)

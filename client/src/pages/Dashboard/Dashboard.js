@@ -1,16 +1,26 @@
 //React
-import React, { Component } from 'react'
+import React from 'react'
 // import { connect } from 'react-redux'
 
 // RMW shell
 // import { Activity } from 'rmw-shell'
 // import { GitHubIcon } from 'rmw-shell/lib/components/Icons'
 // import Scrollbar from 'rmw-shell/lib/components/Scrollbar'
+// import clsx from 'clsx';
 
 // Material UI
-import Button from '@material-ui/core/Button'
-import Group from '@material-ui/icons/Group'
-import { withTheme } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button';
+// import Group from '@material-ui/icons/Group';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import {
+  // withStyles, 
+  makeStyles,
+  // useTheme 
+} from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
 
 // Other modules
 // import CountUp from 'react-countup'
@@ -19,253 +29,199 @@ import { withTheme } from '@material-ui/core/styles'
 // import { Line, Bar, Doughnut } from 'react-chartjs-2'
 
 // Components
-// import NavBar from '../../components/Navbar'
-import SideBar from '../../components/Sidebar'
+// import SideBar from '../../components/Sidebar'
 
-//
+const useStyles = makeStyles(theme => ({
+  // const styles = makeStyles(theme => ({
+  // root: {
+  //   align: 'center',
+  //   display: 'flex',
+  // },
+  cardsContent: {
+    // padding: 15,
+    paddingTop: 90,
+    paddingLeft: 15,
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    [theme.breakpoints.only('xs')]: {
+      width: '100%',
+      padding: 0,
+      // paddingTop: 15
+      paddingTop: 60,
+      paddingLeft: 0,
 
-// const currentYear = new Date().getFullYear()
-// const daysPath = `/user_registrations_per_day/${currentYear}/${new Date().toISOString().slice(5, 7)}`
-// const monthsPath = `/user_registrations_per_month/${currentYear}`
-// const providerPath = '/provider_count'
+    }
+  },
+  card: {
+    minWidth: "37vw",
+    // maxWidth: 350,
+    maxWidth: "50%",
+    margin: 15,
+    [theme.breakpoints.only('xs')]: {
+      minWidth: 275,
+      width: '100%',
+      margin: 0,
+      marginTop: 7
+    },
+    // "&:last-child": {
+    //   marginTop: 25,
+    // }
+  },
+  wideCard: {
+    minWidth: "90%",
+    // maxWidth: 350,
+    maxWidth: "90%",
+    margin: 15,
+    [theme.breakpoints.only('xs')]: {
+      width: '100%',
+      margin: 0,
+      marginTop: 7
+    },
+  },
+  mouseEntered: {
+    color: "red",
+  },
+  mouseLeft: {
+    color: "black",
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)'
+  },
+  cardTitle: {
+    marginBottom: 16,
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
+  },
+}))
 
-class Dashboard extends Component {
-  state = {
-    // This tells the AppBar which menu to highlight, maybe.
-    currentPage: "",
+function Dashboard() {
+  /*
+    let state = {
+      // This tells the AppBar which menu to highlight, maybe.
+      currentPage: "",
+  
+      // Submitted, In progress, Resolved, Closed...
+      counts: {
+        submitted: 5,
+        reviewed: 1,
+        resolved: 1,
+        closed: 3
+      },
+  
+      latestIssue: {},
+  
+      // Status updates in sentence form: MM/DD/YY hh:mm - ${assignee} ${action description} (Issue #${###-###-###-###})
+      // Give thoughts on the issue number structure.
+      notifications: []
+    };
+  */
+  const classes = useStyles();
 
-    // Submitted, In progress, Resolved, Closed...
-    counts: {},
+  return (
+    <React.Fragment>
+      <div className={classes.cardsContent}>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              Organization Summary
+          </Typography>
+            <br />
+            <Typography>{'Paste this in Node command line:'}</Typography>
+            <br />
+            <Typography className={classes.pos} color="textSecondary">
+              <br></br>
+              Submitted:
+              {/* {this.state.counts.submitted} */}
+              {' '}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              size="small"
+              onClick={() => {
+                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
+                win.focus()
+              }}
+            >
+              Learn More
+          </Button>
+          </CardActions>
+        </Card>
+
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              My Issues
+          </Typography>
+            <br />
+            <Typography>{'Paste this in Node command line:'}</Typography>
+            <br />
+            <Typography className={classes.pos} color="textSecondary">
+              <br></br>
+              Submitted:
+              {/* {this.state.counts.submitted} */}
+              {' '}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              size="small"
+              onClick={() => {
+                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
+                win.focus()
+              }}
+            >
+              Learn More
+          </Button>
+          </CardActions>
+        </Card>
 
 
-    latestIssue: {},
+        <Card className={classes.wideCard}>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              Notifications
+          </Typography>
+            <br />
+            <Link
+              component="button"
+              variant="body1"
+              color="textPrimary"
+              onClick={() => {
+                console.log("Some accessibility message here...")
+                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
+                win.focus()
+              }}
+            >
+              {'DISPLAY AUTOMATED MESSAGES HERE (e.g. Like this)'}
+            </Link>
+            <br />
+            <Typography className={classes.pos} color="textSecondary">
+              <br></br>
+              11/20/2019 03:30 PM - Someone did Something, Something and Something.
+              {/* {this.state.counts.submitted} */}
+              <br></br>
+              11/20/2019 03:30 PM - Someone did Something, Something and Something.
 
-    // Status updates in sentence form: MM/DD/YY hh:mm - ${assignee} ${action description} (Issue #${###-###-###-###})
-    // Give thoughts on the issue number structure.
-    notifications: []
-  };
+              <br></br>
+              11/20/2019 03:30 PM - Someone did Something, Something and Something.
 
-  componentDidMount() {
-    // const { watchPath } = this.props
-    // watchPath(daysPath)
-    // watchPath(monthsPath)
-    // watchPath(providerPath)
-    // watchPath('users_count')
+              {' '}
+            </Typography>
+          </CardContent>
 
-    const test = this.props
-    this.setState(test);
-  }
+        </Card>
 
-  render() {
-    return <div>testing dashboard</div>
-  }
+      </div>
+    </React.Fragment>
+  )
 }
 
-// What used to be in render() {}
-// const { theme, intl, days, months, providers, usersCount } = this.props
 
-// let daysLabels = []
-// let daysData = []
-
-// if (days) {
-//   Object.keys(days)
-//     .sort()
-//     .map(key => {
-//       daysLabels.push(key)
-//       daysData.push(days[key])
-//       return key
-//     })
-// }
-
-// const daysComponentData = {
-//   labels: daysLabels,
-//   datasets: [
-//     {
-//       label: intl.formatDate(Date.now(), { month: 'long' }),
-//       fill: false,
-//       lineTension: 0.1,
-//       backgroundColor: theme.palette.primary.main,
-//       borderColor: theme.palette.primary.main,
-//       borderCapStyle: 'butt',
-//       borderDash: [],
-//       borderDashOffset: 0.0,
-//       borderJoinStyle: 'miter',
-//       pointBorderColor: theme.palette.secondary.main,
-//       pointBackgroundColor: '#fff',
-//       pointBorderWidth: 1,
-//       pointHoverRadius: 5,
-//       pointHoverBackgroundColor: theme.palette.primary.main,
-//       pointHoverBorderColor: theme.palette.secondary.main,
-//       pointHoverBorderWidth: 2,
-//       pointRadius: 1,
-//       pointHitRadius: 10,
-//       data: daysData
-//     }
-//   ]
-// }
-
-// let monthsLabels = []
-// let monthsData = []
-
-// if (months) {
-//   Object.keys(months)
-//     .sort()
-//     .map(key => {
-//       let date = new Date(`${currentYear}-${key}-1`)
-//       monthsLabels.push(intl.formatDate(date, { month: 'long' }))
-
-//       monthsData.push(months[key])
-//       return key
-//     })
-// }
-
-// const monthsComponentData = {
-//   labels: monthsLabels,
-//   datasets: [
-//     {
-//       label: intl.formatMessage({ id: 'user_registrationg_graph_label' }),
-//       fill: false,
-//       maintainAspectRatio: true,
-//       lineTension: 0.1,
-//       backgroundColor: theme.palette.primary.main,
-//       borderColor: theme.palette.primary.main,
-//       borderCapStyle: 'butt',
-//       borderDash: [],
-//       borderDashOffset: 0.0,
-//       borderJoinStyle: 'miter',
-//       pointBorderColor: theme.palette.secondary.main,
-//       pointBackgroundColor: '#fff',
-//       pointBorderWidth: 1,
-//       pointHoverRadius: 5,
-//       pointHoverBackgroundColor: theme.palette.primary.main,
-//       pointHoverBorderColor: theme.palette.secondary.main,
-//       pointHoverBorderWidth: 2,
-//       pointRadius: 1,
-//       pointHitRadius: 10,
-//       data: monthsData
-//     }
-//   ]
-// }
-
-// let providersData = []
-// let providersLabels = []
-// let providersBackgrounColors = []
-
-// if (providers) {
-//   Object.keys(providers)
-//     .sort()
-//     .map(key => {
-//       providersLabels.push(intl.formatMessage({ id: key }))
-//       providersBackgrounColors.push(intl.formatMessage({ id: `${key}_color` }))
-//       providersData.push(providers[key])
-//       return key
-//     })
-// }
-
-// const providersComponentData = {
-//   labels: providersLabels,
-//   datasets: [
-//     {
-//       data: providersData,
-//       backgroundColor: providersBackgrounColors,
-//       hoverBackgroundColor: providersBackgrounColors
-//     }
-//   ]
-// }
-
-// return (
-//   <Activity
-//     iconElementRight={
-//       <Button
-//         style={{ marginTop: 4 }}
-//         href="https://github.com/TarikHuber/react-most-wanted"
-//         target="_blank"
-//         rel="noopener"
-//         secondary
-//         icon={<GitHubIcon />}
-//       />
-//     }
-//     title={intl.formatMessage({ id: 'dashboard' })}
-//   >
-//     <Scrollbar>
-//       <div
-//         style={{
-//           margin: 5,
-//           display: 'flex',
-//           flexDirection: 'row',
-//           flexWrap: 'wrap',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//           width: '100%',
-//           marginTop: 50
-//         }}
-//       >
-//         <div style={{ flexGrow: 1, flexShrink: 1, maxWidth: 600 }}>
-//           <Line
-//             options={{
-//               maintainAspectRatio: true
-//             }}
-//             data={monthsComponentData}
-//           />
-//         </div>
-
-//         <div style={{ flexGrow: 1, flexShrink: 1, maxWidth: 600 }}>
-//           <Bar
-//             options={{
-//               maintainAspectRatio: true
-//             }}
-//             data={daysComponentData}
-//           />
-//         </div>
-//       </div>
-
-//       <br />
-//       <div
-//         style={{
-//           margin: 5,
-//           display: 'flex',
-//           flexDirection: 'row',
-//           flexWrap: 'wrap',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//           width: '100%',
-//           marginTop: 50
-//         }}
-//       >
-//         <div style={{ flexGrow: 1, flexShrink: 1, maxWidth: 600, justifyContent: 'center' }}>
-//           <Doughnut data={providersComponentData} />
-//         </div>
-
-//         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: 30 }}>
-//           <CountUp
-//             style={{
-//               fontSize: 100,
-//               color: theme.palette.primary.main,
-//               fontFamily: theme.fontFamily
-//             }}
-//             start={0}
-//             end={usersCount}
-//           />
-//           <div>
-//             <Group color="secondary" className="material-icons" style={{ fontSize: 70, marginLeft: 16 }} />
-//           </div>
-//         </div>
-//       </div>
-//     </Scrollbar>
-//   </Activity>
-// )
-
-
-// const mapStateToProps = state => {
-//   const { paths } = state
-
-//   return {
-//     days: paths[daysPath],
-//     months: paths[monthsPath],
-//     providers: paths[providerPath],
-//     usersCount: paths['users_count'] ? paths['users_count'] : 0
-//   }
-// }
-
-// export default connect(mapStateToProps)(injectIntl(withTheme(withFirebase(Dashboard))))
+// export default withStyles(styles)(Dashboard);
 export default Dashboard;

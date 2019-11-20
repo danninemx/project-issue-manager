@@ -1,6 +1,16 @@
 // React and related libraries
 import React, { useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation,
+  withRouter
+} from "react-router-dom";
+
 
 // rmw
 // import { Helmet } from 'react-helmet' // manages document head
@@ -22,7 +32,7 @@ import { withStyles } from '@material-ui/core/styles'
 import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone';
 
 
-// OTher
+// Other
 
 
 // Default style settings for Material UI
@@ -139,25 +149,26 @@ const styles = theme => ({
 })
 
 const LandingPage = ({ classes, history, theme }) => {
-  const isAuthorised = () => {
-    try {
-      const key = Object.keys(localStorage).find(e => e.match(/persist:root/))
-      const data = JSON.parse(localStorage.getItem(key))
-      const auth = JSON.parse(data.auth)
+  // const isAuthorised = () => {
+  //   try {
+  //     const key = Object.keys(localStorage).find(e => e.match(/persist:root/))
+  //     const data = JSON.parse(localStorage.getItem(key))
+  //     const auth = JSON.parse(data.auth)
 
-      return auth && auth.isAuthorised
-    } catch (ex) {
-      return false
-    }
-  }
+  //     return auth && auth.isAuthorised
+  //   } catch (ex) {
+  //     return false
+  //   }
+  // }
 
-  useEffect(() => {
-    if (isAuthorised()) {
-      history.push('/signin')
-    }
-  })
+  // useEffect(() => {
+  //   if (isAuthorised()) {
+  //     history.push('/signin')
+  //   }
+  // })
 
   return (
+
     <div className={classes.main}>
       {/* <Helmet>
         <meta name="theme-color" content={theme.palette.primary.main} />
@@ -167,13 +178,16 @@ const LandingPage = ({ classes, history, theme }) => {
       </Helmet> */}
 
       <AppBar position="static">
-        <Toolbar disableGutters>
-          <div style={{ flex: 1 }} />
 
+        <Toolbar disableGutters>
+          <Typography variant="h6" className={classes.title}>
+            Bug Tracker
+          </Typography>
+          <div style={{ flex: 1 }} />
           <Tooltip id="tooltip-icon1" title="Sign in">
             <IconButton
               name="signin"
-              aria-label="Open Github"
+              aria-label="Sign In"
               color="inherit"
               onClick={() => {
                 history.push('/signin')
@@ -221,7 +235,9 @@ const LandingPage = ({ classes, history, theme }) => {
               </Typography>
               <Button
                 onClick={() => {
-                  history.push('/signin')
+                  // Reinstate this once signin page is set up with authentication
+                  // history.push('/signin')
+                  history.push('/dashboard')
                 }}
                 className={classes.button}
                 variant="outlined"
@@ -255,7 +271,7 @@ const LandingPage = ({ classes, history, theme }) => {
                       history.push('/signin')
                     }}
                   >
-                    Get started
+                    Submit Issue
                   </Button>
                 </CardActions>
               </Card>
