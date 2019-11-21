@@ -2,12 +2,16 @@
 import React from 'react';
 import clsx from 'clsx';
 import {
-  BrowserRouter as Router, Switch, Route, Redirect, useHistory, useLocation, withRouter, Link
+  // BrowserRouter as Router, Switch, Route, Redirect, useHistory, useLocation, 
+  withRouter, Link
 } from "react-router-dom";
 
 
 // Material UI
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  makeStyles, useTheme
+  // styled 
+} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -31,6 +35,8 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 
 // Firebase
 import firebase from "firebase"
+// import { mergeClasses } from '@material-ui/styles';
+// import { NONAME } from 'dns';
 
 // Pages
 // import Dashboard from '../../pages/Dashboard';
@@ -117,7 +123,7 @@ function Sidebar(props) {
   firebase.auth().onAuthStateChanged(function (currentUser) {
     if (currentUser) {
       // User is signed in.
-      console.log('\n Current authenticated user :', currentUser.displayName, currentUser.email, currentUser.photoURL, currentUser.emailVerified, currentUser.uid)
+      console.log('\n Sidebar sees user :', currentUser.displayName, currentUser.email, currentUser.photoURL, currentUser.emailVerified, currentUser.uid)
       // user.name = currentUser.displayName;
       // console.log('\n Saved user name initial: ', user.name);
       // user.name = currentUser.displayName;
@@ -144,6 +150,12 @@ function Sidebar(props) {
 
   const classes = useStyles();
   const theme = useTheme();
+
+  // const CustomLink = styled('link')({
+  //   textDecoration: NONAME,
+  //   color: 'primary',
+  // })
+
   const [open, setOpen] = React.useState(false);
 
   console.log("\n Sidebar received these props : ", props); // Functional components use props, not this.props
@@ -184,42 +196,45 @@ function Sidebar(props) {
     setOpen(false);
   };
 
-  const handleClickEvent = (buttonText) => {
-    switch (buttonText) {
-      case 'Dashboard':
-        console.log('\n You clicked ', buttonText);
-        console.log('Sidebar sees props.history : ', props.history);
-        break;
-      case 'Submit Issue':
-        console.log('\n You clicked ', buttonText);
-        console.log('Sidebar sees props.history : ', props.history);
-
-        // Per https://stackoverflow.com/questions/44121069/how-to-pass-params-with-history-push-link-redirect-in-react-router-v4
-        // props.history.push({
-        //   pathname: '/developerview',
-        //   state: { activeView: buttonText }
-        // }) 
-        // This did not work.
-
-        // Alternative suggestion
-        // <Link to={{
-        //   pathname: '/template',
-        //   search: '?query=abc',
-        //   state: { detail: response.data }
-        // }}> My Link </Link> 
-
-        // props.history.push("/developerview");
-        break;
-      case 'Review Issues':
-        console.log('\n You clicked ', buttonText);
-        console.log('Sidebar sees props.history : ', props.history);
-        break;
-      default:
-        console.log('What did you even click? ', buttonText);
-        console.log('Sidebar sees props.history : ', props.history);
+  /*  
+    const handleClickEvent = (buttonText) => {
+      switch (buttonText) {
+        case 'Dashboard':
+          console.log('\n You clicked ', buttonText);
+          console.log('Sidebar sees props.history : ', props.history);
+          break;
+        case 'Submit Issue':
+          console.log('\n You clicked ', buttonText);
+          console.log('Sidebar sees props.history : ', props.history);
+  
+          // Per https://stackoverflow.com/questions/44121069/how-to-pass-params-with-history-push-link-redirect-in-react-router-v4
+          // props.history.push({
+          //   pathname: '/developerview',
+          //   state: { activeView: buttonText }
+          // }) 
+          // This did not work.
+  
+          // Alternative suggestion
+          // <Link to={{
+          //   pathname: '/template',
+          //   search: '?query=abc',
+          //   state: { detail: response.data }
+          // }}> My Link </Link> 
+  
+          // props.history.push("/developerview");
+          break;
+        case 'Review Issues':
+          console.log('\n You clicked ', buttonText);
+          console.log('Sidebar sees props.history : ', props.history);
+          break;
+        default:
+          console.log('What did you even click? ', buttonText);
+          console.log('Sidebar sees props.history : ', props.history);
+      }
     }
-  }
-  let testprint = 10000;
+  */
+
+  // let testprint = 10000;
 
   return (
     <div className={classes.root}>
@@ -255,9 +270,9 @@ function Sidebar(props) {
           </Typography>
 
           <Toolbar disableGutters>
-            {/* <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={classes.title}>
               Bug Tracker
-          </Typography> */}
+          </Typography>
             <div style={{ flex: 1 }} />
             <Tooltip id="tooltip-icon1" title="Sign out">
               <IconButton
@@ -309,23 +324,26 @@ function Sidebar(props) {
         </div>
         <Divider />
         <List>
-          {/* {['Dashboard', 'Submit Issue', 'Review Issues'].map((text, index) => ( */}
           {['Dashboard', 'Submit Issue', 'Review Issues'].map((text, index) => (
             // <Link href="#" onClick={() => handleClickEvent(text)}>
-            <Link to={{
-              pathname: '/developerview',
-              state: {
-                userName: props.userName,
-                signOutFunction: props.signOutFunction,
-                profileImgSrc: props.profileImgSrc,
-                activeView: text
-              }
-            }}>
+            <Link
+              // <CustomLink
+              className={classes.title}
+              to={{
+                pathname: '/developerview',
+                state: {
+                  // userName: props.userName,
+                  // signOutFunction: props.signOutFunction,
+                  // profileImgSrc: props.profileImgSrc,
+                  activeView: text
+                }
+              }}>
               <ListItem button key={text}>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             </Link>
+            // </CustomLink>
           ))}
         </List>
         <Divider />

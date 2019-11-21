@@ -20,6 +20,7 @@ class DeveloperView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            activeView: 'Dashboard',
             methodInDeveloperView: true, // test state
         };
     }
@@ -47,7 +48,10 @@ class DeveloperView extends Component {
 
 
     determineView(props) {
-        console.log('\n DeveloperView sees this.props.activeView :', this.props.activeView);
+
+        if (this.props.activeView) {
+            console.log('\n DeveloperView sees this.props.activeView :', this.props.activeView);
+        }
 
         let nextView;
 
@@ -56,7 +60,7 @@ class DeveloperView extends Component {
                 nextView = <SubmitIssue />
                 break;
             case 'Review Issues':
-                nextView = <Dashboard />
+                nextView = <SubmitIssue /> // Add additional page later
                 break;
             default:
                 nextView = <Dashboard />
@@ -64,7 +68,6 @@ class DeveloperView extends Component {
         return nextView;
     }
 
-    // On component load:
     componentDidMount(props) {
         console.log("\n DeveloperView received these props : ", this.props);
 
@@ -132,7 +135,8 @@ class DeveloperView extends Component {
                 // profileImgSrc={this.props.profileImgSrc}
                 user={this.state.user}
             >
-                <SubmitIssue />
+                {this.determineView}
+                {/* <SubmitIssue /> */}
                 {/* <Dashboard /> */}
                 {this.props.children}
             </Sidebar>

@@ -4,7 +4,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import { Redirect } from 'react-router-dom'
 // import config from '../../../../config'
 
-import DeveloperView from '../DeveloperView';
+// import DeveloperView from '../DeveloperView';
 
 require('dotenv').config();
 // If running in non-production environment, load .env variables
@@ -83,8 +83,10 @@ class SigninPage extends Component {
             })
             .catch(function (error) {
                 // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
+                // let errorCode = error.code;
+                // let errorMessage = error.message;
+                console.log(`\n error code : ${error.code}`,
+                    `\n error message : ${error.message}`)
             })
     }
 
