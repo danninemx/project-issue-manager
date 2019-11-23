@@ -1,12 +1,5 @@
 //React
 import React from 'react'
-// import { connect } from 'react-redux'
-
-// RMW shell
-// import { Activity } from 'rmw-shell'
-// import { GitHubIcon } from 'rmw-shell/lib/components/Icons'
-// import Scrollbar from 'rmw-shell/lib/components/Scrollbar'
-// import clsx from 'clsx';
 
 // Material UI
 import Button from '@material-ui/core/Button';
@@ -27,9 +20,6 @@ import Link from '@material-ui/core/Link';
 // import { injectIntl } from 'react-intl'
 // import { withFirebase } from 'firekit-provider'
 // import { Line, Bar, Doughnut } from 'react-chartjs-2'
-
-// Components
-// import SideBar from '../../components/Sidebar'
 
 const useStyles = makeStyles(theme => ({
   // const styles = makeStyles(theme => ({

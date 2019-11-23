@@ -2,7 +2,8 @@ import React, { Component, useEffect } from "react";
 import {
   BrowserRouter as Router, Switch, Route,
   // Link, 
-  Redirect, useHistory
+  // Redirect, 
+  useHistory
   // useLocation, withRouter 
 } from "react-router-dom";
 // import PropTypes from 'prop-types';
@@ -165,67 +166,109 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-// // Express-session setup
-// const express = express();
-// express.use(session({
-//   secret: 'keyboard cat',
-//   resave: false,
-//   saveUninitialized: true,
-//   // cookie: { secure: true } // Enable this if using HTTPS
-// }))
-
-
 class App extends Component {
+  // constructor(props) {
+  //   super(props);
+  constructor() {
+    super();
 
-  state = {
-    user: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      organization: '',
-      affiliatedProducts: [],
-    },
-    // issues: {
-    //   submitted: [],
-    //   assigned: [],
-    // },
-  };
+    // Bind the this context to the handler function
+    this.handler = this.handler.bind(this);
+    // this.handleSignIn = this.handleSignIn.bind(this);
 
+    // Set default auth state of false
+    this.state = {
+      isAuthenticated: false,
+    };
+  }
+  // state = {
+  //   user: {
+  //     email: '',
+  //     firstName: '',
+  //     lastName: '',
+  //     organization: '',
+  //     affiliatedProducts: [],
+  //   },
+  // issues: {
+  //   submitted: [],
+  //   assigned: [],
+  // },
+  // };
 
-  authentication = {
-    isAuthenticated: true, // Once actual authentication is implemented, change this to "false".
-    authenticate(callback) {
-      this.isAuthenticated = true;
-      // process?
-    },
-    signout(callback) {
-      this.isAuthenticated = false;
-      // process?
-    }
+  // This method will be sent to the child component
+  handler() {
+    this.setState({
+      isAuthenticated: true
+    })
+    alert('Welcome, user!');
   }
 
 
-  // A wrapper for <Route> that redirects to the login screen if you're not yet authenticated.
+  handleSignIn() {
+    this.setState({
+      isAuthenticated: true
+    })
+    alert('Welcome, user!');
+  }
+
+  handleSignOut() {
+    this.setState({
+      isAuthenticated: false
+    })
+  }
+
+  // authentication = {
+  //   // isAuthenticated: true, // Once actual authentication is implemented, change this to "false".
+  //   authenticate(callback) {
+  //     this.isAuthenticated = true;
+  //   },
+  //   signout(callback) {
+  //     this.isAuthenticated = false;
+  //   }
+  // }
+
+
   ProtectedRoute = ({ children, ...rest }) => {
     return (
       <Route
         {...rest}
-        // If authenticated, use the children route. If not, send to login.
-        render={({ location }) =>
-          this.authentication.isAuthenticated ? (
-            children
-          ) : (
-              <Redirect
-                to={{
-                  pathname: "/loginpage",
-                  state: { from: location }
-                }}
-              />
-            )
-        }
+        render={children}
+      // ({ location }) => fakeAuth.isAuthenticated ? (
+      //   children
+      // ) : (
+      //   <Redirect
+      //     to={{
+      //       pathname: "/login",
+      //       state: { from: location }
+      //     }}
+      // />
+      // )
+      // }
       />
     );
   }
+
+  // A wrapper for <Route> that redirects to the login screen if you're not yet authenticated.
+  // ProtectedRoute = ({ children, ...rest }) => {
+  //   return (
+  //     <Route
+  //       {...rest}
+  //       // If authenticated, use the children route. If not, send to login.
+  //       render={({ location }) =>
+  //         this.state.isAuthenticated ? (
+  //           children
+  //         ) : (
+  //             <Redirect
+  //               to={{
+  //                 pathname: "/signinpage",
+  //                 state: { from: location }
+  //               }}
+  //             />
+  //           )
+  //       }
+  //     />
+  //   );
+  // }
 
 
 
@@ -452,30 +495,27 @@ class App extends Component {
     )
   }
 
+  componentDidMount = () => {
+    console.log(' landing props: ', this.props)
+    console.log('landing state: ', this.state)
+  }
+
+  componentDidUpdate = () => {
+    console.log(' landing props: ', this.props)
+    console.log('landing state: ', this.state)
+  }
+
   render() {
     return (
       <Router>
         <div>
+          <p>{this.state.isAuthenticated.toString()}</p>
           <Switch>
-
-            {/* <Route path="/public">
-              <PublicPage />
-            </Route>
-            <ProtectedRoute path="/protected">
-              <ProtectedPage />
-            </ProtectedRoute> */}
-
-
             <Route exact path="/" component={this.LandingPage} />
-            {/* <Route path="/loginpage" component={this.LoginPage} /> */}
-            <Route path="/signinpage" component={SigninPage} />
-            {/* <LoginPage component={this.LoginPage} /> */}
+            <Route exact path="/signinpage" handler={this.handler} component={SigninPage} />
+            {/* <SigninPage handler={this.handler} */}
             <Route exact path="/submitissue" component={SubmitIssue} />
             <Route exact path="/dashboard" component={Dashboard} />
-
-            {/* <ProtectedRoute exact path="/developerview" component={DeveloperView} /> */}
-            {/* <Route exact path="/developerview" component={DeveloperView} /> */}
-
             <Route exact path="/developerview">
               <DeveloperView />
             </Route>
@@ -484,10 +524,7 @@ class App extends Component {
           </Switch>
         </div>
       </Router >
-    );
+    )
   }
-
 }
-
-
 export default App;

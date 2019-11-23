@@ -101,6 +101,8 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   let socket = io.connect('http://localhost:3001' || 'http://localhost:3000');
+  // 11/22 Tried this instead to see if it avoids ECONNREFUSED error. No change.
+  // let socket = io.connect('http://localhost:3001')
   
   socket.on('connect', function (data) {
     // console.log(data);

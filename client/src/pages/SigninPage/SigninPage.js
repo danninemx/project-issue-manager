@@ -4,6 +4,9 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import { Redirect } from 'react-router-dom'
 // import config from '../../../../config'
 
+import Button from '@material-ui/core/Button';
+
+// import App from '../../App';
 // import DeveloperView from '../DeveloperView';
 
 require('dotenv').config();
@@ -28,7 +31,35 @@ firebase.initializeApp({
 })
 
 class SigninPage extends Component {
-    state = { isSignedIn: false }
+
+    constructor(props) {
+        super(props);
+
+        // Set default auth state of false
+        this.state = {
+            isSignedIn: false,
+            // isAuthenticated: false,
+        };
+
+        // this.routeChange = this.routeChange.bind(this); //testing
+    }
+
+    /*
+    routeChange() { // testing
+        // let path = `/`;
+        // this.props.history.push(path);
+        // this.props.history.push({
+        //     pathname: path,
+        //     state: {isAuthenticated: true}
+        // })
+        <App
+            isAuthenticated='true' />
+    }
+    */
+
+    // state = { isSignedIn: false }; // signed out by default
+
+    // Firebase UI signin configuration
     uiConfig = {
         signInFlow: "popup",
         signInOptions: [
@@ -40,7 +71,6 @@ class SigninPage extends Component {
         callbacks: {
             // Return false means user-determined redirect, not auto-redirect.
             signInSuccessWithAuthResult: () => {
-
                 // Determine here whether this is new user. 
                 // If so, open details page.
                 // If not, proceed to appropriate data view.
@@ -53,14 +83,15 @@ class SigninPage extends Component {
 
         firebase.auth().onAuthStateChanged(user => {
             this.setState({
-                // name: user.displayName,
-                // email: user.email,
-                // photoUrl: user.photoURL,
-                // emailVerified: user.emailVerified,
-                // idToken: user.getIdToken(),
+                // Coerce the value to be a boolean regardless of original type
                 isSignedIn: !!user
             });
-            console.log("\n SigninPage sees this state : ", this.state);
+            // console.log('this.props is :', this.props);
+            // console.log('this.props.handler is :', this.props.handler);
+            // console.log("\n SigninPage sees this state : ", this.state);
+
+
+            // console.log('this.props.handleSignIn is :', this.props.handleSignIn);
             // console.log('SigninPage sees "isSignin" in state : ', this.state.isSignedIn);
             // console.log("SigninPage sees this user : ", user);
         })
@@ -69,6 +100,9 @@ class SigninPage extends Component {
     }
 
     componentDidUpdate = () => {
+        // console.log('this.props.handler is :', this.props.handler)
+
+
         // Consider adding "keep me signed in" checkbox which will enable this
 
         // Change persistence from local storage to session storage
@@ -93,6 +127,44 @@ class SigninPage extends Component {
     render() {
         return (
             <div className="App">
+                <h3>Please sign in to proceed.</h3>
+                <h4>(If you do not have an account, one will be created for you.)</h4>
+                <Button onClick={this.props.handler}>
+                    {/*
+                    // this.routeChange
+                    
+                    // <Redirect
+                    //     to={{
+                    //         pathname: "/",
+                    //         state: {
+                    //             isAuthenticated: true,
+                    //             referrer: "/signinpage"
+                    //         }
+                    //     }}
+                    // />
+
+
+
+                    // this.props.handler();
+
+                    // this.props.history.push({
+                    //     pathname: '/',
+                    //     state: { isAuthenticated: true }
+                    // }); // redirect to LandingPage
+
+                    // console.log(this.props)
+
+                    // return <Redirect
+                    // to={{
+                    //     pathname: "/",
+                    //     state: {
+                    //         referrer: "/signinpage"
+                    //     }
+                    // }}
+                    // />
+                }>
+                */}
+                    test button</Button>
                 {/* If auth succeeded, render DeveloperView */}
                 {this.state.isSignedIn ? (
                     <Redirect

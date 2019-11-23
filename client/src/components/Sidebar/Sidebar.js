@@ -2,8 +2,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import {
-  // BrowserRouter as Router, Switch, Route, Redirect, useHistory, useLocation, 
-  withRouter, Link
+  // BrowserRouter as Router,
+  // Switch, Route, 
+  // Redirect,
+  // useHistory, useLocation,
+  withRouter,
+  // Link
 } from "react-router-dom";
 
 
@@ -35,11 +39,10 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 
 // Firebase
 import firebase from "firebase"
-// import { mergeClasses } from '@material-ui/styles';
-// import { NONAME } from 'dns';
 
 // Pages
 // import Dashboard from '../../pages/Dashboard';
+// import { ViewContext } from '../../utils/viewContext';
 
 
 const drawerWidth = 240;
@@ -107,41 +110,43 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Sidebar(props) {
-  let user = {
-    name: '',
-    email: '',
-    photoUrl: '',
-    emailVerified: '',
-    uid: '', // The user's ID, unique to the Firebase project. Do NOT use
-    // this value to authenticate with your backend server, if
-    // you have one. Use User.getToken() instead.
-    idToken: ''
-  }
+
+
+  // let user = {
+  //   name: '',
+  //   email: '',
+  //   photoUrl: '',
+  //   emailVerified: '',
+  //   uid: '', // The user's ID, unique to the Firebase project. Do NOT use
+  //   // this value to authenticate with your backend server, if
+  //   // you have one. Use User.getToken() instead.
+  //   idToken: ''
+  // }
 
   // Get current user's info 
 
-  firebase.auth().onAuthStateChanged(function (currentUser) {
-    if (currentUser) {
-      // User is signed in.
-      console.log('\n Sidebar sees user :', currentUser.displayName, currentUser.email, currentUser.photoURL, currentUser.emailVerified, currentUser.uid)
-      // user.name = currentUser.displayName;
-      // console.log('\n Saved user name initial: ', user.name);
-      // user.name = currentUser.displayName;
-      // console.log('\n Saved user name final: ', user.name);
-      // console.log(this.user.name); // this does not work
+  // firebase.auth().onAuthStateChanged(function (currentUser) {
+  //   if (currentUser) {
+  //     // User is signed in.
+  //     console.log('\n Sidebar sees user :', currentUser.displayName, currentUser.email, currentUser.photoURL, currentUser.emailVerified, currentUser.uid)
+  //     // user.name = currentUser.displayName;
+  //     // console.log('\n Saved user name initial: ', user.name);
+  //     // user.name = currentUser.displayName;
+  //     // console.log('\n Saved user name final: ', user.name);
+  //     // console.log(this.user.name); // this does not work
 
-      user.name = currentUser.displayName;
-      user.email = currentUser.email;
-      user.photoUrl = currentUser.photoURL;
-      user.emailVerified = currentUser.emailVerified;
-      user.idToken = currentUser.getIdToken();
+  //     user.name = currentUser.displayName;
+  //     user.email = currentUser.email;
+  //     user.photoUrl = currentUser.photoURL;
+  //     user.emailVerified = currentUser.emailVerified;
+  //     user.idToken = currentUser.getIdToken();
 
-      console.log('\n Saved user info: ', user);
-    } else {
-      // No user is signed in.
-      console.log('\n There is no authenticated user right now.')
-    }
-  })
+  //     console.log('\n Saved user info: ', user);
+  //   } else {
+  //     // No user is signed in.
+  //     console.log('\n There is no authenticated user right now.')
+  //   }
+  // })
 
   // forcing synch
   //     function setUserInfo () {
@@ -158,16 +163,12 @@ function Sidebar(props) {
 
   const [open, setOpen] = React.useState(false);
 
-  console.log("\n Sidebar received these props : ", props); // Functional components use props, not this.props
-  console.log("Sidebar received props.userName : ", props.userName);
-  console.log("Sidebar received props.signOutFunction : ", props.signOutFunction);
-  console.log("Sidebar received props.profileImgSrc : ", props.profileImgSrc);
-
+  // Keep using this
+  // console.log("\n Sidebar received these props : ", props); // Functional components use props, not this.props
 
   // firebase.auth().onAuthStateChanged(currentUser => {currentUser.displayName} )
 
-
-  console.log(' \n Sidebar sees this user outside of the firebase function :', user)
+  // console.log(' \n Sidebar sees this user outside of the firebase function :', user)
   // On load, save user info
   // let testuser = firebase.auth().currentUser;  //This returns null even if sign in
   // console.log(testuser);
@@ -196,6 +197,9 @@ function Sidebar(props) {
     setOpen(false);
   };
 
+  // let routeChange = (newUrl) => {
+  //   this.history.push(newUrl);
+  // };
   /*  
     const handleClickEvent = (buttonText) => {
       switch (buttonText) {
@@ -235,8 +239,9 @@ function Sidebar(props) {
   */
 
   // let testprint = 10000;
-
+  // console.log(props.context)
   return (
+    // <ViewContext.Consumer>
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -258,15 +263,7 @@ function Sidebar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {/* {testprint} */}
-            {/* { firebase.auth().onAuthStateChanged(function(currentUser) {
-              return currentUser.displayName } )
-              } */}
-            {/* {user.name} */}
-            {/* Display name of authenticated user */}
-            {/* {firebase.auth().currentUser.displayName} */}
-            {/* {firebase.auth().currentUser.da.displayName} */}
-            {/* {this.setUserInfo.then(user.name)} */}
+            {props.name}
           </Typography>
 
           <Toolbar disableGutters>
@@ -324,25 +321,42 @@ function Sidebar(props) {
         </div>
         <Divider />
         <List>
-          {['Dashboard', 'Submit Issue', 'Review Issues'].map((text, index) => (
+          {['Dashboard', 'Submit Issue'].map((text, index) => (
             // <Link href="#" onClick={() => handleClickEvent(text)}>
-            <Link
-              // <CustomLink
-              className={classes.title}
-              to={{
-                pathname: '/developerview',
-                state: {
-                  // userName: props.userName,
-                  // signOutFunction: props.signOutFunction,
-                  // profileImgSrc: props.profileImgSrc,
-                  activeView: text
-                }
-              }}>
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            </Link>
+            // <Link
+            //   // <CustomLink
+            //   className={classes.title}
+            //   to={{
+            //     pathname: '/developerview',
+            //     state: {
+            //       activeView: text
+            //     }
+            //   }}>
+            <ListItem button key={text}
+              onClick={props.changeName
+                // () => {
+                // let nextPath = '/' + text.split(' ').join('').toLowerCase();
+                // console.log(`\n Sidebar says you clicked ${nextPath} `);
+
+                // props.history.push({
+                //   pathname: '/developerview',
+                //   state: { activeView: nextPath}
+                // });
+
+
+
+                // return <Redirect
+                //   to={{
+                //     pathname: "/developerview",
+                //     state: { activeView: nextPath }
+                //   }} />
+                // }
+              }
+            >
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+            // </Link>
             // </CustomLink>
           ))}
         </List>
@@ -355,9 +369,9 @@ function Sidebar(props) {
           state: { detail: response.data }
         }}> My Link </Link>  */}
 
-
       {props.children}
     </div>
+    // </ViewContext.Consumer>
   );
 }
 

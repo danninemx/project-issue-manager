@@ -1,24 +1,41 @@
 import axios from "axios";
 
 export default {
-  // Gets books from the Google API
-  getBooks: function (q) {
-    console.log(`\n getBooks is querying for : ${q}`);
-    return axios.get("/api/google", { params: { q } });
+  // axios test
+  // userTest: function (userData) {
+  //   console.log(`\n testing axios call : `, userData);
+  //   return axios.get("/api/users", userData);
+  // },
+
+  // Find all users meeting criteria
+  getUsers: function (q) {
+    console.log(`\n getUsers is querying for : ${q}`);
+    return axios.get("/api/users", { params: { q } });
   },
-  // Gets all saved books
-  getSavedBooks: function () {
-    console.log(`\n getSavedBooks is getting all saved books.`);
-    return axios.get("/api/books");
+
+  // Saves a user to the database
+  createUser: function (userData) {
+    console.log(`\n createUser is attempting to save : `, userData);
+    return axios.post("/api/users", userData);
   },
-  // Deletes the saved book with the given id
-  deleteBook: function (id) {
-    console.log(`\n deleteBook is attempting to delete : ${id}`);
-    return axios.delete("/api/books/" + id);
+
+  // Find one user meeting criteria.
+  // Can getUsers perform the same with right criteria? Also unsure of the composition
+  findOneUser: function (q) {
+    console.log(`\n findOneUser is querying for : ${q}`);
+    return axios.post("/api/users/:id", q);
+    // return axios.post("/api/users/:id", q);
   },
-  // Saves an book to the database
-  saveBook: function (bookData) {
-    console.log(`\n saveBook is attempting to save : ${bookData}`);
-    return axios.post("/api/books", bookData);
+
+  // Deletes the saved user with the given id
+  deleteUser: function (id) {
+    console.log(`\n deleteUser is attempting to delete : ${id}`);
+    return axios.delete("/api/users/" + id);
+  },
+
+  getIssues: function (q) {
+    console.log(`\n getIssues is querying for : ${q}`);
+    return axios.get("/api/issues", { params: { q } });
   }
+
 };
