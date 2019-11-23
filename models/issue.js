@@ -5,12 +5,14 @@ const issueSchema = new Schema({
   reporter: { type: Schema.Types.ObjectId, ref: 'User' },
 
   // type: { type: String, required: true }, // technical(default)/business process/change management/resource/third party
-  type: String, // technical(default)/business process/change management/resource/third party
+  // technical(default)/business process/change management/resource/third party
+  type: String,
   // timing: { type: String, required: true }, // When was issue identified
   timing: String, // When was issue identified
 
   // Reporter input. Shared view
-  organization: { type: Schema.Types.ObjectId, ref: 'Organization' }, // project's provider
+  // project's provider
+  organization: { type: Schema.Types.ObjectId, ref: 'Organization' },
   project: { type: Schema.Types.ObjectId, ref: 'Project' },
   subject: String,
   description: String,
@@ -22,8 +24,8 @@ const issueSchema = new Schema({
   // url: { type: String, required: false }, // Attachments can be stored elsewhere and referenced by this
 
   // Shared input. Shared view
-  // status: { type: String, required: true }, // was falsely initialized as Boolean
-  status: String, // was falsely initialized as Boolean
+  // status: { type: String, required: true },
+  status: String,
   /*
   open: submitted by user
   investigating: in dev review
@@ -34,17 +36,15 @@ const issueSchema = new Schema({
   */
 
   // resolved: { type: Boolean, required: true }, // yes/no. Default is no
-  resolved: Boolean, // yes/no. Default is no
+  resolved: Boolean, // true/false. Default is false
 
   // Dev input only. Optionally shared view
-  // comment: [{ type: [Schema.Types.ObjectId], required: false, ref: 'Comment' }], // What is being or has been done. Push new items to array
-  comment: [{ type: [Schema.Types.ObjectId], ref: 'Comment' }],
   // What is being or has been done. Push new items to array
   // Provides action descriptions by devs. (visibility on)
   // Also "Final Resolution" by checking if status is Res/Closed and getting item[actionDescriptions/length]
 
   // Developer input & view
-  owner: { type: Schema.Types.ObjectId, ref: 'Member' },
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
   priority: String,
   targetResolutionDate: Date,
   potentialImpact: String,

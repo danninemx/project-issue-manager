@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const commentSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
-  commenter: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }], // Allows user participation
+  issue: { type: Schema.Types.ObjectId, ref: 'Issue' },
+  commenter: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 
   // Dev input. Shared view
   timestamps: { createdAt, updatedAt },
@@ -20,7 +20,8 @@ const commentSchema = new Schema({
   proj: visible to devs in proj - Action Description
   */
   image: { type: String, required: false },
-  url: { type: String, required: false }, // Attachments can be stored elsewhere and referenced by this
+  // Attachments can be stored elsewhere and referenced by this
+  url: { type: String, required: false },
 
 });
 
