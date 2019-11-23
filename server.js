@@ -5,6 +5,8 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const bodyParser = require('body-parser');
+
 /*
 //-----------------//
 // Dotenv testing  //
@@ -50,6 +52,7 @@ io.on('connection', function (socket) {
 // Configure body parsing for AJAX requests
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser.json())
 // Serve up static assets
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -58,6 +61,14 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
+
+// parse application/json
+
+app.use(function (req, res) {
+  res.setHeader('Content-Type', 'text/plain')
+  res.write('you posted:\n')
+  res.end(JSON.stringify(req.body, null, 2))
+})
 
 
 // Connect to the Mongo DB

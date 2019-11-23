@@ -36,6 +36,11 @@ export default {
   getIssues: function (q) {
     console.log(`\n getIssues is querying for : ${q}`);
     return axios.get("/api/issues", { params: { q } });
-  }
+  },
 
+  // Creates issue
+  createIssue: function (issueData) {
+    console.log(`\n createIssue is attempting to save : `, issueData);
+    return axios.post("/api/issues", issueData);
+  }
 };

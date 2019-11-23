@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const commentSchema = new Schema({
-  _id: Schema.Types.ObjectId,
+  // _id: Schema.Types.ObjectId,
   commenter: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }], // Allows user participation
 
   // Dev input. Shared view

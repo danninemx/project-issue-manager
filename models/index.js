@@ -3,7 +3,8 @@ module.exports = {
 
   User: require("./user"),
   Organization: require("./organization"),
-  Product: require('./product'),
+  Project: require('./project'),
+  Version: require('./version'),
   Member: require('./member'),
   Issue: require("./issue")
 };

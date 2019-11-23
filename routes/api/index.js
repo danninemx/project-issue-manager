@@ -1,18 +1,13 @@
 const path = require("path");
 const router = require("express").Router();
-// const bookRoutes = require("./books");
-// const googleRoutes = require("./google");
-const dashboardRoutes = require("./user");
+const userRoutes = require("./user");
+const issueRoutes = require("./issue");
 
-// // Book routes
-// router.use("/books", bookRoutes);
+// user Routes
+router.use("/users", userRoutes);
 
-// // Google Routes
-// router.use("/google", googleRoutes);
-
-// Dashboard Route -- replaced by React Router
-// router.use("/dashboard", dashboardRoutes);
-
+// issue Routes
+router.use("/issues", issueRoutes);
 
 // For anything else, render the html page
 router.use(function (req, res) {
