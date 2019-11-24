@@ -322,18 +322,37 @@ function Sidebar(props) {
         <Divider />
         <List>
           {['Dashboard', 'Submit Issue'].map((text, index) => (
-            // <Link href="#" onClick={() => handleClickEvent(text)}>
-            // <Link
-            //   // <CustomLink
-            //   className={classes.title}
-            //   to={{
-            //     pathname: '/developerview',
-            //     state: {
-            //       activeView: text
-            //     }
-            //   }}>
             <ListItem button key={text}
-              onClick={props.changeName
+              // onClick={props.someFunction // This works.
+              onClick={
+                () => {
+                  // text === 'Submit Issue' ? props.showSubmitIssue() : props.showDashboard()
+                  switch (text) {
+                    case 'Dashboard':
+                      props.showDashboard()
+                      break;
+
+                    case 'Submit Issue':
+                      props.showSubmitIssue()
+                      break;
+
+                    default:
+                      console.log('I am Error')
+                  }
+                }
+
+                // onClick={props.changeName // This works.
+                // onClick={props.determineView // meh
+
+                // console.log(`\n Sidebar says you clicked ${text} `)
+                // text == 'Submit Issue' ? props.showSubmitIssue : alert('what?')
+
+                // let nextPath = '/' + text.split(' ').join('').trim().toLowerCase();
+                // console.log(`\n Sidebar says you clicked ${nextPath} `)
+                // (nextPath === '/submitissue') ? props.showSubmitIssue : false
+                // props.determineView(nextPath);
+
+                // onClick={() => console.log(props)
                 // () => {
                 // let nextPath = '/' + text.split(' ').join('').toLowerCase();
                 // console.log(`\n Sidebar says you clicked ${nextPath} `);
@@ -342,8 +361,6 @@ function Sidebar(props) {
                 //   pathname: '/developerview',
                 //   state: { activeView: nextPath}
                 // });
-
-
 
                 // return <Redirect
                 //   to={{

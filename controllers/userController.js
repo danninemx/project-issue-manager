@@ -19,9 +19,13 @@ module.exports = {
 
   // Call this to get one user's info (signin, __id acquisition)
   findOneUser: function (req, res) {
-    console.log('\n userController-findOneUser received this : ', req);
+    // console.log('\n userController-findOneUser received this : ', req);
+    console.log('find one user')
     db.User.findOne({ email: req.params.email })
-      .then(dbUser => res.json(dbUser))
+      .then(dbUser => {
+        console.log('find one user got : ', dbUser)
+        // res.json(dbUser)
+      })
       .catch(err => res.status(422).json(err));
     // or per Mongoose docs,
     // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});

@@ -5,15 +5,19 @@ const userController = require("../../controllers/userController");
 router
   // Use URL as-is
   .route("/")
-  // .get(userController.test)
   .get(userController.getUsers)
+  .get(userController.findOneUser)
   .post(userController.createUser)
 
 // Matches with "/api/users/:id"
 router
   .route("/:id")
-  .get(userController.findOneUser)
   .put(userController.update)
 // .delete(userController.remove)
+
+// Matches with "/api/users/:email"
+router
+  .route("/:email")
+
 
 module.exports = router;

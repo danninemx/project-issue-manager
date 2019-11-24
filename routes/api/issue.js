@@ -6,6 +6,7 @@ router
   // Use URL as-is
   .route("/")
   .get(issueController.getIssues)
-  .post(issueController.createIssue);
+  .post(issueController.createIssue)
+  .put(issueController.updateIssue)
 
 module.exports = router;

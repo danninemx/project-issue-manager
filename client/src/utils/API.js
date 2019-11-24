@@ -21,10 +21,9 @@ export default {
 
   // Find one user meeting criteria.
   // Can getUsers perform the same with right criteria? Also unsure of the composition
-  findOneUser: function (q) {
-    console.log(`\n findOneUser is querying for : ${q}`);
-    return axios.post("/api/users/:id", q);
-    // return axios.post("/api/users/:id", q);
+  findOneUser: function (email) {
+    console.log(`\n findOneUser is querying for : ${email}`);
+    return axios.get("/api/users/", email);
   },
 
   // Deletes the saved user with the given id
@@ -40,7 +39,13 @@ export default {
 
   // Creates issue
   createIssue: function (issueData) {
-    console.log(`\n createIssue is attempting to save : `, issueData);
+    console.log(`\n createIssue is attempting to create : `, issueData);
     return axios.post("/api/issues", issueData);
+  },
+
+  updateIssue: function (id) {
+    // console.log(`\n createIssue is attempting to update : `, id);
+    console.log(`\n API: updating issue`);
+    return axios.put("/api/issues/" + id);
   }
 };
