@@ -17,6 +17,8 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
 
 // Components
 // import Sidebar from '../../components/Sidebar';
@@ -35,7 +37,7 @@ const styles = theme => ({
         ...theme.mixins.toolbar,
         // width: `calc(100% - 240px)`,
         paddingLeft: 240,
-        paddingTop: 56,
+        paddingTop: '12vh',
 
     },
     textField: {
@@ -66,8 +68,7 @@ class SubmitIssue extends Component {
         this.state = {
             name: this.props.name,
             email: this.props.email,
-            description: ''
-            // testArr: []
+            type: 'Technical'
         }
     }
 
@@ -116,14 +117,28 @@ class SubmitIssue extends Component {
         // console.log('handle field change :', this.state); // this will be one step slower
     }
 
-
-
-    // [{ username, email}, setState] = useState(initialState);
-
     clearState = () => {
         this.setState({
             ...this.state,
-            description: ''
+            // required
+            organization: '',
+            project: '',
+            subject: '',
+            description: '',
+            owner: '',
+
+            // This is string here but DB stores it as array
+            comment: '',
+
+            // optional in current scope
+            url: '',
+            status: '',
+            resolved: '',
+            priority: '',
+            targetResolutionDate: '',
+            potentialImpact: '',
+            image: '',
+            partImpacted: ''
         })
     };
 
@@ -146,19 +161,21 @@ class SubmitIssue extends Component {
         return (
             <form className={classes.container} noValidate autoComplete="off" >
                 <div>
+                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                    <br></br>
                     <TextField
-                        disabled
                         id="name"
+                        disabled
                         label="Your Name"
                         placeholder="John Doe"
                         className={classes.textField}
-                        value={this.props.name}
+                        defaultValue={this.props.name}
                         margin="normal"
                         variant="outlined"
                     />
                     <TextField
-                        disabled
                         id="email"
+                        disabled
                         label="Your Email"
                         defaultValue={this.props.email}
                         className={classes.textField}
@@ -166,11 +183,38 @@ class SubmitIssue extends Component {
                         variant="outlined"
                     />
                     <TextField
-                        disabled
                         id="type"
+                        disabled
                         label="Issue Type"
-                        defaultValue="Technical"
+                        defaultValue={this.state.type}
                         className={classes.textField}
+                        margin="normal"
+                        variant="outlined"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
+                        id="organization"
+                        required
+                        label="Provider"
+                        value={this.state.organization}
+                        className={classes.textField}
+                        InputLabelProps={{ // Prevent label from appearing as placeholder
+                            shrink: true,
+                        }}
+                        margin="normal"
+                        variant="outlined"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
+                        id="project"
+                        required
+                        label="Project"
+                        // placeholder="Who is the provider?"
+                        value={this.state.project}
+                        className={classes.textField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
@@ -178,13 +222,34 @@ class SubmitIssue extends Component {
                 </div>
                 <div>
                     <TextField
-                        id="description"
-                        label="Description"
-                        placeholder="What is your issue?"
-                        className={classes.textField}
-                        value={this.state.description}
-                        helperText="Required"
+                        id="subject"
+                        required
+                        label="Subject"
+                        value={this.state.subject}
+                        style={{ margin: 8 }}
+                        // placeholder="Placeholder"
+                        // helperText="What seems to be the trouble?"
+                        fullWidth
                         margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
+                        id="description"
+                        required
+                        label="Issue Description"
+                        value={this.state.description}
+                        style={{ margin: 8 }}
+                        // placeholder="Placeholder"
+                        // helperText="What seems to be the trouble?"
+                        fullWidth
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
@@ -192,24 +257,13 @@ class SubmitIssue extends Component {
                         id="comment"
                         label="Comment"
                         placeholder="Any thoughts?"
+                        value={this.state.comment}
                         className={classes.textField}
-                        // helperText="Required"
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
-
                     {/* <TextField
-                        required
-                        id="standard-password-input"
-                        label="Password"
-                        className={classes.textField}
-                        type="password"
-                        autoComplete="current-password"
-                        margin="normal"
-                        variant="outlined"
-                    /> */}
-                    <TextField
                         id="standard-number"
                         label="Number"
                         type="number"
@@ -219,7 +273,7 @@ class SubmitIssue extends Component {
                         }}
                         margin="normal"
                         variant="outlined"
-                    />
+                    /> */}
                     {/* <TextField
                         id="standard-search"
                         label="Search field"
@@ -228,16 +282,6 @@ class SubmitIssue extends Component {
                         margin="normal"
                         variant="outlined"
                     /> */}
-                    <TextField
-                        id="standard-helperText"
-                        label="Helper text"
-                        defaultValue="Default Value"
-                        className={classes.textField}
-                        helperText="Some important text"
-                        margin="normal"
-                        variant="outlined"
-                    />
-
                     <div className='button-group'>
                         <Button
                             variant="contained"
@@ -247,7 +291,7 @@ class SubmitIssue extends Component {
                             onClick={
                                 // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
                                 () => {
-                                    console.log('clicked reset while state is', this.state.testArr)
+                                    console.log('clicked reset while state is', this.state)
                                     // this.props.handleSubmitIssue()
                                     this.clearState()
                                 }
@@ -262,8 +306,40 @@ class SubmitIssue extends Component {
                             onClick={
                                 // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
                                 () => {
-                                    console.log('clicked button', this.state.testArr)
-                                    this.props.handleSubmitIssue()
+                                    console.log('clicked button', this.state)
+
+                                    const keys = [
+                                        "type",
+                                        "organization",
+                                        "project",
+                                        "subject",
+                                        "description",
+                                        "comment",
+                                        "owner",
+
+                                        // optional in this version
+                                        "url",
+                                        "status",
+                                        "resolved",
+                                        "priority",
+                                        "targetResolutionDate",
+                                        "potentialImpact",
+                                        "image",
+                                        "partImpacted"
+                                    ]
+
+                                    // Loop through keys and get values
+                                    // let values = keys.map(
+                                        // (key) => {
+                                    for (let key of keys) {
+                                        this.props.handleSubmitIssue(key, this.state[key])
+
+                                    }
+                                        // }
+                                        // console.log(this.state[key]) // works
+                                    // )
+
+                                    // this.props.handleSubmitIssue(values)
                                 }
                             }
                         > Submit

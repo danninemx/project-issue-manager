@@ -509,7 +509,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <p>{this.state.isAuthenticated.toString()}</p>
           <Switch>
             <Route exact path="/" component={this.LandingPage} />
             <Route exact path="/signinpage" handler={this.handler} component={SigninPage} />

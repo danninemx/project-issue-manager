@@ -43,15 +43,16 @@ class DeveloperView extends Component {
             email: "",
             name: "", // Separate first and last name later
 
-            // issue: {} or []
+            // issue: {} or []?
             // required
+
             type: '',
             organization: '',
             project: '',
             subject: '',
             description: '',
-            owner: '',
             comment: [],
+            owner: '',
 
             // optional in this version
             url: '',
@@ -104,7 +105,7 @@ class DeveloperView extends Component {
         this.setState({ value: event.target.value });
     }
 
-    handleSubmitIssue = (key, value) => {
+    handleSubmitIssue = (key, val) => {
         /*
         let issue = {};
         tempIssue = { ...this.state.issue }; // copy issue to prevent direct state update
@@ -124,9 +125,34 @@ class DeveloperView extends Component {
             }
         }
         */
+        // const keys = [
+        //     "type",
+        //     "organization",
+        //     "project",
+        //     "subject",
+        //     "description",
+        //     "comment",
+        //     "owner",
+
+        //     // optional in this version
+        //     "url",
+        //     "status",
+        //     "resolved",
+        //     "priority",
+        //     "targetResolutionDate",
+        //     "potentialImpact",
+        //     "image",
+        //     "partImpacted"
+        // ]
+
+        this.setState({ [key]: val })
+        //Object.keys(this.state) // may not secure sequence
+
         // this.setState({ arr }) // update state of "issue" with new variable "issue"
         // this.setState({ comment: [1, 2, "3"] }) // works
-        this.setState({ [key]: value })
+        // this.setState({ [key]: value })
+        // this.setState({testArr: arr})
+
     }
 
     // can write promise this way

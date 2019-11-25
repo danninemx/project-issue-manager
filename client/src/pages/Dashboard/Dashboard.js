@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   // },
   cardsContent: {
     // padding: 15,
-    paddingTop: 90,
+    paddingTop: '12vh',
     paddingLeft: 15,
     display: 'flex',
     justifyContent: 'space-around',

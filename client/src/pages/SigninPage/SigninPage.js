@@ -1,13 +1,15 @@
 import React, { Component } from "react"
+import { Redirect } from 'react-router-dom'
+
+// Firebase Authentication
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
-import { Redirect } from 'react-router-dom'
-// import config from '../../../../config'
+// import config from '../../../../config' (CRA app cannot reach outside /src)
 
-import Button from '@material-ui/core/Button';
-
-// import App from '../../App';
-// import DeveloperView from '../DeveloperView';
+// Material UI
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 require('dotenv').config();
 // If running in non-production environment, load .env variables
@@ -126,11 +128,26 @@ class SigninPage extends Component {
 
     render() {
         return (
-            <div className="App">
-                <h3>Please sign in to proceed.</h3>
-                <h4>(If you do not have an account, one will be created for you.)</h4>
-                <Button onClick={this.props.handler}>
-                    {/*
+            // <div className="App">
+            <React.Fragment>
+                <CssBaseline
+                />
+                <Container maxWidth="sm"
+                    style={{
+                        backgroundColor: '#cfe8fc'
+                        , height: '100vh'
+                        , width: '100vw'
+                    }}>
+                    <Typography component="div"
+                    // style={{
+                    //     backgroundColor: '#cfe8fc'
+                    // , height: '100vh' 
+                    // }}
+                    >
+                        <h3>Please sign in to proceed.</h3>
+                        <h4>(If you do not have an account, one will be created for you.)</h4>
+                        {/* <Button onClick={this.props.handler}> */}
+                        {/*
                     // this.routeChange
                     
                     // <Redirect
@@ -164,38 +181,40 @@ class SigninPage extends Component {
                     // />
                 }>
                 */}
-                    test button</Button>
-                {/* If auth succeeded, render DeveloperView */}
-                {this.state.isSignedIn ? (
-                    <Redirect
-                        to={{
-                            pathname: "/developerview",
-                            state: {
-                                // name: this.state.name,
-                                // email: this.state.email,
-                                // photoUrl: this.state.photoUrl,
-                                // emailVerified: this.state.emailVerified,
-                                // idToken: this.state.idToken,
-                                referrer: "/signinpage"
-                            }
-                        }}
-                    />
+                        {/* test button</Button> */}
+                        {/* If auth succeeded, render DeveloperView */}
+                        {this.state.isSignedIn ? (
+                            <Redirect
+                                to={{
+                                    pathname: "/developerview",
+                                    state: {
+                                        // name: this.state.name,
+                                        // email: this.state.email,
+                                        // photoUrl: this.state.photoUrl,
+                                        // emailVerified: this.state.emailVerified,
+                                        // idToken: this.state.idToken,
+                                        referrer: "/signinpage"
+                                    }
+                                }}
+                            />
 
-                    // <DeveloperView
-                    //     userName={firebase.auth().currentUser.displayName}
-                    //     signOutFunction={() => firebase.auth().signOut()}
-                    //     profileImgSrc={firebase.auth().currentUser.photoURL}
-                    // >
-                    // </DeveloperView>
+                            // <DeveloperView
+                            //     userName={firebase.auth().currentUser.displayName}
+                            //     signOutFunction={() => firebase.auth().signOut()}
+                            //     profileImgSrc={firebase.auth().currentUser.photoURL}
+                            // >
+                            // </DeveloperView>
 
-                ) : (
-                        <StyledFirebaseAuth
-                            uiConfig={this.uiConfig}
-                            firebaseAuth={firebase.auth()}
-                        />
-                    )
-                }
-            </div>
+                        ) : (
+                                <StyledFirebaseAuth
+                                    uiConfig={this.uiConfig}
+                                    firebaseAuth={firebase.auth()}
+                                />
+                            )
+                        }
+                    </Typography>
+                </Container>
+            </React.Fragment> // </div>
         )
     }
 }
@@ -204,8 +223,8 @@ export default SigninPage;
 
 
 
-// React and related libraries
-// import React from 'react'
+        // React and related libraries
+        // import React from 'react'
 // import {
 //     BrowserRouter as Router,
 //     Switch,
