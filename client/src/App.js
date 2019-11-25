@@ -496,13 +496,13 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    console.log(' landing props: ', this.props)
-    console.log('landing state: ', this.state)
+    // console.log(' landing props: ', this.props)
+    // console.log('landing state: ', this.state)
   }
 
   componentDidUpdate = () => {
-    console.log(' landing props: ', this.props)
-    console.log('landing state: ', this.state)
+    // console.log(' landing props: ', this.props)
+    // console.log('landing state: ', this.state)
   }
 
   render() {

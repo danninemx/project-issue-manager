@@ -8,6 +8,8 @@ import Sidebar from '../../components/Sidebar';
 import Dashboard from '../Dashboard';
 import SubmitIssue from '../SubmitIssue';
 import UserProfile from '../UserProfile';
+import OrganizationProfile from '../OrganizationProfile';
+import ProjectProfile from '../ProjectProfile';
 
 // Auth
 import firebase from "firebase";
@@ -50,7 +52,7 @@ class DeveloperView extends Component {
             // issue: {} or []?
             // required
 
-            type: '', // issue type, not user
+            type: 'Technical', // issue type, not user
             organization: '',
             project: '',
             subject: '',
@@ -70,7 +72,7 @@ class DeveloperView extends Component {
         }
 
         // This allows the functions to be passed via props.
-        this.getUserInfo = this.getUserInfo.bind(this);
+        this.getUser = this.getUser.bind(this);
         this.determineView = this.determineView.bind(this);
         this.showSubmitIssue = this.showSubmitIssue.bind(this);
         this.showDashboard = this.showDashboard.bind(this);
@@ -121,6 +123,14 @@ class DeveloperView extends Component {
 
     showUserProfile = () => {
         this.setState({ activeView: 'User Profile' })
+    }
+
+    showOrganizationProfile = () => {
+        this.setState({ activeView: 'Organization Profile' })
+    }
+
+    showProjectProfile = () => {
+        this.setState({ activeView: 'Project Profile' })
     }
 
     handldIssueChange = (event) => {
@@ -264,16 +274,27 @@ class DeveloperView extends Component {
     //     }
     // }
 
-    checkNewUser = () => {
-        // API.findOneUser({ email: this.state.name })
+    checkNewUser = (authEmail) => {
+        API.findOneUser(
+            // If an email was passed, use it. If not use state.
+            authEmail || this.state.email
+        )
+            .then(res => {
+                // If user is found, save id to state. 
+                // If not, send user to user profile for user creation.
+                res.data ?
+                    // console.log('User found :', res.data[0]['_id'])
+                    this.setState({ 'id': res.data[0]['_id'] })
+                    :
+                    // console.log('User not found', res.data)
+                    this.showUserProfile();
+            })
+            .catch(() =>
+                this.setState({
+                    message: "No results. Please try another query."
+                })
+            );
     }
-
-    // get info on this user. 
-    // 
-    // getUserInfo = (e) => {
-    //     // API.findOneUser({ email: this.state.email })
-    //     //     .then(res => console.log(res.data))
-    // }
 
     // Call this when adding comment to issue or updating status/resolved/
     updateIssue = (e) => {
@@ -307,6 +328,21 @@ class DeveloperView extends Component {
         // this.props.history.push('/student-list')
     }
 
+    authenticate = () => {
+
+        firebase.auth().onAuthStateChanged(user => {
+            // console.log('\n DeveloperView sees user :', user.displayName, user.email, user.photoURL, user.emailVerified, user.uid)
+            // checkNewUser();
+            this.checkNewUser(user.email)
+            this.setState({
+                name: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                emailVerified: user.emailVerified,
+                idToken: user.getIdToken()
+            })
+        });
+    }
     //------------------//
     // End of functions //
     //------------------//
@@ -321,18 +357,8 @@ class DeveloperView extends Component {
 
         console.log('did mount. state =', this.state)
 
+        this.authenticate()
         // get auth info
-        firebase.auth().onAuthStateChanged(user => {
-            // Keep using
-            console.log('\n DeveloperView sees user :', user.displayName, user.email, user.photoURL, user.emailVerified, user.uid)
-            this.setState({
-                name: user.displayName,
-                email: user.email,
-                photoURL: user.photoURL,
-                emailVerified: user.emailVerified,
-                idToken: user.getIdToken()
-            })
-        });
 
         /*
           let arr = new Array(10).fill(undefined).map((val, idx) => {
@@ -382,8 +408,24 @@ class DeveloperView extends Component {
                 email={this.state.email}
                 userType={this.state.userType}
                 photoURL={this.state.photoURL}
-                // handle save user
-                handleUserSave={this.handleUserSave}
+            // handle save user
+            // handleUserSave={this.handleUserSave}
+            />
+        }
+        else if (newView === 'Organization Profile') {
+            view = <OrganizationProfile
+                id={this.state.id}
+                name={this.state.name}
+                email={this.state.email}
+                userType={this.state.userType}
+            // photoURL={this.state.photoURL}
+            // handle save user
+            // handleUserSave={this.handleUserSave}
+            />
+        }
+        else if (newView === 'Project Profile') {
+            view = <ProjectProfile
+                id={this.state.id}
             />
         }
 
@@ -398,6 +440,8 @@ class DeveloperView extends Component {
                     showDashboard={this.showDashboard}
                     showSubmitIssue={this.showSubmitIssue}
                     showUserProfile={this.showUserProfile}
+                    showOrganizationProfile={this.showOrganizationProfile}
+                    showProjectProfile={this.showProjectProfile}
                 >
                     {/* {this.props.children} // this works, kinda. */}
                     {/* {this.determineView(this.props)} // doesn't work? */}

@@ -7,8 +7,9 @@ export default {
     return axios.get("/api/users", { params: { q } });
   },
 
+  // ok, I think?
   createUser: function (userData) {
-    console.log(`\n createUser is attempting to save : `, userData);
+    // console.log(`\n createUser is attempting to save : `, userData);
     return axios.post("/api/users", userData);
   },
 
@@ -32,6 +33,18 @@ export default {
   deleteUser: function (id) {
     console.log(`\n deleteUser is attempting to delete : ${id}`);
     return axios.delete("/api/users/" + id);
+  },
+
+  // ORG
+
+  getOrgs: function (q) {
+    console.log(`\n getUsers is querying for : `, q);
+    return axios.get("/api/orgs", { params: { q } });
+  },
+  // ok
+  createOrganization: function (orgData) {
+    console.log('API create org');
+    return axios.post("/api/orgs", orgData);
   },
 
   getIssues: function (q) {

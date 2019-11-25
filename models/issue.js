@@ -14,6 +14,7 @@ const issueSchema = new Schema({
   // project's provider
   organization: { type: Schema.Types.ObjectId, ref: 'Organization' },
   project: { type: Schema.Types.ObjectId, ref: 'Project' },
+  version: { type: Schema.Types.ObjectId, ref: 'Version' },
   subject: String,
   description: String,
   url: String, // Attachments can be stored elsewhere and referenced by this
