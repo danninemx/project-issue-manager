@@ -17,7 +17,7 @@ const userSchema = new Schema({
   // authors: { type: [String], required: true }, // syntax ref for multi-value array
 
   // backend use only
-  userType: { type: String, required: true }, // reporter or developer
+  userType: { type: String, required: true }, // user/reporter or developer
 
   // Developer type only
   // affiliatedOrganization: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],

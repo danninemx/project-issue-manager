@@ -1,29 +1,31 @@
 import axios from "axios";
 
 export default {
-  // axios test
-  // userTest: function (userData) {
-  //   console.log(`\n testing axios call : `, userData);
-  //   return axios.get("/api/users", userData);
-  // },
-
-  // Find all users meeting criteria
+  // ok
   getUsers: function (q) {
-    console.log(`\n getUsers is querying for : ${q}`);
+    console.log(`\n getUsers is querying for : `, q);
     return axios.get("/api/users", { params: { q } });
   },
 
-  // Saves a user to the database
   createUser: function (userData) {
     console.log(`\n createUser is attempting to save : `, userData);
     return axios.post("/api/users", userData);
   },
 
-  // Find one user meeting criteria.
-  // Can getUsers perform the same with right criteria? Also unsure of the composition
+  // params search required key and value.
+  // key of email and value of address is like
+  // http://localhost:3000/api/users?email=dudkny@gmail.com
+
+  // missing explicit param turn it into "query" like
+  // ... /api/users?q=dudkny@gmail.com
+
+  // http://localhost:3000/api/users?email=dudkny@gmail.com
   findOneUser: function (email) {
-    console.log(`\n findOneUser is querying for : ${email}`);
-    return axios.get("/api/users/", email);
+    console.log(`\n API says findOneUser : `, email);
+    return axios.get("/api/users", { params: { email } });
+    // Must wrap params as above. Below does not work.
+    // console.log(`\n findOneUser is querying for : `, email);
+    // return axios.get("/api/users", email);
   },
 
   // Deletes the saved user with the given id
@@ -37,7 +39,7 @@ export default {
     return axios.get("/api/issues", { params: { q } });
   },
 
-  // Creates issue
+  // maybe? Can't tell until I have org, etc to assign it to.
   createIssue: function (issueData) {
     console.log(`\n createIssue is attempting to create : `, issueData);
     return axios.post("/api/issues", issueData);

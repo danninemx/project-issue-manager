@@ -321,7 +321,7 @@ function Sidebar(props) {
         </div>
         <Divider />
         <List>
-          {['Dashboard', 'Submit Issue'].map((text, index) => (
+          {['Dashboard', 'Submit Issue', 'User Profile'].map((text, index) => (
             <ListItem button key={text}
               // onClick={props.someFunction // This works.
               onClick={
@@ -334,6 +334,10 @@ function Sidebar(props) {
 
                     case 'Submit Issue':
                       props.showSubmitIssue()
+                      break;
+
+                    case 'User Profile':
+                      props.showUserProfile()
                       break;
 
                     default:

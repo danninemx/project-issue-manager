@@ -7,6 +7,9 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../../components/Sidebar';
 import Dashboard from '../Dashboard';
 import SubmitIssue from '../SubmitIssue';
+import UserProfile from '../UserProfile';
+
+// Auth
 import firebase from "firebase";
 
 import API from '../../utils/API'
@@ -42,11 +45,12 @@ class DeveloperView extends Component {
             id: "",
             email: "",
             name: "", // Separate first and last name later
+            userType: "",
 
             // issue: {} or []?
             // required
 
-            type: '',
+            type: '', // issue type, not user
             organization: '',
             project: '',
             subject: '',
@@ -88,9 +92,23 @@ class DeveloperView extends Component {
         this.setState({ name: e.target.value })
     }
 
-    getUserInfo = (e) => {
-        API.findOneUser({ email: this.state.email })
-            .then(res => console.log('res.data was ', res.data))
+    getUser = () => {
+        API.findOneUser(
+            this.props.email
+        )
+            .then(res => {
+                res.data ?
+                    console.log('returned :', res.data[0])
+                    // this.setState({
+                    //   books: res.data
+                    // })
+                    : console.log('no one!', res.data)
+            })
+            .catch(() =>
+                this.setState({
+                    message: "No results. Please try another query."
+                })
+            );
     }
 
     showDashboard = () => {
@@ -99,6 +117,10 @@ class DeveloperView extends Component {
 
     showSubmitIssue = () => {
         this.setState({ activeView: 'Submit Issue' })
+    }
+
+    showUserProfile = () => {
+        this.setState({ activeView: 'User Profile' })
     }
 
     handldIssueChange = (event) => {
@@ -294,18 +316,11 @@ class DeveloperView extends Component {
     //-------------------//
 
     componentDidMount(props) {
-        // Keep using
         console.log("\n DeveloperView received these props : ", this.props);
-
-        // console.log("\n DeveloperView received this.props.children : ", this.props.children); // undefined
-        // console.log("DeveloperView received this.props.profileImgSrc : ", this.props.profileImgSrc);
-        // console.log("DeveloperView received this.props.userName : ", this.props.userName);
-        // console.log("DeveloperView received this.props.signOutFunction : ", this.props.signOutFunction);
         // console.log("\n DeveloperView finally sees this state : ", this.state); // anti-design to update state with non-changing values
 
         console.log('did mount. state =', this.state)
 
-        // (function () {
         // get auth info
         firebase.auth().onAuthStateChanged(user => {
             // Keep using
@@ -313,31 +328,12 @@ class DeveloperView extends Component {
             this.setState({
                 name: user.displayName,
                 email: user.email,
-                photoUrl: user.photoURL,
+                photoURL: user.photoURL,
                 emailVerified: user.emailVerified,
                 idToken: user.getIdToken()
             })
         });
 
-        // console.log(this.state) // doesnt work
-        // console.log("\n DeveloperView received these props : ", this.props);
-        // this.state.getUserInfo()
-        // }())
-
-
-        // let newState = {
-        //     userName: this.props.userName,
-        //     signOutFunction: this.props.signOutFunction,
-        //     profileImgSrc: this.props.profileImgSrc,
-        //     activeView: this.determineView(props)
-        // }
-        // let newState = this.props; // This doesn't work.
-        // console.log('DeveloperView used props to make newState : ', newState);
-
-        // this.setState({ newState });
-        // this.setState(newState);
-
-        // console.log("DeveloperView later sees this state : ", this.state);
         /*
           let arr = new Array(10).fill(undefined).map((val, idx) => {
             let user = {
@@ -361,12 +357,8 @@ class DeveloperView extends Component {
     }
 
     componentDidUpdate() {
-        // console.log('DeveloperView received state of :', this.props.location.state.detail);
-        // console.log('DeveloperView received props of :', this.props);
-
         // Keep using
         // console.log('DeveloperView state has :', this.state);
-
     }
 
     render() {
@@ -379,10 +371,22 @@ class DeveloperView extends Component {
             view = <SubmitIssue
                 name={this.state.name}
                 email={this.state.email}
-                handleReset={this.showSubmitIssue}
+                type={this.state.type}
                 handleSubmitIssue={this.handleSubmitIssue}
             />
         }
+        else if (newView === 'User Profile') {
+            view = <UserProfile
+                id={this.state.id}
+                name={this.state.name}
+                email={this.state.email}
+                userType={this.state.userType}
+                photoURL={this.state.photoURL}
+                // handle save user
+                handleUserSave={this.handleUserSave}
+            />
+        }
+
         return (
             <React.Fragment>
                 {console.log('state in render', this.state)}
@@ -393,6 +397,7 @@ class DeveloperView extends Component {
                     determineView={this.determineView}
                     showDashboard={this.showDashboard}
                     showSubmitIssue={this.showSubmitIssue}
+                    showUserProfile={this.showUserProfile}
                 >
                     {/* {this.props.children} // this works, kinda. */}
                     {/* {this.determineView(this.props)} // doesn't work? */}

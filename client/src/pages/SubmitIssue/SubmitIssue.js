@@ -19,6 +19,7 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
+import API from '../../utils/API';
 
 // Components
 // import Sidebar from '../../components/Sidebar';
@@ -66,9 +67,9 @@ class SubmitIssue extends Component {
         super(props);
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
-            name: this.props.name,
-            email: this.props.email,
-            type: 'Technical'
+            // name: this.props.name,
+            // email: this.props.email,
+            // type: 'Technical'
         }
     }
 
@@ -141,7 +142,6 @@ class SubmitIssue extends Component {
             partImpacted: ''
         })
     };
-
     //  onChange = e => {
     //     const { name, value } = e.target;
     //     setState(prevState => ({ ...prevState, [name]: value }));
@@ -151,6 +151,39 @@ class SubmitIssue extends Component {
     //     e.preventDefault();
     //     signupUser().then(this.clearState);
     // };
+
+    createIssue = () => {
+        API.createIssue({
+            // this.state
+            type: this.state.type,
+            organization: this.state.organization, // ObjectId
+            project: this.state.project, // ObjectId
+            subject: this.state.subject,
+            description: this.state.description,
+            comment: this.state.comment,
+            owner: this.state.owner, // ObjectId
+
+            // optional in this version
+            url: this.state.url,
+            status: this.state.status,
+            resolved: this.state.resolved,
+            priority: this.state.priority,
+            targetResolutionDate: this.state.targetResolutionDate,
+            potentialImpact: this.state.potentialImpact,
+            image: this.state.image,
+            partImpacted: this.state.partImpacted
+        }).then(() => alert('done'))
+
+        // API.saveBook({
+        //     googleId: book.id,
+        //     title: book.volumeInfo.title,
+        //     subtitle: book.volumeInfo.subtitle,
+        //     link: book.volumeInfo.infoLink,
+        //     authors: book.volumeInfo.authors,
+        //     description: book.volumeInfo.description,
+        //     image: book.volumeInfo.imageLinks.thumbnail
+        //   }).then(() => this.getBooks());
+    }
 
     componentDidUpdate() {
         console.log('component did update :', this.state);
@@ -186,7 +219,7 @@ class SubmitIssue extends Component {
                         id="type"
                         disabled
                         label="Issue Type"
-                        defaultValue={this.state.type}
+                        defaultValue={this.props.type}
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
@@ -304,6 +337,8 @@ class SubmitIssue extends Component {
                             className={classes.button}
                             endIcon={<Icon>send</Icon>}
                             onClick={
+                                this.createIssue
+                                /*
                                 // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
                                 () => {
                                     console.log('clicked button', this.state)
@@ -332,7 +367,7 @@ class SubmitIssue extends Component {
                                     // let values = keys.map(
                                         // (key) => {
                                     for (let key of keys) {
-                                        this.props.handleSubmitIssue(key, this.state[key])
+                                        // this.props.handleSubmitIssue(key, this.state[key]) // works
 
                                     }
                                         // }
@@ -340,7 +375,10 @@ class SubmitIssue extends Component {
                                     // )
 
                                     // this.props.handleSubmitIssue(values)
+
+
                                 }
+                                */
                             }
                         > Submit
                     </Button>

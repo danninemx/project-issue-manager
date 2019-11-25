@@ -12,7 +12,6 @@ module.exports = {
   // Call this to create issue
   createIssue: function (req, res) {
     console.log('req.body is ', req.body)
-    // console.log('\n issueController-createIssue received this : ', req);
     db.Issue.create(req.body)
       .then(dbIssue => {
         console.log('returned data is', dbIssue)
