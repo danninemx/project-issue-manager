@@ -52,7 +52,13 @@ io.on('connection', function (socket) {
 // Configure body parsing for AJAX requests
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.json())
+
+app.use(bodyParser.json());
+// per https://www.positronx.io/react-axios-tutorial-make-http-get-post-requests/
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 // Serve up static assets
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

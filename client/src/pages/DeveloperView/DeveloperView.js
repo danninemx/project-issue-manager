@@ -231,15 +231,6 @@ class DeveloperView extends Component {
             // "userType": user[Object.keys(user)[5]],
             // "affiliatedOrganization": user[Object.keys(user)[6]],
             // "affiliatedProject": user[Object.keys(user)[7]]
-
-            // email: user.email,
-            // firstName: user.firstName,
-            // lastName: user.lastName,
-            // photoURL: user.photoUrl,
-            // submittedIssues: user.submittedIssues,
-            // userType: user.userType,
-            // affiliatedOrganization: user.affiliatedOrganization,
-            // affiliatedProject: user.affiliatedProject
         })
         // .then(() => this.getBooks());
 
@@ -283,10 +274,10 @@ class DeveloperView extends Component {
                 // If user is found, save id to state. 
                 // If not, send user to user profile for user creation.
                 res.data ?
-                    // console.log('User found :', res.data[0]['_id'])
+                    // console.log('User found :', res.data[0]['_id']) // works
                     this.setState({ 'id': res.data[0]['_id'] })
                     :
-                    // console.log('User not found', res.data)
+                    // console.log('User not found', res.data) // works
                     this.showUserProfile();
             })
             .catch(() =>
@@ -296,44 +287,12 @@ class DeveloperView extends Component {
             );
     }
 
-    // Call this when adding comment to issue or updating status/resolved/
-    updateIssue = (e) => {
-        e.preventDefault()
-
-        // immediately invoked anonymouse function
-        // (function () {
-        // }())
-
-        // const user = this.state.user.find(book => book.id === id);
-
-        // const studentObject = {
-        //     name: this.state.name,
-        //     email: this.state.email,
-        //     rollno: this.state.rollno
-        // };
-
-        // API.updateIssue({
-
-        // }).then(() => this.getIssues());
-
-        // axios.put('http://localhost:3000/students/update-student/' + this.props.match.params.id, studentObject)
-        //     .then((res) => {
-        //         console.log(res.data)
-        //         console.log('Student successfully updated')
-        //     }).catch((error) => {
-        //         console.log(error)
-        //     })
-
-        // Redirect to Student List 
-        // this.props.history.push('/student-list')
-    }
-
     authenticate = () => {
 
         firebase.auth().onAuthStateChanged(user => {
             // console.log('\n DeveloperView sees user :', user.displayName, user.email, user.photoURL, user.emailVerified, user.uid)
-            // checkNewUser();
-            this.checkNewUser(user.email)
+
+            // Save signin data to state
             this.setState({
                 name: user.displayName,
                 email: user.email,
@@ -341,6 +300,9 @@ class DeveloperView extends Component {
                 emailVerified: user.emailVerified,
                 idToken: user.getIdToken()
             })
+
+            // Process new user
+            this.checkNewUser(user.email)
         });
     }
     //------------------//
@@ -352,13 +314,13 @@ class DeveloperView extends Component {
     //-------------------//
 
     componentDidMount(props) {
-        console.log("\n DeveloperView received these props : ", this.props);
+        // console.log("\n DeveloperView received these props : ", this.props);
         // console.log("\n DeveloperView finally sees this state : ", this.state); // anti-design to update state with non-changing values
 
         console.log('did mount. state =', this.state)
 
-        this.authenticate()
         // get auth info
+        this.authenticate()
 
         /*
           let arr = new Array(10).fill(undefined).map((val, idx) => {
@@ -408,8 +370,6 @@ class DeveloperView extends Component {
                 email={this.state.email}
                 userType={this.state.userType}
                 photoURL={this.state.photoURL}
-            // handle save user
-            // handleUserSave={this.handleUserSave}
             />
         }
         else if (newView === 'Organization Profile') {
@@ -418,9 +378,6 @@ class DeveloperView extends Component {
                 name={this.state.name}
                 email={this.state.email}
                 userType={this.state.userType}
-            // photoURL={this.state.photoURL}
-            // handle save user
-            // handleUserSave={this.handleUserSave}
             />
         }
         else if (newView === 'Project Profile') {

@@ -27,6 +27,7 @@ export default {
     // Must wrap params as above. Below does not work.
     // console.log(`\n findOneUser is querying for : `, email);
     // return axios.get("/api/users", email);
+    // 
   },
 
   // Deletes the saved user with the given id
@@ -38,10 +39,11 @@ export default {
   // ORG
 
   getOrgs: function (q) {
-    console.log(`\n getUsers is querying for : `, q);
+    console.log(`\n API getOrgs : `, q);
     return axios.get("/api/orgs", { params: { q } });
   },
-  // ok
+
+  // oks
   createOrganization: function (orgData) {
     console.log('API create org');
     return axios.post("/api/orgs", orgData);
@@ -62,5 +64,42 @@ export default {
     // console.log(`\n createIssue is attempting to update : `, id);
     console.log(`\n API: updating issue`);
     return axios.put("/api/issues/" + id);
+  },
+
+  // Project
+
+  // test after creating version.
+  // this is object in form of { name: this.name }
+  createProject: function (projData) {
+    console.log('API create project', projData);
+    return axios.post("/api/projects", projData);
+  },
+
+  // test 
+  getProjects: function (q) {
+    console.log('API get projects :', q);
+    return axios.get("/api/projects", { params: { q } });
+    // return axios.get('/api/projects', q)
+  },
+
+  // getUsers: function (q) {
+  //   console.log(`\n getUsers is querying for : `, q);
+  //   return axios.get("/api/users", { params: { q } });
+  // },
+  // Version
+
+  createVersion: function (orgData) {
+    console.log('API create version');
+    return axios.post("/api/versions", orgData);
+  },
+
+  getVersions: function (q) {
+    console.log(`\n getVersions is querying for : `, q);
+    return axios.get("/api/versions", { params: { q } });
+  },
+
+  findOneVersion: function (id) {
+    console.log(`\n API find one version : `, id);
+    return axios.get("/api/versions", { params: { id } });
   }
 };

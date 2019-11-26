@@ -135,6 +135,8 @@ class UserProfile extends Component {
     // };
 
     getUser = () => {
+
+        // ***** This is hitting controller's getUsers, not findOneUser. //
         API.findOneUser(
             this.props.email
         )

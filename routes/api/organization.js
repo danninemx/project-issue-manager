@@ -9,15 +9,5 @@ router
   // .get(organizationController.findOneorganization)
   .post(organizationController.createOrg) // setup 
 
-// Matches with "/api/organizations/:id"
-router
-  .route("/:id")
-  // .put(organizationController.update)
-// .delete(organizationController.remove)
-
-// Matches with "/api/organizations/:email"
-router
-  .route("/:email")
-
 
 module.exports = router;

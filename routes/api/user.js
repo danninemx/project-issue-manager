@@ -5,7 +5,7 @@ const userController = require("../../controllers/userController");
 router
   // Use URL as-is
   .route("/")
-  .get(userController.getUsers)
+  .get(userController.getUsers) // findOneUser seems to trigger this anyway
   .get(userController.findOneUser)
   .post(userController.createUser)
 

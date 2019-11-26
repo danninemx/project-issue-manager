@@ -32,28 +32,5 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   }
-  // ,
 
-  // Call this to get one user's info (signin, __id acquisition)
-  // findOneIssue: function (req, res) {
-  //   // console.log('\n findOneUser received this : ', req);
-  //   console.log('controller - find one issue');
-  //   // What to use as condition?
-  //   db.Issue.findOne({ email: req.params.email })
-  //     .then(issue => res.json(issue))
-  //     .catch(err => res.status(422).json(err));
-  //   // or per Mongoose docs,
-  // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
-  // }
-  // ,
-
-
-  // // Call this to remove a user (un-registration)
-  // removeUser: function (req, res) {
-  //   console.log('\n issueController-getUserInfo received this : ', req);
-  //   db.Issue.findById(req.params.id)
-  //     .then(dbIssue => dbIssue.remove())
-  //     .then(dbIssue => res.json(dbIssue))
-  //     .catch(err => res.status(422).json(err));
-  // }
 };
