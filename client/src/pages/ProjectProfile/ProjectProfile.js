@@ -83,7 +83,10 @@ class ProjectProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            disableProjSelect: true
+            disableProjSelect: true,
+            // orgId: 'unknown' // initializing orgId prevents selection from staying
+            // orgId: ''
+
             // name: this.props.name, 
             // email: this.props.email,
             // type: 'Technical' // initializing this way still did not define prevState
@@ -108,36 +111,60 @@ class ProjectProfile extends Component {
         let ind = this.state.organizationNames.indexOf(event.target.value)
         // console.log(this.state.organizationList[ind]) // shows the object at index
         // this.setState({org: event.target.value})
-        // console.log(Object.keys(this.state.organizationList[ind])) // shows array containing just the key from the object
-        // console.log(Object.keys(this.state.organizationList[ind])[0]) // that in a string
-        let selectedId = Object.keys(this.state.organizationList[ind])[0];
+        // console.log(Object.keys(this.state.organizationList[ind])) // shows array containing keys from the object
+        // console.log(Object.keys(this.state.organizationList[ind])[0]) // first key (in ObjectId form) in a string
+
+        let selectedId = ''; // must initialize as string
+        // If index was found, get the key. If not, keep blank.
+        ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = ''
         console.log('selected org:', selectedId);
         this.setState({
+            projId: '', // If any proj is selected, remove it
             orgId: selectedId
         }
-            , () => { this.getAllProj() }
+            , () => { this.getAllProj() } // on org select, query proj list
         );
     };
 
     handleProjSelect = event => {
         console.log('select proj target: ', event.target)
         let ind = this.state.projectNames.indexOf(event.target.value)
-        // console.log(this.state.projectList[ind]) // shows the object at index
-        // console.log(Object.keys(this.state.projectList[ind])) // shows array containing just the key from the object
-        // console.log(Object.keys(this.state.projectList[ind])[0]) // that in a string
-        let selectedId = Object.keys(this.state.projectList[ind])[0];
-        console.log('selectted proj:', selectedId)
-        this.setState({ projId: selectedId }
-            // ,() => this.getAllProj())
-        )
+        console.log('step1', this.state.projectList[ind]) // the object at index
+        console.log('step2', Object.keys(this.state.projectList[ind])) // array containing the keys from the object
+        console.log('step3', Object.keys(this.state.projectList[ind])[0]) // "_id", which is the first item on the array
+        console.log('check :', this.state.projectList[ind]);
+        let selectedId = Object.keys(this.state.projectList[ind])[0]; // this key called "_id" , not the value at the key of "_id"
+
+        console.log('selected proj:', selectedId)
+        this.setState({
+            verId: '', // If any version is selected, remove it
+            projId: selectedId
+        }
+            , () => this.getAllVers()) // on proj select, query version list
+    };
+
+    handleVerSelect = event => {
+        console.log('select ver target: ', event.target)
+        let ind = this.state.versionNames.indexOf(event.target.value) // get the index of selected item from array
+        // console.log(this.state.versionList[ind]) // shows the object at index
+        // console.log(Object.keys(this.state.versionList[ind])) // shows array containing just the key from the object
+        // console.log(Object.keys(this.state.versionList[ind])[0]) // that in a string
+
+        let selectedId = '';
+        // If index was found, get the key. If not, keep blank.
+        ind !== '' ? selectedId = Object.keys(this.state.versionList[ind])[0] : selectedId = ''
+        console.log('selected vers:', selectedId)
+        this.setState({ verId: selectedId })
     };
 
     clearState = () => {
         this.setState({
             ...this.state,
+            // organization info
+            // orgId: '', // ObjectId of org. For now, do not force clear?
+
             // project info
             projId: '', // ObjectId of project
-            orgId: '', // ObjectId of org
             projName: '', // unique
             projDescription: '',
 
@@ -149,17 +176,19 @@ class ProjectProfile extends Component {
 
             // cache
             organizationList: [], // should not be reset unless query auto restarts
-            organizationNames: [], // 
+            organizationNames: [],
 
-            projectList: [], // these should be reset, but make org select rerun proj query
-            projectNames: [], //
-            // versionList: [] //
+            projectList: [],
+            projectNames: [],
+            versionList: [],
+            versionNames: [],
 
-            disableProjSelect: 'true'
+            disableProjSelect: 'true',
+            disableVerSelect: 'true',
         },
             () => { // callback inside setState guarantees sync ops
                 this.getAllOrgs() // reset org list to all (applicable, eventually)
-                this.getAllProj() // reset proj list to all
+                // this.getAllProj() // reset proj list to all. Called at end of getAllOrgs.
                 console.log('state cleared')
             })
     };
@@ -182,8 +211,8 @@ class ProjectProfile extends Component {
                         organizationList: objects,
                         organizationNames: names
                     }
-                    ,
-                    () => this.getAllProj() // cb
+                    // ,
+                    // () => this.getAllProj() // cb
 
                     // prevState test. did not work
                     // (prevState) => { // general syntax for avoiding async prob
@@ -231,26 +260,26 @@ class ProjectProfile extends Component {
             })
             .then(projects => {
                 console.log('get all proj', projects);
-                let objects = projects.data.map(proj => {
-                    if (proj.organization === this.state.orgId) {
-                        return { [proj._id]: proj.name } // projId : [ projName, orgId ]
-                    }
-                })
 
-                let names = projects.data.map(proj => {
-                    if (proj.organization === this.state.orgId) {
-                        return proj.name // projId : projName
-                    }
-                })
+                let objects = [];
+                let names = [];
 
-                // If blanks exist, this is remnant from relevant query
-                objects.includes(undefined) ?
+                for (let obj of projects.data) { // iterable array, so for-in does not work
+                    if (obj.organization === this.state.orgId) {
+                        objects.push({ [obj._id]: obj.name }) // projId : projName
+                        names.push(obj.name); // save names separately // works
+                    }
+                } // .map does not work since it may create "undefined" holes in output array
+                // .filter does not work since condition sits on same level as data to save
+
+                objects.includes(undefined) ? // no longer need to check undefineds due to change above, but will leave for now
                     this.setState({
                         projectList: [],
                         projectNames: [],
                         disableProjSelect: true // prevent proj pick
                     },
                         console.log('No relevant project. ', objects, names)
+                        // console.log('No relevant project. ', o2, n2)
                     ) :
                     // If relevant projects are found, add list to state and enable project selection
                     // objects.length > 0 && names.length > 0 ?
@@ -258,29 +287,21 @@ class ProjectProfile extends Component {
                         projectList: objects,
                         projectNames: names,
                         disableProjSelect: false // enables project select
-                    }, console.log('Relevant projects found. Adding to state:', objects, names)
+                    }
+                        , console.log('Relevant projects found. Adding to state:', objects, names)
+                        // , console.log('Relevant projects found. Adding to state:', o2, n2)
                     )
 
             })
             .then(() => console.log('state after getAllProj, filtered :', this.state))
+            .then(this.getAllVers()) // query matching versions on proj select // works?
             .catch(err => console.log(err));
-        // .then(this.getAllVers()) // query matching versions on proj select // works?
     }
 
 
     //-------------------//
     // Version functions //
     //-------------------//
-    getAllVers = () => {
-        API.getVersions({ project: this.state.projId })
-            .then(vers => console.log('get all vers', vers))
-    }
-
-    getOneVer = () => {
-        API.findOneVersion(this.state.verId)
-            .then(ver => console.log(ver))
-    }
-
     saveVer = () => {
         API.createVersion({
             name: this.state.verName,
@@ -289,23 +310,54 @@ class ProjectProfile extends Component {
         }).then(() => console.log('Org saved.'))
     }
 
-    // makeOrgList = () => {
-    //     let names = this.state.organizationList.map((org, ind) => {
-    //         // let k = Object.keys(this.state.organizationList[ind])[0] // get the key at index of ind
-    //         let k = Object.keys(org)[ind]
-    //         console.log(k)
-    //         // return this.state.organizationList[k]
-    //         return k
-    //     })
-    //     // return ('here', names)
-    //     // console.log(names)
-    //     // this.setState({ organizationNames: names })
-    // }
+    getAllVers = () => {
+        API.getVersions({
+            // project: this.state.projId // seems to work but below logic is for unfiltered data
+        })
+            .then(versions => {
+                console.log('get all vers', versions)
+                let objects = [];
+                let names = [];
 
+                for (let obj of versions.data) { // iterable array, so for-in does not work
+                    if (obj.project === this.state.projId) {
+                        objects.push({ [obj._id]: obj.name }) // verId : verName
+                        names.push(obj.name); // save names separately
+                    }
+                } // .map does not work since it may create "undefined" holes in output array
+                // .filter does not work since condition sits on same level as data to save
+
+                // If blanks exist, this is remnant from relevant query
+                objects.includes(undefined) ?
+                    this.setState({
+                        versionList: [],
+                        versionNames: [],
+                        disableVerSelect: true // prevent select
+                    },
+                        console.log('No relevant version. ', objects, names)
+                    ) :
+                    // If relevant result is found, add list to state and enable selection
+                    this.setState({
+                        versionList: objects,
+                        versionNames: names,
+                        disableVerSelect: false // enables select
+                    }, console.log('Relevant versions found. Adding to state:', objects, names)
+                    )
+
+            })
+    }
+
+    getOneVer = () => {
+        API.findOneVersion(this.state.verId)
+            .then(ver => console.log('get one ver', ver))
+    }
+
+    //--------------------//
+    //  Lifecyle Methods  //
+    //--------------------//
     componentDidMount() {
         this.getAllOrgs() // adds to state the list of org objects and array of org names
-        // this.getAllProj()
-
+        // this also gets projects via callback
     }
 
     componentDidUpdate() {
@@ -323,7 +375,6 @@ class ProjectProfile extends Component {
     }
 
     render() {
-        // this.getAllOrgs();
         const { classes } = this.props;
 
         return (
@@ -335,16 +386,18 @@ class ProjectProfile extends Component {
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel
                             // ref={inputLabel} 
-                            id="demo-simple-select-outlined-label">
+                            id="demo-simple-select-outlined-label-org">
                             Provider
                             </InputLabel>
                         <Select
-                            labelId="demo-simple-select-outlined-label"
+                            labelId="demo-simple-select-outlined-label-org"
                             // id={this.state.orgId || "demo-simple-select-outlined"}
                             id={"demo-simple-select-outlined"}
+                            key={Date.now}
                             placeholder='Provider Name'
                             value={
                                 this.state.orgId !== '' ? this.state.orgId : '' // does not change display
+                                // collin tried: this.state.orgId
                             }
                             onChange={this.handleOrgSelect
                                 // this.handleFieldChange // not reading correctly?
@@ -354,17 +407,20 @@ class ProjectProfile extends Component {
                         >
                             {
                                 this.state.organizationNames ?
-                                    this.state.organizationNames.map((org, ind) =>
+                                    this.state.organizationNames.map((org, ind) => {
+                                        // console.log(Object.keys(this.state.organizationList[ind])[0])
+                                        console.log(org)
                                         // <option key={org.key} value={org.key}>{org.value}</option>
-                                        <MenuItem
+                                        return < MenuItem
                                             id={Object.keys(this.state.organizationList[ind])[0]}
+                                            // id={org} // collin tried
                                             key={org}
                                             name={org}
-                                            value={org}>
+                                            value={org} >
                                             {/* error: you have provided an out-of-range value `undefined` for the select component. */}
                                             {org}
                                         </MenuItem>
-                                    )
+                                    })
                                     : () => console.log('state during MenuItem render', this.state)
                                 // None should not be an option. Create org first if missing.
                             }
@@ -402,6 +458,7 @@ class ProjectProfile extends Component {
                             labelId="demo-simple-select-outlined-label-proj"
                             // id={this.state.orgId || "demo-simple-select-outlined"}
                             id={"demo-simple-select-outlined-proj"}
+                            key={Date.now}
                             placeholder='Project Name'
                             // value={this.state.orgName}
                             onChange={
@@ -419,7 +476,7 @@ class ProjectProfile extends Component {
                                         // Object.keys(this.state.projectList[i])[0]: 
                                         return <MenuItem
                                             id={proj}
-                                            key={proj}
+                                            key={Date.now}
                                             name={proj}
                                             value={proj}
                                             disabled={
@@ -485,10 +542,54 @@ class ProjectProfile extends Component {
                     />
 
                 </div>
+
+                {/* Version */}
                 <div>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-outlined-label-ver">
+                            Select Version
+                        </InputLabel>
+                        <Select
+                            labelId="demo-simple-select-outlined-label-ver"
+                            // id={this.state.orgId || "demo-simple-select-outlined"}
+                            id={"demo-simple-select-outlined-ver"}
+                            placeholder='Version / Specification'
+                            // value={this.state.orgName}
+                            onChange={
+                                // onOpen={ // doesn't work but unsure if due to choice
+                                // this.handleFieldChange // not reading correctly?
+                                // this.setState({ event.target.value })
+                                this.handleVerSelect
+                            }
+                        // labelWidth={'500px'}
+                        >
+                            {
+                                this.state.versionNames ?
+                                    this.state.versionNames.map((ver, i) => {
+                                        // this.state.versionList ? // unexpected
+                                        // Object.keys(this.state.versionList[i])[0]: 
+                                        return <MenuItem
+                                            id={ver}
+                                            key={ver}
+                                            name={ver}
+                                            value={ver}
+                                            disabled={
+                                                this.state.disableVerSelect ? true : false
+                                            }
+                                        >
+                                            {ver}
+                                            {console.log('ver list at render:', this.state.versionList[i])}
+                                        </MenuItem>
+                                    }) : <br />
+                                // 'None' should not be an option. Create org first if missing.
+                            }
+                        </Select>
+                        {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
+                    </FormControl>
+
                     <TextField
                         id="verName"
-                        required
+                        disabled
                         fullWidth
                         label="Version / Specification Name"
                         // className={classes.textField} // disabled for full width
@@ -510,6 +611,21 @@ class ProjectProfile extends Component {
                         // placeholder="Placeholder"
                         // className={classes.textField} // adding this will break css
                         // helperText="What seems to be the trouble?"
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
+                        id="verId"
+                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                        disabled
+                        fullWidth
+                        label="Version ID"
+                        value={this.state.verId}
+                        style={{ margin: 8 }}
                         margin="normal"
                         InputLabelProps={{
                             shrink: true,
