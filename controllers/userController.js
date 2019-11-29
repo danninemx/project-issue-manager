@@ -9,15 +9,15 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  // Call this to get all users' info (no use case)
   getUsers: function (req, res) {
     console.log('\n userController-getUserInfo received this : ', req.query);
-    // req.query : { email: 'dudkny@gmail.com' }
+    // e.g. req.query : { email: 'dudkny@gmail.com' }
     db.User.find(req.query)
       .then(user => res.json(user))
       .catch(err => res.status(422).json(err));
   },
 
+  // probably not needed
   // Call this to get one user's info (signin, __id acquisition)
   findOneUser: function (req, res) {
     console.log('Controller: find one user')

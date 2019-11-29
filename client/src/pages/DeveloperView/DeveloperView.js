@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import {
     // BrowserRouter as Router, Switch, Route, Redirect, useHistory, useLocation, withRouter, Link
 } from "react-router-dom";
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 
+// Material UI
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+// import { SnackbarProvider, useSnackbar } from 'notistack'; // later for feedback msg
+
+// Pages
 import Sidebar from '../../components/Sidebar';
 import Dashboard from '../Dashboard';
 import SubmitIssue from '../SubmitIssue';

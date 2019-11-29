@@ -6,7 +6,7 @@ router
   // Use URL as-is
   .route("/")
   .get(userController.getUsers) // findOneUser seems to trigger this anyway
-  .get(userController.findOneUser)
+  .get(userController.findOneUser) // probbly not needed
   .post(userController.createUser)
 
 // Matches with "/api/users/:id"

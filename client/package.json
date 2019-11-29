@@ -13,6 +13,7 @@
     "express-session": "^1.17.0",
     "firebase": "^7.4.0",
     "material-table": "^1.54.1",
+    "notistack": "^0.9.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-firebaseui": "^4.0.0",

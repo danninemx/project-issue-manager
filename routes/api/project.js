@@ -9,4 +9,8 @@ router
   .post(projectController.createProj) // setup 
 // .get(projectController.findOneorganization)
 
+router
+  .route("/:id")  // Matches with "/api/projects/:id"
+  .get(projectController.findById)
+  .put(projectController.updateProj)
 module.exports = router;

@@ -75,23 +75,27 @@ export default {
     return axios.post("/api/projects", projData);
   },
 
-  // test 
+  // works
   getProjects: function (q) {
     console.log('API get projects :', q);
     return axios.get("/api/projects", { params: { q } });
-    // return axios.get('/api/projects', q)
   },
 
-  // getUsers: function (q) {
-  //   console.log(`\n getUsers is querying for : `, q);
-  //   return axios.get("/api/users", { params: { q } });
-  // },
+  updateProject: function (id, projData) {
+    console.log(`\n API updateProject w/ id: `, id);
+    return axios.put("/api/projects/" + id, projData);
+  },
 
   // Version //
 
   createVersion: function (orgData) {
     console.log('API create version');
     return axios.post("/api/versions", orgData);
+  },
+
+  updateVersion: function (id, verData) {
+    console.log(`\n API updateVersion w/ id: `, id);
+    return axios.put("/api/versions/" + id, verData);
   },
 
   getVersions: function (q) {
