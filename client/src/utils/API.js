@@ -88,9 +88,9 @@ export default {
 
   // Version //
 
-  createVersion: function (orgData) {
-    console.log('API create version');
-    return axios.post("/api/versions", orgData);
+  createVersion: function (data) {
+    console.log('API create version', data);
+    return axios.post("/api/versions", data);
   },
 
   updateVersion: function (id, verData) {
@@ -99,7 +99,7 @@ export default {
   },
 
   getVersions: function (q) {
-    console.log(`\n getVersions is querying for : `, q);
+    console.log(`\n API getVersions : `, q);
     return axios.get("/api/versions", { params: { q } });
   },
 

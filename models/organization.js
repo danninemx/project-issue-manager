@@ -5,7 +5,7 @@ const organizationSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
   url: { type: String, required: false },
-
+  email: String,
   member: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 

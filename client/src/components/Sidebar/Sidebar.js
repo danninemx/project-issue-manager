@@ -67,6 +67,10 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  appBarHeading: {
+    flexGrow: 1,
+    // padding: theme.spacing(3),
+  },
   menuButton: {
     marginRight: 36,
   },
@@ -76,7 +80,7 @@ const useStyles = makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    // whiteSpace: 'nowrap',
   },
   drawerOpen: {
     width: drawerWidth,
@@ -102,10 +106,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
   },
 }));
 
@@ -262,14 +262,15 @@ function Sidebar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            {props.name}
+          <Typography variant="h6" className={classes.appBarHeading} noWrap>
+            {/* {props.name} */}
+            {props.activeView}
           </Typography>
 
           <Toolbar disableGutters>
             <Typography variant="h6" className={classes.title}>
-              Bug Tracker
-          </Typography>
+              {/* Issue Manager */}
+            </Typography>
             <div style={{ flex: 1 }} />
             <Tooltip id="tooltip-icon1" title="Sign out">
               <IconButton

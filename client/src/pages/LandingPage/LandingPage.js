@@ -181,7 +181,7 @@ const LandingPage = ({ classes, history, theme }) => {
 
         <Toolbar disableGutters>
           <Typography variant="h6" className={classes.title}>
-            Bug Tracker
+            Project Issue Manager
           </Typography>
           <div style={{ flex: 1 }} />
           <Tooltip id="tooltip-icon1" title="Sign in">
@@ -190,7 +190,7 @@ const LandingPage = ({ classes, history, theme }) => {
               aria-label="Sign In"
               color="inherit"
               onClick={() => {
-                history.push('/signin')
+                history.push('/signinpage')
               }}
               rel="noopener"
             >
@@ -268,7 +268,7 @@ const LandingPage = ({ classes, history, theme }) => {
                   <Button
                     size="small"
                     onClick={() => {
-                      history.push('/signin')
+                      history.push('/signinpage')
                     }}
                   >
                     Submit Issue

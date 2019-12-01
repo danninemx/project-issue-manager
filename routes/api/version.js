@@ -6,13 +6,13 @@ router
   // Use URL as-is
   .route("/")
   .get(versionController.getVers) // setting up
-  // .get(versionController.findOneorganization)
   .post(versionController.createVer) // setup 
+// .get(versionController.findOneorganization)
 
-// Matches with "/api/organizations/:id"
-// router
-// .route("/:id")
-// .put(versionController.update)
+// Matches with "/api/versions/:id"
+router
+  .route("/:id")
+  .put(versionController.updateVer)
 // .delete(versionController.remove)
 
 // Matches with "/api/organizations/:email"

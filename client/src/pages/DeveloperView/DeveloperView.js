@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
-    // BrowserRouter as Router, Switch, Route, Redirect, useHistory, useLocation, withRouter, Link
+    // BrowserRouter as Router, Switch, Route,
+    // Redirect
+    // , useHistory, useLocation, withRouter, Link
 } from "react-router-dom";
 
 // Material UI
@@ -45,13 +47,13 @@ class DeveloperView extends Component {
         this.state = {
             activeView: 'Dashboard',
             isSignedIn: false,
-            // isAuthenticated: false,
 
             // user info
             id: "",
             email: "",
             name: "", // Separate first and last name later
-            userType: "",
+            userType: 'reporter',
+            // photoURL: '',
 
             // issue: {} or []?
             // required
@@ -274,16 +276,18 @@ class DeveloperView extends Component {
             // If an email was passed, use it. If not use state.
             authEmail || this.state.email
         )
-            .then(res => {
+            .then(res =>
                 // If user is found, save id to state. 
                 // If not, send user to user profile for user creation.
-                res.data ?
+                // console.log('checking new user status.', res)
+                res !== ''
+                    ? this.setState({ 'id': res.data[0]['_id'] }, console.log('user found:', res.data))
                     // console.log('User found :', res.data[0]['_id']) // works
-                    this.setState({ 'id': res.data[0]['_id'] })
-                    :
-                    // console.log('User not found', res.data) // works
-                    this.showUserProfile();
-            })
+                    : () => {
+                        console.log('User NOT found', res.data) // works
+                        this.showUserProfile();
+                    }
+            )
             .catch(() =>
                 this.setState({
                     message: "No results. Please try another query."
@@ -292,21 +296,18 @@ class DeveloperView extends Component {
     }
 
     authenticate = () => {
-
         firebase.auth().onAuthStateChanged(user => {
             // console.log('\n DeveloperView sees user :', user.displayName, user.email, user.photoURL, user.emailVerified, user.uid)
 
             // Save signin data to state
             this.setState({
+                isSignedIn: !!user, // Coerce the value to be a boolean regardless of original type
                 name: user.displayName,
                 email: user.email,
                 photoURL: user.photoURL,
                 emailVerified: user.emailVerified,
                 idToken: user.getIdToken()
             })
-
-            // Process new user
-            this.checkNewUser(user.email)
         });
     }
     //------------------//
@@ -318,13 +319,9 @@ class DeveloperView extends Component {
     //-------------------//
 
     componentDidMount(props) {
-        // console.log("\n DeveloperView received these props : ", this.props);
-        // console.log("\n DeveloperView finally sees this state : ", this.state); // anti-design to update state with non-changing values
-
-        console.log('did mount. state =', this.state)
-
-        // get auth info
+        // check auth
         this.authenticate()
+        console.log('Did Mount. State =', this.state)
 
         /*
           let arr = new Array(10).fill(undefined).map((val, idx) => {
@@ -350,7 +347,22 @@ class DeveloperView extends Component {
 
     componentDidUpdate() {
         // Keep using
-        // console.log('DeveloperView state has :', this.state);
+        console.log('Did Update. State has :', this.state);
+
+        // console.log('Router passed these props :', this.props.location.state)
+        // this.state.isSignedIn
+        // ? () => { // If signed in, show state and proceed
+        //     console.log('checking router state', this.props.location.state)
+        //     console.log('main view ran auth. State:', this.state)
+        //     // this.checkNewUser(user.email) // Process new user
+        // }
+        // : () => {
+        //     console.log('You are NOT signed in.')
+        //     this.props.history.push({
+        //         pathname: '/',
+        //         state: { isSignedIn: false }
+        //     }); // redirect to LandingPage
+        // }
     }
 
     render() {
@@ -364,6 +376,7 @@ class DeveloperView extends Component {
                 name={this.state.name}
                 email={this.state.email}
                 type={this.state.type}
+                isSignedIn={this.state.isSignedIn}
                 handleSubmitIssue={this.handleSubmitIssue}
             />
         }
@@ -374,6 +387,7 @@ class DeveloperView extends Component {
                 email={this.state.email}
                 userType={this.state.userType}
                 photoURL={this.state.photoURL}
+                isSignedIn={this.state.isSignedIn}
             />
         }
         else if (newView === 'Organization Profile') {
@@ -382,34 +396,40 @@ class DeveloperView extends Component {
                 name={this.state.name}
                 email={this.state.email}
                 userType={this.state.userType}
+                isSignedIn={this.state.isSignedIn}
             />
         }
         else if (newView === 'Project Profile') {
             view = <ProjectProfile
                 id={this.state.id}
+                isSignedIn={this.state.isSignedIn}
+                showDashboard={this.showDashboard}
             />
         }
 
         return (
-            <React.Fragment>
-                {console.log('state in render', this.state)}
-                {/* {this.seed()}  // this works but wont use now */}
-                <Sidebar
-                    name={this.state.name}
-                    changeName={this.changeName}
-                    determineView={this.determineView}
-                    showDashboard={this.showDashboard}
-                    showSubmitIssue={this.showSubmitIssue}
-                    showUserProfile={this.showUserProfile}
-                    showOrganizationProfile={this.showOrganizationProfile}
-                    showProjectProfile={this.showProjectProfile}
-                >
-                    {/* {this.props.children} // this works, kinda. */}
-                    {/* {this.determineView(this.props)} // doesn't work? */}
-                </Sidebar>
-                {view}
-                {/* <Dashboard /> */}
-            </React.Fragment>
+            <div>
+                {}
+                <React.Fragment>
+                    {console.log('state in render', this.state)}
+                    {/* {this.seed()}  // this works but wont use now */}
+                    <Sidebar
+                        activeView={this.state.activeView}
+                        name={this.state.name}
+                        changeName={this.changeName}
+                        determineView={this.determineView}
+                        showDashboard={this.showDashboard}
+                        showSubmitIssue={this.showSubmitIssue}
+                        showUserProfile={this.showUserProfile}
+                        showOrganizationProfile={this.showOrganizationProfile}
+                        showProjectProfile={this.showProjectProfile}
+                    >
+                        {/* {this.props.children} // this works, kinda. */}
+                        {/* {this.determineView(this.props)} // doesn't work? */}
+                    </Sidebar>
+                    {view}
+                </React.Fragment>
+            </div>
         );
     }
 }

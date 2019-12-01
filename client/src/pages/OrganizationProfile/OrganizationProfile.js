@@ -41,7 +41,7 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 200,
+        width: 300, // default 200
     },
 
     content: {
@@ -101,6 +101,7 @@ class OrganizationProfile extends Component {
             orgName: '',
             orgDescription: '',
             orgUrl: '',
+            email: '',
             member: [this.props.id]
             // userType: 'User',
             // implement later for devs
@@ -172,10 +173,10 @@ class OrganizationProfile extends Component {
                     <TextField
                         id="orgName"
                         required
-                        fullWidth
+                        // fullWidth
                         label="Provider Name"
                         value={this.state.orgName}
-                        // className={classes.textField} // disabled for full width
+                        className={classes.textField} // disable for full width
                         // defaultValue={this.props.name}
                         margin="normal"
                         variant="outlined"
@@ -184,6 +185,23 @@ class OrganizationProfile extends Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                    />
+                    <TextField
+                        id="email"
+                        // fullWidth
+                        label="Email"
+                        value={this.state.email}
+                        className={classes.textField}
+                        style={{ margin: 8 }}
+                        placeholder="info@company.com"
+                        // className={classes.textField} // adding this will break css
+                        // helperText="What seems to be the trouble?"
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        onChange={this.handleFieldChange.bind(this)}
                     />
                     <TextField
                         id="orgDescription"

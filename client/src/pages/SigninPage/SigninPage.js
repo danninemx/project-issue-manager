@@ -1,4 +1,6 @@
-import React, { Component } from "react"
+import React, { Component
+    // , useRef 
+} from "react"
 import { Redirect } from 'react-router-dom'
 
 // Firebase Authentication
@@ -10,6 +12,8 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+
+import API from '../../utils/API'
 
 require('dotenv').config();
 // If running in non-production environment, load .env variables
@@ -40,7 +44,6 @@ class SigninPage extends Component {
         // Set default auth state of false
         this.state = {
             isSignedIn: false,
-            // isAuthenticated: false,
         };
 
         // this.routeChange = this.routeChange.bind(this); //testing
@@ -59,6 +62,31 @@ class SigninPage extends Component {
     }
     */
 
+    checkNewUser = (authEmail) => {
+        API.findOneUser(
+            // If an email was passed, use it. If not use state.
+            authEmail || this.state.email
+        )
+            .then(res => {
+                // If user is found, save id to state. 
+                // If not, send user to user profile for user creation.
+                console.log('SigninPage is checking new user status.', res)
+                // res !== '' ? () => {
+                //     console.log('user found:', res.data)
+                //     // console.log('User found :', res.data[0]['_id']) // works
+                //     this.setState({ 'id': res.data[0]['_id'] })
+                // }
+                //     : () => {
+                //         console.log('User NOT found', res.data) // works
+                //         this.showUserProfile();
+                //     }
+            })
+            .catch(() =>
+                this.setState({
+                    message: "No results. Please try another query."
+                })
+            );
+    }
     // state = { isSignedIn: false }; // signed out by default
 
     // Firebase UI signin configuration
@@ -81,30 +109,20 @@ class SigninPage extends Component {
         }
     }
 
+    //-------------------//
+    // Lifecycle Methods //
+    //-------------------//
     componentDidMount = () => {
-
         firebase.auth().onAuthStateChanged(user => {
             this.setState({
                 // Coerce the value to be a boolean regardless of original type
                 isSignedIn: !!user
-            });
-            // console.log('this.props is :', this.props);
-            // console.log('this.props.handler is :', this.props.handler);
-            // console.log("\n SigninPage sees this state : ", this.state);
-
-
-            // console.log('this.props.handleSignIn is :', this.props.handleSignIn);
-            // console.log('SigninPage sees "isSignin" in state : ', this.state.isSignedIn);
-            // console.log("SigninPage sees this user : ", user);
+            })
         })
-
-
     }
 
     componentDidUpdate = () => {
         // console.log('this.props.handler is :', this.props.handler)
-
-
         // Consider adding "keep me signed in" checkbox which will enable this
 
         // Change persistence from local storage to session storage
@@ -130,8 +148,7 @@ class SigninPage extends Component {
         return (
             // <div className="App">
             <React.Fragment>
-                <CssBaseline
-                />
+                <CssBaseline />
                 <Container maxWidth="sm"
                     style={{
                         backgroundColor: '#cfe8fc'
@@ -160,10 +177,6 @@ class SigninPage extends Component {
                     //     }}
                     // />
 
-
-
-                    // this.props.handler();
-
                     // this.props.history.push({
                     //     pathname: '/',
                     //     state: { isAuthenticated: true }
@@ -188,12 +201,8 @@ class SigninPage extends Component {
                                 to={{
                                     pathname: "/developerview",
                                     state: {
-                                        // name: this.state.name,
-                                        // email: this.state.email,
-                                        // photoUrl: this.state.photoUrl,
-                                        // emailVerified: this.state.emailVerified,
-                                        // idToken: this.state.idToken,
-                                        referrer: "/signinpage"
+                                        referrer: "/signinpage",
+                                        wasAuthenticated: true
                                     }
                                 }}
                             />

@@ -48,7 +48,7 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 200,
+        width: 300, //default 200
     },
 
     content: {
@@ -69,6 +69,10 @@ const styles = theme => ({
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
+    },
+
+    divider: {
+        margin: '20px 0 20px 0',
     },
 })
 
@@ -260,30 +264,34 @@ class ProjectProfile extends Component {
             ? console.log('choose org first. Visit org profile for creation')
 
             // If org Id was found, check if proj ID was found.
-            : this.state.projId !== ''// If proj ID is found, proj is in DB. Update it. Use ObjectId of org
-                ? this.updateProject(this.state.projId, {
-                    "name": this.state.projName,
-                    "description": this.state.projDescription,
-                    "organization": this.state.orgId
-                })
-                :
-                // (async function e() { return 'e' })().then( res => console.log(res + 'f') )
+            : (async () => {
+                this.state.projId !== ''// If proj ID is found, proj is in DB. Update it. Use ObjectId of org
+                    ? await this.updateProject(this.state.projId, {
+                        "name": this.state.projName,
+                        "description": this.state.projDescription,
+                        "organization": this.state.orgId
+                    })
+                    :
+                    // (async function e() { return 'e' })().then( res => console.log(res + 'f') )
 
-                // If projId is missing...
-                (async () => {
-                    await this.createProj();  // first create proj anew to DB. wait until done.
-                })()
-                    .then(
-                        // Check if version Id is missing.
-                        this.state.verId === ''
-                            ? this.createVer() // If verId is missing, create a new ver in DB.
-                            : // If found, version is in DB. Update it. Use ObjectId of proj
-                            this.updateVersion(this.state.verId, {
-                                "name": this.state.verName,
-                                "description": this.state.verDescription,
-                                "project": this.state.projId
-                            })
-                    )
+                    // If projId is missing...
+                    (async () => {
+                        await this.createProj();  // first create proj anew to DB. wait until done.
+                    })()
+            })()
+                .then( // After project process...
+                    // Check if version Id is missing.
+                    this.state.verId === ''
+                        ? this.createVer() // If verId is missing, create a new ver in DB.
+                        : // If found, version is in DB. Update it. Use ObjectId of proj
+                        this.updateVersion(this.state.verId, {
+                            "name": this.state.verName,
+                            "description": this.state.verDescription,
+                            "project": this.state.projId
+                        })
+                )
+                .then((() => this.props.showDashboard())) // Once updated, forward to main view
+                .catch(err => console.log(err))
     }
 
 
@@ -417,9 +425,10 @@ class ProjectProfile extends Component {
         API.createVersion({
             name: this.state.verName,
             description: this.state.verDescription,
-            project: this.state.projId // project Id as ref
+            project: [this.state.projId] // project Id as ref
         })
             .then(res => console.log('Version saved.', res))
+            .catch(error => console.log(error))
     }
 
     updateVersion = async (id, data) => { // works
@@ -556,7 +565,8 @@ class ProjectProfile extends Component {
                         id="orgId"
                         // REMEMBER, LIST IS FOR NAME BUT SAVES ID
                         disabled
-                        fullWidth
+                        // fullWidth
+                        className={classes.textField}
                         label="Provider ID"
                         value={this.state.orgId}
                         style={{ margin: 8 }}
@@ -564,10 +574,10 @@ class ProjectProfile extends Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        variant="outlined"
+                        variant="filled"
                         onChange={this.handleFieldChange.bind(this)}
                     />
-                    <Divider />
+                    <Divider className={classes.divider} />
                     {/* project */}
                 </div>
                 <div id='proj-grp'>
@@ -619,6 +629,22 @@ class ProjectProfile extends Component {
                         </Select>
                     </FormControl>
                     <TextField
+                        id="projId"
+                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                        disabled
+                        // fullWidth
+                        label="Project ID"
+                        className={classes.textField}
+                        value={this.state.projId}
+                        style={{ margin: 8 }}
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="filled"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
                         id="projName"
                         required
                         fullWidth
@@ -634,21 +660,6 @@ class ProjectProfile extends Component {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    />
-                    <TextField
-                        id="projId"
-                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
-                        disabled
-                        fullWidth
-                        label="Project ID"
-                        value={this.state.projId}
-                        style={{ margin: 8 }}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                        onChange={this.handleFieldChange.bind(this)}
                     />
                     <TextField
                         id="projDescription"
@@ -667,7 +678,7 @@ class ProjectProfile extends Component {
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
-                    <Divider />
+                    <Divider className={classes.divider} />
                 </div>
                 <div id='version-div'>
                     {/* Version */}
@@ -714,12 +725,29 @@ class ProjectProfile extends Component {
                     </FormControl>
 
                     <TextField
+                        id="verId"
+                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                        disabled
+                        // fullWidth
+                        className={classes.textField}
+                        label="Version ID"
+                        value={this.state.verId}
+                        style={{ margin: 8 }}
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="filled"
+                        onChange={this.handleFieldChange.bind(this)}
+                    />
+                    <TextField
                         id="verName"
                         required
                         fullWidth
                         label="Version / Specification Name"
                         // className={classes.textField} // disabled for full width
-                        value={this.state.verName || '(not applicable)'}
+                        // value={this.state.verName || '(not applicable)'}
+                        value={this.state.verName}
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
@@ -728,6 +756,7 @@ class ProjectProfile extends Component {
                             shrink: true,
                         }}
                     />
+
                     <TextField
                         id="verDescription"
                         fullWidth
@@ -744,22 +773,7 @@ class ProjectProfile extends Component {
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
-                    <TextField
-                        id="verId"
-                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
-                        disabled
-                        fullWidth
-                        label="Version ID"
-                        value={this.state.verId}
-                        style={{ margin: 8 }}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                        onChange={this.handleFieldChange.bind(this)}
-                    />
-                    <Divider />
+                    <Divider className={classes.divider} />
                 </div>
                 <div id='button-div' className='button-div'>
                     <Button

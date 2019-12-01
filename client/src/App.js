@@ -76,9 +76,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   title: {
-    letterSpacing: '.7rem',
+    // letterSpacing: '.7rem',
     textIndent: '.7rem',
-    fontWeight: theme.typography.fontWeightLight,
+    fontWeight: theme.typography.fontWeightBold,
     [theme.breakpoints.only('xs')]: {
       fontSize: 24,
       letterSpacing: '.1em',
@@ -347,16 +347,16 @@ class App extends Component {
 
           <Toolbar disableGutters>
             <Typography variant="h6" className={classes.title}>
-              Bug Tracker
+              Project   Issue Manager
           </Typography>
             <div style={{ flex: 1 }} />
             <Tooltip id="tooltip-icon1" title="Sign in">
               <IconButton
                 name="signin"
-                aria-label="Open Github"
+                aria-label="Sign In"
                 color="inherit"
                 onClick={() => {
-                  history.push('/signin')
+                  history.push('/signinpage')
                 }}
                 rel="noopener"
               >
@@ -394,7 +394,7 @@ class App extends Component {
                   gutterBottom
                   className={classes.title}
                 >
-                  {'Bug Tracker'}
+                  {'Project Issue Manager'}
                 </Typography>
                 <Typography variant="h5" component="h2" color="inherit" gutterBottom className={classes.h5}>
                   {'For all bug control needs, from submission to resolution.'}
@@ -445,7 +445,7 @@ class App extends Component {
                     <Button
                       size="small"
                       onClick={() => {
-                        history.push('/signin')
+                        history.push('/signinpage')
                       }}
                     >
                       Get started
@@ -512,7 +512,6 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={this.LandingPage} />
             <Route exact path="/signinpage" handler={this.handler} component={SigninPage} />
-            {/* <SigninPage handler={this.handler} */}
             <Route exact path="/submitissue" component={SubmitIssue} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/developerview">
