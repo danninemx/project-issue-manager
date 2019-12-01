@@ -1,7 +1,7 @@
 const db = require("../models");
 
 module.exports = {
-  // Call this to get all issue' info (no use case)
+
   getIssues: function (req, res) {
     console.log('\n issueController-getIssues received this : ', req);
     db.Issue.find(req.query)
@@ -9,12 +9,12 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  // Call this to create issue
+  // works
   createIssue: function (req, res) {
-    console.log('req.body is ', req.body)
+    console.log('\n issueController req.body:', req.body);
     db.Issue.create(req.body)
       .then(dbIssue => {
-        console.log('returned data is', dbIssue)
+        console.log('createIssue returned :', dbIssue)
         res.json(dbIssue)
       })
       .catch(err => res.status(422).json(err));

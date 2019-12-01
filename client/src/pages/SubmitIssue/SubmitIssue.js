@@ -52,7 +52,6 @@ const styles = theme => ({
         ...theme.mixins.toolbar,
         paddingLeft: 240,
         paddingTop: '12vh',
-
     },
     textField: {
         marginLeft: theme.spacing(1),
@@ -74,7 +73,7 @@ const styles = theme => ({
     // For Select
     formControl: {
         margin: theme.spacing(1),
-        // marginTop: theme.spacing(2),
+        // marginTop: theme.spacing(2), // lines up verically w textfields
         minWidth: 300,
     },
     selectEmpty: {
@@ -93,9 +92,9 @@ class SubmitIssue extends Component {
         super(props);
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
-            selectedDate: new Date(),
+            selectedDate: new Date(), // default is current date-time
             // .toLocaleDateString('en-US'),
-            // selectedTime: new Date().toLocaleTimeString('en-US')
+
             // name: this.props.name,
             // email: this.props.email,
             // type: 'Technical'
@@ -107,12 +106,12 @@ class SubmitIssue extends Component {
             // project info
             projId: '', // ObjectId of project
             projName: '', // unique
-            projDescription: '',
+            // projDescription: '',
 
             // version info
             verId: '', // ObjectId of version
             verName: '',
-            verDescription: '',
+            // verDescription: '',
             // Also needs project ObjectId as ref. Use id above
 
             // cache
@@ -129,7 +128,15 @@ class SubmitIssue extends Component {
             versionDesc: [],
 
             disableProjSelect: true, // both data types seem to work
-            disableVerSelect: 'true'
+            disableVerSelect: 'true',
+
+            // issue info
+            issueSubject: '',
+            issueDescription: '',
+            issueType: 'Technical',
+            issueURL: '',
+            issueComment: '' // commit into array in DB
+
         }
     }
 
@@ -140,7 +147,7 @@ class SubmitIssue extends Component {
     //-------------------//
     // Handler functions //
     //-------------------//
-    handleFieldChange = (event) => {
+    handleFieldChange = event => {
         // for a regular input field, read field name and value from the event
         const fieldId = event.target.id;
         const fieldValue = event.target.value;
@@ -242,13 +249,12 @@ class SubmitIssue extends Component {
         this.setState({
             ...this.state,
             // required
-            organization: '',
-            project: '',
-            version: '',
-            subject: '',
-            description: '',
+            orgId: '',
+            projId: '',
+            verId: '',
+
             owner: '',
-            url: '',
+            issueURL: '',
 
             // This is string here but DB stores it as array
             comment: '',
@@ -259,43 +265,66 @@ class SubmitIssue extends Component {
             priority: '',
             targetResolutionDate: '',
             potentialImpact: '',
-            image: '',
-            partImpacted: ''
+            imageURL: '',
+            partImpacted: '',
+
+            // cache
+            organizationList: [], // should not be reset unless query auto restarts
+            organizationNames: [],
+            organizationDesc: [],
+
+            projectList: [],
+            projectNames: [],
+            projectDesc: [],
+
+            versionList: [],
+            versionNames: [],
+            versionDesc: [],
+
+            disableProjSelect: true, // both data types seem to work
+            disableVerSelect: 'true',
+
+            // issue info
+            issueSubject: '',
+            issueDescription: '',
+            issueType: 'Technical',
+            issueURL: '',
+            issueComment: '' // commit into array in DB
+
         })
     };
 
-    createIssue = () => {
+    createIssue = () => { // works
         API.createIssue({
             // this.state
-            type: this.state.type,
-            organization: this.state.organization, // ObjectId
-            project: this.state.project, // ObjectId
-            subject: this.state.subject,
-            description: this.state.description,
-            comment: this.state.comment,
-            owner: this.state.owner, // ObjectId
+            type: this.state.issueType,
+            timing: this.state.selectedDate,
 
-            // optional in this version
-            url: this.state.url,
+            organization: this.state.orgId, // ObjectId
+            project: this.state.projId, // ObjectId
+            version: this.state.verId, // ObjectId
+
+            subject: this.state.issueSubject,
+            description: this.state.issueDescription,
+            url: this.state.issueURL,
+            imageURL: this.state.imageURL,
             status: this.state.status,
             resolved: this.state.resolved,
+
+            owner: this.state.owner, // ObjectId
             priority: this.state.priority,
             targetResolutionDate: this.state.targetResolutionDate,
             potentialImpact: this.state.potentialImpact,
-            image: this.state.image,
             partImpacted: this.state.partImpacted
-        }).then(() => alert('done'))
 
-        // API.saveBook({
-        //     googleId: book.id,
-        //     title: book.volumeInfo.title,
-        //     subtitle: book.volumeInfo.subtitle,
-        //     link: book.volumeInfo.infoLink,
-        //     authors: book.volumeInfo.authors,
-        //     description: book.volumeInfo.description,
-        //     image: book.volumeInfo.imageLinks.thumbnail
-        //   }).then(() => this.getBooks());
+        }).then(() => console.log('createIssue has run.'))
+            .then(() => this.props.showDashboard) // forward to main view
+
     }
+
+    // write createComment
+    // comment: this.state.comment, // This goes to Comment model
+
 
     //------------------------//
     // Organization functions //
@@ -310,28 +339,12 @@ class SubmitIssue extends Component {
                 let names = orgs.data.map(obj => {
                     return obj.name // orgId : orgName
                 })
-                this.setState(
-                    {
-                        organizationList: objects,
-                        organizationNames: names
-                    }
-                    // ,
-                    // () => this.getAllProj() // cb
-
-                    // prevState test. did not work
-                    // (prevState) => { // general syntax for avoiding async prob
-                    //     console.log('prevState:', prevState) // initially prints nothing?
-                    //     return {
-                    //         organizationList: objects,
-                    //         organizationNames: names,
-                    //         prevSL: prevState.length // testing
-                    //     }
-                    // })
-                )
+                this.setState({
+                    organizationList: objects,
+                    organizationNames: names
+                })
             })
             .then(() => console.log('state after getAllOrg & getAllProj:', this.state))
-        // .then(() => this.getAllProj()) // query matching projects on org select
-        // works but without parameters
     }
 
     // NEEDS DUPLICATION PREVENTION
@@ -488,8 +501,12 @@ class SubmitIssue extends Component {
             .then(ver => console.log('get one ver', ver))
     }
 
+    //--------------------//
+    //  Lifecyle Methods  //
+    //--------------------//
     componentDidMount() {
         console.log('component did mount :', this.state);
+        this.getAllOrgs() // adds to state the list of org objects and array of org names
     }
 
     componentDidUpdate() {
@@ -501,9 +518,12 @@ class SubmitIssue extends Component {
         return (
             <form className={classes.container} noValidate autoComplete="off" >
                 <div>
-                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
-                    <br />
-                    {!this.props.isSignedIn && // Display for anonymous users only
+                    <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
+                </div>
+
+                <div>
+                    {/* <br /> */}
+                    {!this.props.isSignedIn && // Render latter for "anonymous" users only
                         <React.Fragment>
                             <TextField
                                 id="name"
@@ -533,7 +553,8 @@ class SubmitIssue extends Component {
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel
                             // ref={inputLabel} 
-                            id="demo-simple-select-outlined-label-org">
+                            id="demo-simple-select-outlined-label-org"
+                            required>
                             Provider
                             </InputLabel>
                         <Select
@@ -599,8 +620,9 @@ class SubmitIssue extends Component {
                     >
                         <InputLabel
                             // ref={inputLabel} 
-                            id="demo-simple-select-outlined-label-proj">
-                            Select Project
+                            id="demo-simple-select-outlined-label-proj"
+                            required>
+                            Project/Product
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-outlined-label-proj"
@@ -662,8 +684,8 @@ class SubmitIssue extends Component {
                     {/* Version */}
 
                     <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-outlined-label-ver">
-                            Select Version
+                        <InputLabel id="demo-simple-select-outlined-label-ver" required>
+                            Version/Specification
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-outlined-label-ver"
@@ -702,51 +724,60 @@ class SubmitIssue extends Component {
                         </Select>
                         {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
                     </FormControl>
-
                     <TextField
                         id="verId"
                         // REMEMBER, LIST IS FOR NAME BUT SAVES ID
                         disabled
-                        // fullWidth
                         className={classes.textField}
                         label="Version ID"
                         value={this.state.verId}
                         style={{ margin: 8 }}
                         margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="filled"
+                        InputLabelProps={{ shrink: true, }}
                         onChange={this.handleFieldChange.bind(this)}
+                        variant="filled"
                     />
                     <Divider className={classes.divider} />
                 </div>
                 <div>
-                    <TextField
-                        id="subject"
+                    {/* <TextField // stopped responding?
+                        id="issueSubject"
                         required
+                        fullWidth
                         label="Subject"
-                        value={this.state.subject}
+                        key='issueSubject'
+                        value={this.state.issueSubject}
                         style={{ margin: 8 }}
                         // placeholder="Placeholder"
                         // helperText="What seems to be the trouble?"
-                        fullWidth
                         margin="normal"
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        onChasnge={this.handleFieldChange.bind(this)}
+                        variant="outlined"
+                    /> */}
+                    <TextField
+                        id="issueSubject"
+                        fullWidth
+                        multiline
+                        label="Subject"
+                        // placeholder="Any thoughts?"
+                        value={this.state.issueSubject}
+                        // className={classes.textField}
+                        margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
                     <TextField
-                        id="description"
+                        id="issueDescription"
                         required
                         multiline
                         fullWidth
                         rows="4"
                         key="outlined-multiline-static"
                         label="Issue Description"
-                        value={this.state.description}
+                        value={this.state.issueDescription}
                         style={{ margin: 8 }}
                         // placeholder="Placeholder"
                         // helperText="What seems to be the trouble?"
@@ -758,10 +789,10 @@ class SubmitIssue extends Component {
                         variant="outlined"
                     />
                     <TextField
-                        id="type"
+                        id="issueType"
                         disabled
                         label="Issue Type"
-                        defaultValue={this.props.type}
+                        defaultValue={this.state.issueType}
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
@@ -772,23 +803,23 @@ class SubmitIssue extends Component {
                         handleDateChange={this.handleDateChange}
                     />
                     <TextField
-                        id="url"
+                        id="issueURL"
                         fullWidth
                         label="URL"
                         // placeholder="Any thoughts?"
-                        value={this.state.url}
+                        value={this.state.issueURL}
                         // className={classes.textField}
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
                     <TextField
-                        id="comment"
+                        id="issueComment"
                         fullWidth
                         multiline
                         label="Comment"
                         placeholder="Any thoughts?"
-                        value={this.state.comment}
+                        value={this.state.issueComment}
                         // className={classes.textField}
                         margin="normal"
                         variant="outlined"
@@ -802,10 +833,8 @@ class SubmitIssue extends Component {
                             className={classes.button}
                             endIcon={<RotateLeftIcon>Reset Form</RotateLeftIcon>}
                             onClick={
-                                // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
                                 () => {
                                     console.log('clicked reset while state is', this.state)
-                                    // this.props.handleSubmitIssue()
                                     this.clearState()
                                 }
                             }

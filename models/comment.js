@@ -6,11 +6,14 @@ const commentSchema = new Schema({
   commenter: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 
   // Dev input. Shared view
-  timestamps: { createdAt, updatedAt },
   subject: { type: String, required: true },
-  description: { type: String, required: true },
-  // What is being or has been done. Push new items to array
+  actionDescription: [{ type: String, required: true }],
+  // What is being or has been done. Push new items to array.
+  // e.g. Changed priority to X and made 3 others.
   // Also provides "Final Resolution" by checking if status is Res/Closed
+  // Determine string value via JS logic
+
+  comment: String, // "How and Why" the action was taken. Subjective.
 
   // For future scope
   visibility: { type: String, required: true },
@@ -23,6 +26,8 @@ const commentSchema = new Schema({
   // Attachments can be stored elsewhere and referenced by this
   url: { type: String, required: false },
 
+  timing: Date, // optional. for future scope?
+  timestamps: { createdAt }, // auto generated, shared view
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

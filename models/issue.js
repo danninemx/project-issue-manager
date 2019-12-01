@@ -8,20 +8,20 @@ const issueSchema = new Schema({
   // technical(default)/business process/change management/resource/third party
   type: String,
   // timing: { type: String, required: true }, // When was issue identified
-  timing: String, // When was issue identified
+  timing: Date, // When was issue identified
 
   // Reporter input. Shared view
   // project's provider
   organization: { type: Schema.Types.ObjectId, ref: 'Organization' },
   project: { type: Schema.Types.ObjectId, ref: 'Project' },
   version: { type: Schema.Types.ObjectId, ref: 'Version' }, // added 11/25
-  subject: String,
-  description: String,
-  url: String, // Attachments can be stored elsewhere and referenced by this
+  // subject: String,
+  // description: String,
   // organization: [{ type: Schema.Types.ObjectId, required: true, ref: 'Organization' }], // project's provider
   // project: [{ type: Schema.Types.ObjectId, required: true, ref: 'project' }], // project
-  // subject: { type: String, required: true },
-  // description: { type: String, required: true },
+  subject: { type: String, required: true },
+  description: { type: String, required: true },
+  url: String, // Attachments can be stored elsewhere and referenced by this
   // url: { type: String, required: false }, // Attachments can be stored elsewhere and referenced by this
 
   // Shared input. Shared view
@@ -55,10 +55,12 @@ const issueSchema = new Schema({
   // potentialImpact: { type: String, required: false }, // serves as reasoning for priority
 
   // For future scope
-  image: String,
-  partImpacted: String
+  imageURL: String,
+  partImpacted: String,
   // image: { type: String, required: false },
   // partImpacted: { type: String, required: false }  // which part of the project is impacted
+
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }] // sequential array
 });
 
 const Issue = mongoose.model("Issue", issueSchema);

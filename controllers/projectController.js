@@ -106,7 +106,7 @@ module.exports = {
     //   });
     // });
 
-  },
+  }
 
   /* just in case. non func *
   updateProj: function (req, res) {
@@ -131,27 +131,5 @@ module.exports = {
     )
   }
 */
-
-  // // Call this to remove a user (un-registration)
-  // removeUser: function (req, res) {
-  //   console.log('\n userController-removeUser received this : ', req);
-  //   db.User.findById(req.params.id)
-  //     .then(dbUser => dbUser.remove())
-  //     .then(dbUser => res.json(dbUser))
-  //     .catch(err => res.status(422).json(err));
-  // }
-
-  // // Call this to get one user's info (signin, __id acquisition)
-  // findOneVersion: function (req, res) {
-  //   console.log('Controller: find one project')
-  //   db.Project.findOne({ project: req.params.project })
-  //     .then(proj => {
-  //       console.log('find one proj got : ', proj)
-  //       res.json(proj)
-  //     })
-  //     .catch(err => res.status(422).json(err));
-  //   // or per Mongoose docs,
-  //   // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
-  // },
 
 }

@@ -49,23 +49,6 @@ export default {
     return axios.post("/api/orgs", orgData);
   },
 
-  getIssues: function (q) {
-    console.log(`\n getIssues is querying for : ${q}`);
-    return axios.get("/api/issues", { params: { q } });
-  },
-
-  // maybe? Can't tell until I have org, etc to assign it to.
-  createIssue: function (issueData) {
-    console.log(`\n createIssue is attempting to create : `, issueData);
-    return axios.post("/api/issues", issueData);
-  },
-
-  updateIssue: function (id) {
-    // console.log(`\n createIssue is attempting to update : `, id);
-    console.log(`\n API: updating issue`);
-    return axios.put("/api/issues/" + id);
-  },
-
   // Project
 
   // test after creating version.
@@ -106,5 +89,25 @@ export default {
   findOneVersion: function (id) {
     console.log(`\n API find one version : `, id);
     return axios.get("/api/versions", { params: { id } });
+  },
+
+  // Issue //
+
+  // maybe? Can't tell until I have org, etc to assign it to.
+  createIssue: function (issueData) {
+    console.log(`\n API create issue : `, issueData);
+    return axios.post("/api/issues", issueData);
+  },
+
+  getIssues: function (q) {
+    console.log(`\n getIssues is querying for : ${q}`);
+    return axios.get("/api/issues", { params: { q } });
+  },
+
+  updateIssue: function (id) {
+    // console.log(`\n createIssue is attempting to update : `, id);
+    console.log(`\n API: updating issue`);
+    return axios.put("/api/issues/" + id);
   }
+
 };

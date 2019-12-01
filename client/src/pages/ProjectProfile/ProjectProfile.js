@@ -492,12 +492,9 @@ class ProjectProfile extends Component {
     //--------------------//
     componentDidMount() {
         this.getAllOrgs() // adds to state the list of org objects and array of org names
-        // this also gets projects via callback
     }
 
     componentDidUpdate() {
-        // this.makeOrgList()
-
         console.log('component did update :', this.state);
         // // prevState test did not work
         // this.state.orgId !== prevState.orgId ?
