@@ -4,5 +4,6 @@ module.exports = {
   Project: require('./project'),
   Version: require('./version'),
   Member: require('./member'),
-  Issue: require("./issue")
+  Issue: require("./issue"),
+  Comment: require("./comment")
 };

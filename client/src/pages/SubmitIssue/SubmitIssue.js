@@ -299,6 +299,10 @@ class SubmitIssue extends Component {
         })
     };
 
+    handleSubmit = async () => {
+        await this.createIssue;
+        await this.createComment;
+    }
 
     //------------------------//
     // Organization functions //
@@ -507,10 +511,12 @@ class SubmitIssue extends Component {
             this.setState({
                 ...this.state,
                 issueId: res.data._id
-            },
-                console.log('createIssue has run.', res)
-            )
+            })
+            console.log('createIssue has run.', res);
+            // this.createComment() // save return issueId, then use it on new comment
+            // )
         })
+            .then(() => this.createComment())
     }
 
     createComment = () => {
@@ -523,8 +529,11 @@ class SubmitIssue extends Component {
 
             actionDescription: ['Reported issue'],
             comment: this.state.issueComment,
-            visibility: this.state.visibility,
+            visibility: 'Organization members and reporter',
             avatar: this.props.photoURL
+
+            // createdAt: new Date
+
         })
             .then((res) => {
                 console.log('createComment has run.', res);
@@ -533,9 +542,6 @@ class SubmitIssue extends Component {
                 this.props.showDashboard // forward to main view
             )
     }
-    // write createComment
-    // comment: this.state.comment, // This goes to Comment model
-
 
     //--------------------//
     //  Lifecyle Methods  //
@@ -884,7 +890,9 @@ class SubmitIssue extends Component {
                             color="primary"
                             className={classes.button}
                             endIcon={<Icon>send</Icon>}
-                            onClick={this.createIssue
+                            onClick={this.createIssue // invokes createComment
+                                // this.handleSubmit
+
                                 // (async () => {
                                 //     await this.createIssue();
                                 //     // await this.createComment();
