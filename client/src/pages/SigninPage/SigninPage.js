@@ -1,4 +1,5 @@
-import React, { Component
+import React, {
+    Component
     // , useRef 
 } from "react"
 import { Redirect } from 'react-router-dom'
@@ -62,6 +63,7 @@ class SigninPage extends Component {
     }
     */
 
+    // *** USE THIS SOMEWHERE TO INITIATE NEW USER PROTOCOL *** //
     checkNewUser = (authEmail) => {
         API.findOneUser(
             // If an email was passed, use it. If not use state.
@@ -203,6 +205,7 @@ class SigninPage extends Component {
                                     state: {
                                         referrer: "/signinpage",
                                         wasAuthenticated: true
+                                        // email: this.state.email
                                     }
                                 }}
                             />

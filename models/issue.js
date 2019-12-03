@@ -12,9 +12,9 @@ const issueSchema = new Schema({
 
   // Reporter input. Shared view
   // project's provider
-  organization: { type: Schema.Types.ObjectId, ref: 'Organization' },
-  project: { type: Schema.Types.ObjectId, ref: 'Project' },
-  version: { type: Schema.Types.ObjectId, ref: 'Version' }, // added 11/25
+  organization: { type: Schema.Types.ObjectId, ref: 'Organization' }, // immutable
+  project: { type: Schema.Types.ObjectId, ref: 'Project' }, // immutable
+  version: { type: Schema.Types.ObjectId, ref: 'Version' }, // added 11/25 // immutable
   // subject: String,
   // description: String,
   // organization: [{ type: Schema.Types.ObjectId, required: true, ref: 'Organization' }], // project's provider

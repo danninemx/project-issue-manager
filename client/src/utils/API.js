@@ -22,13 +22,27 @@ export default {
 
   // http://localhost:3000/api/users?email=dudkny@gmail.com
   findOneUser: function (email) {
-    console.log(`\n API says findOneUser : `, email);
+    console.log(`\n API findOneUser : `, email);
     return axios.get("/api/users", { params: { email } });
     // Must wrap params as above. Below does not work.
     // console.log(`\n findOneUser is querying for : `, email);
     // return axios.get("/api/users", email);
-    // 
   },
+
+  // syntax FYI
+  // delete(function (req, res, next) {
+  //   //Only allow deleting user without an entry
+  //   entryModel.findOne({
+  //     author: req.params.userId
+  //   }, function (err, resp) {
+  //     if (err) return next(err);
+  //     if (typeof resp === 'object') {
+  //       err = new Error("This user owns entries, remove the entries first");
+  //       err.status = 412; //precondition failed
+  //       return next(err);
+  //     }
+  //   })
+  // }
 
   // Deletes the saved user with the given id
   deleteUser: function (id) {
@@ -93,21 +107,32 @@ export default {
 
   // Issue //
 
-  // maybe? Can't tell until I have org, etc to assign it to.
   createIssue: function (issueData) {
     console.log(`\n API create issue : `, issueData);
     return axios.post("/api/issues", issueData);
   },
 
   getIssues: function (q) {
-    console.log(`\n getIssues is querying for : ${q}`);
+    console.log(`\n API getIssues : ${q}`);
     return axios.get("/api/issues", { params: { q } });
   },
 
   updateIssue: function (id) {
-    // console.log(`\n createIssue is attempting to update : `, id);
     console.log(`\n API: updating issue`);
     return axios.put("/api/issues/" + id);
+  },
+
+
+  // Comment //
+
+  createComment: function (data) {
+    console.log(`\n API create comment : `, data);
+    return axios.post("/api/comments", data);
+  },
+  
+  getComments: function (q) {
+    console.log(`\n API getComments : ${q}`);
+    return axios.get("/api/comments", { params: { q } });
   }
 
 };

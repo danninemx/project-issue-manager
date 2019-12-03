@@ -16,6 +16,7 @@ import SubmitIssue from '../SubmitIssue';
 import UserProfile from '../UserProfile';
 import OrganizationProfile from '../OrganizationProfile';
 import ProjectProfile from '../ProjectProfile';
+import ManageIssue from '../ManageIssue';
 
 // Auth
 import firebase from "firebase";
@@ -27,6 +28,10 @@ import API from '../../utils/API'
 const styles = makeStyles(theme => ({
     root: {
         display: 'flex',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
     },
 }))
 
@@ -52,7 +57,9 @@ class DeveloperView extends Component {
             id: "",
             email: "",
             name: "", // Separate first and last name later
-            userType: 'reporter',
+            userType: 'Developer', // default should be Reporter
+            // Case Sensitive
+
             // photoURL: '',
 
             // issue: {} or []?
@@ -102,15 +109,16 @@ class DeveloperView extends Component {
 
     getUser = () => {
         API.findOneUser(
-            this.props.email
+            this.props.email || this.state.email
         )
             .then(res => {
-                res.data ?
-                    console.log('returned :', res.data[0])
-                    // this.setState({
-                    //   books: res.data
-                    // })
-                    : console.log('no one!', res.data)
+                console.log('getUser returned :', res.data)
+                res.data // If user data was returned, add to state.
+                    ? this.setState({
+                        ...this.state,
+                        id: res.data[0]._id // Note that filter will be needed if later auto-generating Organization User Account for Orgs.
+                    })
+                    : console.log('Email not found in DB!', res.data)
             })
             .catch(() =>
                 this.setState({
@@ -137,6 +145,10 @@ class DeveloperView extends Component {
 
     showProjectProfile = () => {
         this.setState({ activeView: 'Project Profile' })
+    }
+
+    showManageIssue = () => {
+        this.setState({ activeView: 'Manage Issue' })
     }
 
     handldIssueChange = (event) => {
@@ -307,7 +319,12 @@ class DeveloperView extends Component {
                 photoURL: user.photoURL,
                 emailVerified: user.emailVerified,
                 idToken: user.getIdToken()
-            })
+            },
+                () => {
+                    console.log('Authentication complete. Calling getUser...')
+                    this.getUser()
+                }
+            )
         });
     }
     //------------------//
@@ -366,6 +383,7 @@ class DeveloperView extends Component {
     }
 
     render() {
+        // const { classes } = this.props;
         const newView = this.state.activeView;
         let view;
 
@@ -373,11 +391,16 @@ class DeveloperView extends Component {
             view = <Dashboard />
         } else if (newView === 'Submit Issue') {
             view = <SubmitIssue
+                style={[styles.content]}
+
                 name={this.state.name}
                 email={this.state.email}
                 type={this.state.type}
+                userId={this.state.id} // ObjectId of user
+                photoURL={this.state.photoURL}
                 isSignedIn={this.state.isSignedIn}
                 handleSubmitIssue={this.handleSubmitIssue}
+                showDashboard={this.showDashboard}
             />
         }
         else if (newView === 'User Profile') {
@@ -406,6 +429,14 @@ class DeveloperView extends Component {
                 showDashboard={this.showDashboard}
             />
         }
+        else if (newView === 'Manage Issue') {
+            view = <ManageIssue
+                userId={this.state.id}
+                photoURL={this.state.photoURL}
+                isSignedIn={this.state.isSignedIn}
+                showDashboard={this.showDashboard}
+            />
+        }
 
         return (
             <div>
@@ -416,6 +447,7 @@ class DeveloperView extends Component {
                     <Sidebar
                         activeView={this.state.activeView}
                         name={this.state.name}
+                        userType={this.state.userType}
                         changeName={this.changeName}
                         determineView={this.determineView}
                         showDashboard={this.showDashboard}
@@ -423,6 +455,7 @@ class DeveloperView extends Component {
                         showUserProfile={this.showUserProfile}
                         showOrganizationProfile={this.showOrganizationProfile}
                         showProjectProfile={this.showProjectProfile}
+                        showManageIssue={this.showManageIssue}
                     >
                         {/* {this.props.children} // this works, kinda. */}
                         {/* {this.determineView(this.props)} // doesn't work? */}

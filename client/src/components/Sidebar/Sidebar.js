@@ -30,12 +30,19 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import MailIcon from '@material-ui/icons/Mail';
 
 import Tooltip from '@material-ui/core/Tooltip'
 import LockIcon from '@material-ui/icons/Lock'
 import GitHubIcon from '@material-ui/icons/GitHub';
+
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import CreateIcon from '@material-ui/icons/Create';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import BusinessIcon from '@material-ui/icons/Business';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 
 // Firebase
 import firebase from "firebase"
@@ -321,7 +328,69 @@ function Sidebar(props) {
           </IconButton>
         </div>
         <Divider />
-        <List>
+        <List aria-label='sidebar menu list'>
+
+          <ListItem button key='Dashboard'
+            onClick={props.showDashboard}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItem>
+
+          <ListItem button key='Submit Issue'
+            onClick={props.showSubmitIssue}>
+            <ListItemIcon>
+              <CreateIcon />
+            </ListItemIcon>
+            <ListItemText primary="Submit Issue" />
+          </ListItem>
+
+          {/* conditional naming on userType */}
+          <ListItem button key={props.userType === 'Reporter' ? 'Track Issue' : 'Manage Issue'}
+            onClick={props.showManageIssue}>
+            <ListItemIcon>
+              <FindInPageIcon />
+            </ListItemIcon>
+            <ListItemText primary={props.userType === 'Reporter' ? 'Track Issue' : 'Manage Issue'} />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem button key='User Profile'
+            onClick={props.showUserProfile}>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="User Profile" />
+          </ListItem>
+
+          {props.userType !== 'Reporter' && // Render latter for developer+
+            <>
+              <ListItem button key='Organization Profile'
+                onClick={props.showOrganizationProfile}>
+                <ListItemIcon>
+                  <BusinessIcon />
+                </ListItemIcon>
+                <ListItemText primary="Organization Profile" />
+              </ListItem>
+
+              <ListItem button key='Project Profile'
+                onClick={props.showProjectProfile}>
+                <ListItemIcon>
+                  <AccountTreeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Project Profile" />
+              </ListItem>
+            </>
+          }
+
+        </List>
+
+
+        <Divider />
+
+        {/* 
           {['Dashboard', 'Submit Issue', 'User Profile', 'Organization Profile', 'Project Profile'].map((text, index) => (
             <ListItem button key={text}
               // onClick={props.someFunction // This works.
@@ -386,10 +455,8 @@ function Sidebar(props) {
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
-            // </Link>
-            // </CustomLink>
-          ))}
-        </List>
+          ))} */}
+        {/* </List> */}
         <Divider />
       </Drawer>
 

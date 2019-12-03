@@ -20,8 +20,8 @@ const userSchema = new Schema({
   userType: { type: String, required: true }, // user/reporter or developer
 
   // Developer type only
-  // affiliatedOrganization: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],
-  // affiliatedProject: [{ type: [Schema.Types.ObjectId], ref: 'Project' }],
+  affiliatedOrganization: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],
+  affiliatedProject: [{ type: Schema.Types.ObjectId, ref: 'Project' }]
 });
 
 const User = mongoose.model("User", userSchema);

@@ -6,7 +6,7 @@ const commentSchema = new Schema({
   commenter: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 
   // Dev input. Shared view
-  subject: { type: String, required: true },
+  // subject: { type: String, required: true }, //retired. too much separation
   actionDescription: [{ type: String, required: true }],
   // What is being or has been done. Push new items to array.
   // e.g. Changed priority to X and made 3 others.
@@ -18,16 +18,25 @@ const commentSchema = new Schema({
   // For future scope
   visibility: { type: String, required: true },
   /* 
-  all: visible to all - plain comment
-  org: visible to devs in org - internal share
+  'Everyone': visible to all - plain comment
+  'Organization members only': visible to devs in org - internal share
+
+  Others for future scope.
   proj: visible to devs in proj - Action Description
   */
-  image: { type: String, required: false },
-  // Attachments can be stored elsewhere and referenced by this
-  url: { type: String, required: false },
+  avatar: { type: String, required: false },
+  // Formerly intended for attachments; relegated to description. Now for profile picture.
 
-  timing: Date, // optional. for future scope?
-  timestamps: { createdAt }, // auto generated, shared view
+  // url: { type: String, required: false }, // retired.
+
+  // timing: Date, // optional. for future scope? retired - too much separation.
+  timestamps: { createdAt, updatedAt }, // auto generated, shared view
+
+  // affiliated records (added 12/3/19)
+  organization: { type: Schema.Types.ObjectId, ref: 'Organization' },
+  project: { type: Schema.Types.ObjectId, ref: 'Project' },
+  version: { type: Schema.Types.ObjectId, ref: 'Version' },
+  issue: { type: Schema.Types.ObjectId, ref: 'Issue' }
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

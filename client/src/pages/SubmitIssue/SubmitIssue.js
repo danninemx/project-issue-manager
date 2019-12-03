@@ -52,6 +52,8 @@ const styles = theme => ({
         ...theme.mixins.toolbar,
         paddingLeft: 240,
         paddingTop: '12vh',
+
+        // position: 'absolute', // doesnt shift with drawer
     },
     textField: {
         marginLeft: theme.spacing(1),
@@ -92,6 +94,7 @@ class SubmitIssue extends Component {
         super(props);
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
+            userId: this.props.userId,
             selectedDate: new Date(), // default is current date-time
             // .toLocaleDateString('en-US'),
 
@@ -135,8 +138,9 @@ class SubmitIssue extends Component {
             issueDescription: '',
             issueType: 'Technical',
             issueURL: '',
-            issueComment: '' // commit into array in DB
+            issueComment: '', // commit into array in DB
 
+            issueId: '' // To be read from GET query
         }
     }
 
@@ -248,18 +252,17 @@ class SubmitIssue extends Component {
     clearState = () => {
         this.setState({
             ...this.state,
+            // reporter: '', // ObjectId from User. (props.userId)
+
             // required
             orgId: '',
             projId: '',
             verId: '',
 
-            owner: '',
-            issueURL: '',
-
             // This is string here but DB stores it as array
             comment: '',
 
-            // optional in current scope
+            owner: '',
             status: '',
             resolved: '',
             priority: '',
@@ -267,6 +270,7 @@ class SubmitIssue extends Component {
             potentialImpact: '',
             imageURL: '',
             partImpacted: '',
+            selectedDate: new Date(),
 
             // cache
             organizationList: [], // should not be reset unless query auto restarts
@@ -289,41 +293,11 @@ class SubmitIssue extends Component {
             issueDescription: '',
             issueType: 'Technical',
             issueURL: '',
-            issueComment: '' // commit into array in DB
+            issueComment: '', // commit into array in DB
+
 
         })
     };
-
-    createIssue = () => { // works
-        API.createIssue({
-            // this.state
-            type: this.state.issueType,
-            timing: this.state.selectedDate,
-
-            organization: this.state.orgId, // ObjectId
-            project: this.state.projId, // ObjectId
-            version: this.state.verId, // ObjectId
-
-            subject: this.state.issueSubject,
-            description: this.state.issueDescription,
-            url: this.state.issueURL,
-            imageURL: this.state.imageURL,
-            status: this.state.status,
-            resolved: this.state.resolved,
-
-            owner: this.state.owner, // ObjectId
-            priority: this.state.priority,
-            targetResolutionDate: this.state.targetResolutionDate,
-            potentialImpact: this.state.potentialImpact,
-            partImpacted: this.state.partImpacted
-
-        }).then(() => console.log('createIssue has run.'))
-            .then(() => this.props.showDashboard) // forward to main view
-
-    }
-
-    // write createComment
-    // comment: this.state.comment, // This goes to Comment model
 
 
     //------------------------//
@@ -501,6 +475,68 @@ class SubmitIssue extends Component {
             .then(ver => console.log('get one ver', ver))
     }
 
+    //---------------------------//
+    // Issue & Comment Functions //
+    //---------------------------// 
+    createIssue = () => { // works
+        API.createIssue({
+            // this.state
+            reporter: this.props.userId, // ObjectId
+
+            type: this.state.issueType,
+            timing: this.state.selectedDate,
+
+            organization: this.state.orgId, // ObjectId
+            project: this.state.projId, // ObjectId
+            version: this.state.verId, // ObjectId
+
+            subject: this.state.issueSubject,
+            description: this.state.issueDescription,
+            url: this.state.issueURL,
+            imageURL: this.state.imageURL,
+            status: this.state.status,
+            resolved: this.state.resolved,
+
+            owner: this.state.owner, // ObjectId
+            priority: this.state.priority,
+            targetResolutionDate: this.state.targetResolutionDate,
+            potentialImpact: this.state.potentialImpact,
+            partImpacted: this.state.partImpacted
+
+        }).then((res) => {
+            this.setState({
+                ...this.state,
+                issueId: res.data._id
+            },
+                console.log('createIssue has run.', res)
+            )
+        })
+    }
+
+    createComment = () => {
+        API.createComment({
+            organization: this.state.orgId, // ObjectId
+            project: this.state.projId, // ObjectId
+            version: this.state.verId, // ObjectId
+            issue: this.state.issueId, // ObjectId, returned at createIssue
+            commenter: this.props.userId, // ObjectId
+
+            actionDescription: ['Reported issue'],
+            comment: this.state.issueComment,
+            visibility: this.state.visibility,
+            avatar: this.props.photoURL
+        })
+            .then((res) => {
+                console.log('createComment has run.', res);
+            })
+            .then(
+                this.props.showDashboard // forward to main view
+            )
+    }
+    // write createComment
+    // comment: this.state.comment, // This goes to Comment model
+
+
     //--------------------//
     //  Lifecyle Methods  //
     //--------------------//
@@ -516,7 +552,11 @@ class SubmitIssue extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <form className={classes.container} noValidate autoComplete="off" >
+            <form className={
+                classes.container
+                // this.props.style.content
+            } noValidate autoComplete="off"
+                key='SI-topcontainer-form'>
                 <div>
                     <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
                 </div>
@@ -610,13 +650,13 @@ class SubmitIssue extends Component {
                     />
                 </div>
 
-                <div>
-
-                    {/* Project */}
+                {/* Project */}
+                <div key='SI-project-group-div'>
 
                     <FormControl variant="outlined"
                         className={classes.formControl}
-                    // {this.state.projectList ? null : disabled}
+                        // {this.state.projectList ? null : disabled}
+                        key='SI-project-formcontrol'
                     >
                         <InputLabel
                             // ref={inputLabel} 
@@ -627,8 +667,8 @@ class SubmitIssue extends Component {
                         <Select
                             labelId="demo-simple-select-outlined-label-proj"
                             // id={this.state.orgId || "demo-simple-select-outlined"}
-                            id={"demo-simple-select-outlined-proj"}
-                            key={Date.now}
+                            id={"SI-demo-simple-select-outlined-proj"}
+                            key={"SI-demo-simple-select-outlined-proj"}
                             placeholder='Project Name'
                             // value={this.state.orgName}
                             onChange={
@@ -760,7 +800,6 @@ class SubmitIssue extends Component {
                     <TextField
                         id="issueSubject"
                         fullWidth
-                        multiline
                         label="Subject"
                         // placeholder="Any thoughts?"
                         value={this.state.issueSubject}
@@ -845,8 +884,11 @@ class SubmitIssue extends Component {
                             color="primary"
                             className={classes.button}
                             endIcon={<Icon>send</Icon>}
-                            onClick={
-                                this.createIssue
+                            onClick={this.createIssue
+                                // (async () => {
+                                //     await this.createIssue();
+                                //     // await this.createComment();
+                                // })()
                             }
                         > Submit
                     </Button>
