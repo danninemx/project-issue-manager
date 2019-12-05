@@ -333,7 +333,7 @@ class DeveloperView extends Component {
                 // console.log('API getOrgs returned: ', orgs.data);
                 let userOrgList = [], userOrgNames = [];
                 for (let org of orgs.data) {
-                    console.log('each:', org);
+                    // console.log('each:', org);
 
                     if (org.member.includes(this.state.id)) {
                         userOrgList.push(org._id);
@@ -614,7 +614,7 @@ class DeveloperView extends Component {
             <div>
                 {}
                 <React.Fragment>
-                    {console.log('state in render', this.state)}
+                    {/* {console.log('state in render', this.state)} */}
                     {/* {this.seed()}  // this works but wont use now */}
                     <Sidebar
                         activeView={this.state.activeView}
