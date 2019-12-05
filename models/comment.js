@@ -38,7 +38,12 @@ const commentSchema = new Schema({
     updated_at: { type: Date, required: false }
   }, // auto generated, shared view
 
-  commenterName: String
+  commenterName: String,
+
+  organizationName: String,
+  projectName: String,
+  versionName: String,
+  issueSubject: String
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

@@ -63,8 +63,12 @@ const issueSchema = new Schema({
 
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // sequential array
 
-  reporterName: String
-}); // 19 total
+  reporterName: String,
+  organizationName: String,
+  projectName: String,
+  versionName: String,
+  issueSubject: String
+});
 
 const Issue = mongoose.model("Issue", issueSchema);
 

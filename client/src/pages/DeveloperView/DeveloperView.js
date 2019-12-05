@@ -81,7 +81,19 @@ class DeveloperView extends Component {
             targetResolutionDate: '',
             potentialImpact: '',
             image: '',
-            partImpacted: ''
+            partImpacted: '',
+
+            // for dashboard
+            //affiliatedOrgCount: 0,
+            affiliatedOrgIds: [],
+            affiliatedProjIds: [],
+            relatedIssueIds: [],
+
+            affiliatedOrgNames: [],
+            affiliatedProjNames: [],
+            relatedIssueNames: [],
+
+            relatedCommentObjects: []
         }
 
         // This allows the functions to be passed via props.
@@ -102,11 +114,6 @@ class DeveloperView extends Component {
         alert('name changed!')
     }
 
-    // test2
-    onChangeStudentName(e) {
-        this.setState({ name: e.target.value })
-    }
-
     getUser = () => {
         API.findOneUser(
             this.props.email || this.state.email
@@ -117,7 +124,9 @@ class DeveloperView extends Component {
                     ? this.setState({
                         ...this.state,
                         id: res.data[0]._id // Note that filter will be needed if later auto-generating Organization User Account for Orgs.
-                    })
+                    },
+                        this.getUserOrgs() // use the id to get affiliated orgs
+                    )
                     : console.log('Email not found in DB!', res.data)
             })
             .catch(() =>
@@ -128,7 +137,8 @@ class DeveloperView extends Component {
     }
 
     showDashboard = () => {
-        this.setState({ activeView: 'Dashboard' })
+        this.setState({ activeView: 'Dashboard' }
+            , this.authenticate())
     }
 
     showSubmitIssue = () => {
@@ -266,23 +276,6 @@ class DeveloperView extends Component {
 
     };
 
-
-    // seed = () => {
-    //     for (let ea of this.state.seedUsers) { // array
-    //         // console.log('ea: ', ea) // object of key-val pairs
-    //         this.handleUserSave(ea); // SAVE FULL OBJECT TO DB
-
-    //         // let keys = Object.keys(ea) // array of keys
-    //         // console.log("this person's keys are ", keys) // array of strings
-
-    //         // for (let key in keys) { // iterate over key-value pairs in object and give value
-    //         //     // key comes out ot be index num
-    //         //     console.log('For key ' + keys[key] + ', value is ', ea[keys[key]])
-    //         //     // console.log('ea[key]: ', ea[key])
-    //         // }
-    //     }
-    // }
-
     checkNewUser = (authEmail) => {
         API.findOneUser(
             // If an email was passed, use it. If not use state.
@@ -327,9 +320,177 @@ class DeveloperView extends Component {
             )
         });
     }
-    //------------------//
-    // End of functions //
-    //------------------//
+    //--------------------------//
+    // End of handler functions //
+    //--------------------------//
+
+    //------------------------//
+    // Organization functions //
+    //------------------------//
+    getUserOrgs = () => {
+        API.getOrgs() // works if {} is omitted
+            .then(orgs => { // hits w no params for query
+                // console.log('API getOrgs returned: ', orgs.data);
+                let userOrgList = [], userOrgNames = [];
+                for (let org of orgs.data) {
+                    console.log('each:', org);
+
+                    if (org.member.includes(this.state.id)) {
+                        userOrgList.push(org._id);
+                        userOrgNames.push(org.name)
+                    }
+                }
+                this.setState({
+                    ...this.state,
+                    affiliatedOrgIds: userOrgList.reverse(),
+                    affiliatedOrgNames: userOrgNames.reverse()
+                }
+                    , () => this.getAllProj()
+                )
+            })
+        // .then(() => console.log('state after getAllOrg:', this.state))
+    }
+
+    //-------------------//
+    // Project functions //
+    //-------------------//
+    getAllProj = () => { // works w/o params
+        API.getProjects(
+            { // organization: this.state.orgId // non func
+            })
+            .then(projects => {
+                // console.log('get all proj', projects);
+
+                let objects = [], names = [], descriptions = [], affiliatedProjIds = [], affiliatedProjNames = [];
+
+                console.log('proj query:', projects.data)
+                for (let obj of projects.data) { // iterable array, so for-in does not work
+
+                    for (let orgId of this.state.affiliatedOrgIds) {
+                        // orgIds.includes(orgId) 
+                        console.log('obj shows:', obj.organization)
+                        if (orgId === obj.organization) {
+                            affiliatedProjIds.push(obj._id);
+                            affiliatedProjNames.push(obj.name);
+
+                        }
+                    }
+
+                    // if (obj.organization === this.state.orgId) {
+                    //     objects.push({ [obj._id]: obj.name }) // projId : projName
+                    //     names.push(obj.name); // save names separately // works
+                    //     descriptions.push(obj.description); // save descriptions separately
+
+                    //     // orgIds.push(obj.organization);
+                    // }
+                } // .map does not work since it may create "undefined" holes in output array
+                // .filter does not work since condition sits on same level as data to save
+
+
+
+                objects.includes(undefined) ? // no longer need to check undefineds due to change above, but will leave for now
+                    this.setState({
+                        ...this.state,
+                        projectList: [],
+                        projectNames: [],
+                        projectDesc: [],
+                        affiliatedProjIds: [],
+                        affiliatedProjNames: []
+                        // disableProjSelect: true // prevent proj pick due to lack of valid choice
+                    },
+                        console.log('No relevant project. ', objects, names, descriptions)
+                        // console.log('No relevant project. ', o2, n2)
+                    ) :
+                    // If relevant projects are found, add list to state and enable project selection
+                    // objects.length > 0 && names.length > 0 ?
+                    this.setState({
+                        ...this.state,
+                        projectList: objects,
+                        projectNames: names,
+                        projectDesc: descriptions,
+
+                        affiliatedProjIds: affiliatedProjIds.reverse(),
+                        affiliatedProjNames: affiliatedProjNames.reverse()
+
+                        // disableProjSelect: false // enables project select
+                    }
+                        // , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
+                        // , console.log('Relevant projects found. Adding to state:', o2, n2)
+                        , () => this.getAllIssues()
+                    )
+
+            })
+            .catch(err => console.log(err));
+    }
+
+    //-----------------//
+    // Issue functions //
+    //-----------------//
+    getAllIssues = () => {
+        API.getIssues({
+            // project: this.state.projId // may work but below logic is for unfiltered data
+        })
+            .then(issues => {
+                // console.log('get all issues:', issues)
+
+                let objects = []; // ObjId-Subject pair?
+
+                let relatedIssueIds = [], relatedIssueNames = [];
+                for (let obj of issues.data) { // iterable array, so for-in does not work
+                    if (this.state.affiliatedOrgIds.includes(obj.organization)) {
+                        relatedIssueIds.push(obj._id);
+                        relatedIssueNames.push(obj.subject);
+                    }
+
+                } // .map does not work since it may create "undefined" holes in output array
+                // .filter does not work since condition sits on same level as data to save
+
+                // If blanks exist, this is remnant from relevant query
+                objects.includes(undefined) ?
+                    this.setState({
+                    },
+                        console.log('No relevant issues.'
+                        )
+                    ) :
+                    this.setState({
+                        ...this.state,
+                        relatedIssueIds: relatedIssueIds.reverse(),
+                        relatedIssueNames: relatedIssueNames.reverse()
+
+                    },
+                        () => {
+                            console.log('Relevant issues found. Adding to state.');
+                            this.getAllComments();
+                        }
+                    )
+            })
+    }
+
+    //--------------------//
+    // Comments functions //
+    //--------------------//
+    getAllComments = async () => {
+        await API.getComments({
+            // project: this.state.projId // may work but below logic is for unfiltered data
+        })
+            // .sort({ _id: -1 }) // descending order.
+            .then(comments => {
+                console.log('get all comments:', comments);
+                let commentObjects = []
+                for (let comment of comments.data) {
+                    if (this.state.affiliatedOrgIds.includes(comment.organization)) {
+                        commentObjects.push(comment)
+                    }
+                }
+
+                // commentObjects.reverse();
+                // commentObjects.length <= 10 ? 
+                this.setState({
+                    ...this.state,
+                    relatedCommentObjects: commentObjects.reverse()
+                })
+            })
+    }  // End of getAllComments function
 
     //-------------------//
     // Lifecycle methods //
@@ -337,7 +498,7 @@ class DeveloperView extends Component {
 
     componentDidMount(props) {
         // check auth
-        this.authenticate()
+        this.authenticate();
         console.log('Did Mount. State =', this.state)
 
         /*
@@ -388,7 +549,17 @@ class DeveloperView extends Component {
         let view;
 
         if (newView === 'Dashboard') {
-            view = <Dashboard />
+            view = <Dashboard
+                orgCount={this.state.affiliatedOrgIds.length}
+                projCount={this.state.affiliatedProjIds.length}
+                issueCount={this.state.relatedIssueIds.length}
+                commentObjects={this.state.relatedCommentObjects}
+
+                orgNames={this.state.affiliatedOrgNames}
+                projNames={this.state.affiliatedProjNames}
+                issueSubjects={this.state.relatedIssueNames}
+
+            />
         } else if (newView === 'Submit Issue') {
             view = <SubmitIssue
                 style={[styles.content]}

@@ -21,6 +21,7 @@ import CommentCard from '../../components/CommentCard'
 import Paper from '@material-ui/core/Paper';
 
 import API from '../../utils/API';
+// import { minHeight } from '@material-ui/system';
 
 const styles = theme => ({
     // const styles = makeStyles(theme => ({
@@ -52,8 +53,9 @@ const styles = theme => ({
 
         // make scrollable
         maxHeight: window.screen.availHeight,
-        overflow: 'auto'
+        overflow: 'auto',
         // ADD MEDIA QUERY FOR SMALL VIEWPORT. MOVE TO BOTTOM or ADD BTN THAT OPENS MODAL
+        minHeight: window.screen.availHeight,
     },
     textField: {
         marginLeft: theme.spacing(1),
@@ -254,7 +256,13 @@ class ManageIssue extends Component {
             commentTimestamps: [],
 
             commentFullObjects: [],
-            commentAuthors: [] // displayName
+
+            commentAuthors: [], // displayName
+            commentOrgNames: [],
+            commentProjNames: [],
+            commentVerNames: [],
+            commentIssueSubjects: []
+
         }
     }
 
@@ -292,13 +300,15 @@ class ManageIssue extends Component {
         // console.log(Object.keys(this.state.organizationList[ind])) // shows array containing keys from the object
         // console.log(Object.keys(this.state.organizationList[ind])[0]) // first key (in ObjectId form) in a string
 
-        let selectedId = ''; // must initialize as string
+        let selectedId = '', selectedOrgName = ''; // must initialize as string
         // If index was found, get the key. If not, keep blank.
-        ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = ''
+        ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = '';
+        ind !== '' ? selectedOrgName = this.state.organizationNames[ind] : selectedOrgName = '';
         console.log('selected org:', selectedId);
         this.setState({
             ...this.state,
             orgId: selectedId,
+            orgName: selectedOrgName,
 
             // If any proj is selected, remove it
             projId: '',
@@ -982,7 +992,8 @@ class ManageIssue extends Component {
                     fullObjects = [],
                     commenterNames = [],
                     objects = []; // key-val pairs
-                // commenterNames = []
+
+                // let prettyDate = {};
 
                 (async () => {
                     for (let obj of comments.data) { // iterable array, so for-in does not work
@@ -998,6 +1009,12 @@ class ManageIssue extends Component {
                             commentTexts.push(obj.comment);
                             visibilities.push(obj.visibility);
                             photoURLs.push(obj.avatar);
+
+                            // let tempTime = Date.parse(obj.timestamps.created_at); // convert to ms
+                            // console.log(typeof tempTime, tempTime)
+                            // prettyDate = new Date(tempTime); // convert to Date obj
+                            // console.log('pretty date :', prettyDate);
+                            // timestamps.push(prettyDate);
                             timestamps.push(obj.timestamps);
 
                             fullObjects.push(obj); // full issue object
@@ -1006,6 +1023,8 @@ class ManageIssue extends Component {
                             objects.push({ [obj._id]: obj.subject }) // key is comment ObjectId : value is comment subject
                             // Just for undefined checker
                             commenterNames.push(obj.commenterName);
+
+
                         }
                     } // .map does not work since it may create "undefined" holes in output array
                     // .filter does not work since condition sits on same level as data to save
@@ -1023,6 +1042,7 @@ class ManageIssue extends Component {
                     //     this.findCommenter(commenterId)
                     // })
 
+                    fullObjects.reverse(); // latest first. changes original array
 
                     // let tempAuthors = this.state.commentAuthors;
                     // tempAuthors.push(res.data.displayName);
@@ -1046,8 +1066,8 @@ class ManageIssue extends Component {
                             commentPhotoURLs: [],
                             commentTimestamps: [],
 
-                            commentfullObjects: [],
-                            commentAuthors: []
+                            commentAuthors: [],
+                            commentfullObjects: []
                         },
                             console.log('No relevant comments.', fullObjects)
                         ) :
@@ -1065,8 +1085,8 @@ class ManageIssue extends Component {
                             commentPhotoURLs: photoURLs,
                             commentTimestamps: timestamps,
 
-                            commentFullObjects: fullObjects,
-                            commentAuthors: commenterNames
+                            commentAuthors: commenterNames,
+                            commentFullObjects: fullObjects // the only one that matters
                         },
                             () => {
                                 this.state.commentFullObjects.length > 0
@@ -1099,7 +1119,12 @@ class ManageIssue extends Component {
             avatar: this.props.photoURL,
 
             timestamps: { updated_at: this.state.selectedDate },
-            commenterName: this.props.userName
+            commenterName: this.props.userName,
+
+            organizationName: this.state.orgName,
+            projectName: this.state.projName,
+            versionName: this.state.verName,
+            issueSubject: this.state.subject
 
             // ADD ISSUE ID TO REFS IN USER AND ISSUE?
 
@@ -1402,8 +1427,6 @@ class ManageIssue extends Component {
                                                 {iss}
                                                 {/* {console.log('issue list at render:', this.state.issueList[i])} */}
                                             </MenuItem>
-
-                                            debugger;
                                         }) : <br />
                                     // 'None' should not be an option. Create org first if missing.
                                 }
@@ -1559,7 +1582,7 @@ class ManageIssue extends Component {
 
                 <div className={classes.containerTwo}>
                     {this.state.commentAuthors.length > 0
-                        ? this.state.commentFullObjects.reverse().map(function (commentObj, index) {
+                        ? this.state.commentFullObjects.map(function (commentObj, index) {
                             // console.log('RENDERING:', commentObj)
                             return <CommentCard
                                 key={index}

@@ -10,8 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { Divider } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 
-import API from '../../utils/API'
-
 const useStyles = makeStyles(theme => ({
     // card
     card: {
@@ -54,7 +52,12 @@ const useStyles = makeStyles(theme => ({
     target: {
         fontWeight: 'bold',
         color: 'red',
-    }
+    },
+
+    // texts: {
+    //     display: 'flex',
+    //     flexWrap: 'wrap',
+    // },
 }));
 
 export default function CommentCard(props) {
@@ -91,7 +94,9 @@ export default function CommentCard(props) {
                     </Typography>
                     {/* <Typography display='inline' variant="subtitle2" color="textSecondary" component="p">{'\xa0\xa0'}(+3 other changes)</Typography> */}
                     <Divider className={classes.divider} />
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="body2" color="textSecondary" component="p"
+                    // className={classes.texts}
+                    >
                         {props.comment}
                     </Typography>
                 </CardContent>

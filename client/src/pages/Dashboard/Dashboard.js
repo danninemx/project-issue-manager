@@ -2,18 +2,20 @@
 import React from 'react'
 
 // Material UI
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 // import Group from '@material-ui/icons/Group';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+
 import {
   // withStyles, 
   makeStyles,
   // useTheme 
 } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 
 // Other modules
 // import CountUp from 'react-countup'
@@ -88,11 +90,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14
   },
   pos: {
-    marginBottom: 12
+    marginBottom: 12,
+
+    // display: 'inline-block',
   },
 }))
 
-function Dashboard() {
+function Dashboard(props) {
   /*
     let state = {
       // This tells the AppBar which menu to highlight, maybe.
@@ -115,25 +119,57 @@ function Dashboard() {
   */
   const classes = useStyles();
 
+  const dates = [], times = [];
+
+  // immediately invoke
+  // function prettify() {
+  //   props.commentObjects.map(function (obj, ind) {
+  //     let timeInMs = Date.parse(obj.timestamps.created_at);
+  //     let prettyDate = new Date(timeInMs).toLocaleDateString;
+  //     let prettyTime = new Date(timeInMs).toLocaleTimeString;
+
+  //     dates.push(prettyDate);
+  //     times.push(prettyTime);
+  //   })
+  // }
+
+
   return (
     <React.Fragment>
+      {
+        props.commentObjects.map(function (obj, ind) {
+          let timeInMs = Date.parse(obj.timestamps.created_at);
+          let prettyDate = new Date(timeInMs).toLocaleDateString();
+          let prettyTime = new Date(timeInMs).toLocaleTimeString();
+
+          // console.log('time=', prettyTime)
+          // console.log('date=', prettyDate)
+          dates.push(prettyDate);
+          times.push(prettyTime);
+        })
+      }
       <div className={classes.cardsContent}>
         <Card className={classes.card}>
           <CardContent>
             <Typography variant="h5" component="h2">
-              Organization Summary
+              User Summary
           </Typography>
             <br />
-            <Typography>{'Paste this in Node command line:'}</Typography>
+            <Typography className={classes.pos} color="textSecondary">You are currently affiliated with:</Typography>
             <br />
-            <Typography className={classes.pos} color="textSecondary">
-              <br></br>
-              Submitted:
-              {/* {this.state.counts.submitted} */}
-              {' '}
+            <Typography variant='h6'>
+              {props.orgCount} organizations <Typography variant='body1'>and</Typography> {props.projCount} projects.
             </Typography>
+            {/* <br />
+            <Typography>
+              and
+              </Typography>
+            <br />
+            <Typography variant='h6'>
+              {props.projCount} projects.
+              {' '}</Typography> */}
           </CardContent>
-          <CardActions>
+          {/* <CardActions>
             <Button
               size="small"
               onClick={() => {
@@ -143,25 +179,25 @@ function Dashboard() {
             >
               Learn More
           </Button>
-          </CardActions>
+          </CardActions> */}
         </Card>
 
         <Card className={classes.card}>
           <CardContent>
             <Typography variant="h5" component="h2">
-              My Issues
+              Issue Summary
           </Typography>
             <br />
-            <Typography>{'Paste this in Node command line:'}</Typography>
+            <Typography
+              // className={classes.pos} 
+              color="textSecondary">You currently have:</Typography>
             <br />
-            <Typography className={classes.pos} color="textSecondary">
-              <br></br>
-              Submitted:
-              {/* {this.state.counts.submitted} */}
+            <Typography variant='h6'>
+              {props.issueCount} issues from your connections.
               {' '}
             </Typography>
           </CardContent>
-          <CardActions>
+          {/* <CardActions>
             <Button
               size="small"
               onClick={() => {
@@ -171,7 +207,7 @@ function Dashboard() {
             >
               Learn More
           </Button>
-          </CardActions>
+          </CardActions> */}
         </Card>
 
 
@@ -181,7 +217,7 @@ function Dashboard() {
               Notifications
           </Typography>
             <br />
-            <Link
+            {/* <Link
               component="button"
               variant="body1"
               color="textPrimary"
@@ -192,20 +228,37 @@ function Dashboard() {
               }}
             >
               {'DISPLAY AUTOMATED MESSAGES HERE (e.g. Like this)'}
-            </Link>
+            </Link> */}
             <br />
-            <Typography className={classes.pos} color="textSecondary">
-              <br></br>
-              11/20/2019 03:30 PM - Someone did Something, Something and Something.
-              {/* {this.state.counts.submitted} */}
-              <br></br>
-              11/20/2019 03:30 PM - Someone did Something, Something and Something.
+            {
+              props.commentObjects.map(function (obj, ind) {
+                // let timeInMs = Date.parse(obj.timestamps.created_at);
+                // let prettyDate = new Date(timeInMs).toLocaleDateString;
+                // let prettyTime = new Date(timeInMs).toLocaleTimeString;
 
-              <br></br>
-              11/20/2019 03:30 PM - Someone did Something, Something and Something.
+                return (
+                  <React.Fragment key={Math.random()}>
+                    <Divider></Divider>
+                    <br></br>
+                    <Typography
+                      className={classes.pos} color="textSecondary"
+                    >
+                      {/* [ {dates[ind]}, {times[ind] }] - "{props.orgNames[ind]}"" company / {props.projNames[ind]} project / issue "{props.issueSubjects[ind]} */}
+                      [ {dates[ind]}, {times[ind]}] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
+                      {/* {obj.issue} */}
+                      ":
+                      </Typography>
 
-              {' '}
-            </Typography>
+                    <Typography>
+                      {obj.commenterName} {obj.actionDescription[0]}
+                    </Typography>
+
+                    <Typography>"{obj.comment}"</Typography>
+                    <br />
+                  </React.Fragment>
+                )
+              })
+            }
           </CardContent>
 
         </Card>

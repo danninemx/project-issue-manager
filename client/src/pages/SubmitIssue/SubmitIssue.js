@@ -218,12 +218,14 @@ class SubmitIssue extends Component {
         // console.log(Object.keys(this.state.organizationList[ind])) // shows array containing keys from the object
         // console.log(Object.keys(this.state.organizationList[ind])[0]) // first key (in ObjectId form) in a string
 
-        let selectedId = ''; // must initialize as string
+        let selectedId = '', selectedOrgName = ''; // must initialize as string
         // If index was found, get the key. If not, keep blank.
         ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = ''
+        ind !== '' ? selectedOrgName = this.state.organizationNames[ind] : selectedOrgName = ''
         console.log('selected org:', selectedId);
         this.setState({
             orgId: selectedId,
+            orgName: selectedOrgName,
 
             // If any proj is selected, remove it
             projId: '',
@@ -331,6 +333,13 @@ class SubmitIssue extends Component {
     handleSubmit = async () => {
         await this.createIssue;
         await this.createComment;
+        this.props.isSignedIn
+            ? this.props.showDashboard()
+            : this.props.history.push({
+                pathname: '/',
+                state: { isSignedIn: false }
+            }); // redirect to LandingPage
+
     }
 
     //------------------------//
@@ -512,6 +521,9 @@ class SubmitIssue extends Component {
     // Issue & Comment Functions //
     //---------------------------// 
     createIssue = () => { // works
+
+        // PRETTIFY DATE HERE? //
+
         API.createIssue({
             // this.state
             reporter: this.props.userId, // ObjectId
@@ -535,7 +547,12 @@ class SubmitIssue extends Component {
             priority: this.state.priority,
             targetResolutionDate: this.state.targetResolutionDate,
             potentialImpact: this.state.potentialImpact,
-            partImpacted: this.state.partImpacted
+            partImpacted: this.state.partImpacted,
+
+            organizationName: this.state.orgName,
+            projectName: this.state.projName,
+            versionName: this.state.verName,
+            issueSubject: this.state.issueSubject
 
         }).then((res) => {
             this.setState({
@@ -926,8 +943,9 @@ class SubmitIssue extends Component {
                             color="primary"
                             className={classes.button}
                             endIcon={<Icon>send</Icon>}
-                            onClick={this.createIssue // invokes createComment
-                                // this.handleSubmit
+                            onClick={
+                                // this.createIssue // invokes createComment
+                                this.handleSubmit
 
                                 // (async () => {
                                 //     await this.createIssue();
