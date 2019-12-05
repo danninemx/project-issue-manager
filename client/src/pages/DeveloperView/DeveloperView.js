@@ -582,6 +582,7 @@ class DeveloperView extends Component {
                 userType={this.state.userType}
                 photoURL={this.state.photoURL}
                 isSignedIn={this.state.isSignedIn}
+                showDashboard={this.showDashboard}
             />
         }
         else if (newView === 'Organization Profile') {
@@ -591,6 +592,7 @@ class DeveloperView extends Component {
                 email={this.state.email}
                 userType={this.state.userType}
                 isSignedIn={this.state.isSignedIn}
+                showDashboard={this.showDashboard}
             />
         }
         else if (newView === 'Project Profile') {

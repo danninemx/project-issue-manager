@@ -244,7 +244,7 @@ function Dashboard(props) {
                       className={classes.pos} color="textSecondary"
                     >
                       {/* [ {dates[ind]}, {times[ind] }] - "{props.orgNames[ind]}"" company / {props.projNames[ind]} project / issue "{props.issueSubjects[ind]} */}
-                      [ {dates[ind]}, {times[ind]}] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
+                      [ {dates[ind]}, {times[ind]} ] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
                       {/* {obj.issue} */}
                       ":
                       </Typography>

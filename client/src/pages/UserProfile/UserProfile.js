@@ -180,10 +180,14 @@ class UserProfile extends Component {
             lastName: this.props.name.split(' ')[this.props.name.split(' ').length - 1],
             photoURL: this.props.photoURL,
             userType: this.props.userType
-        }).then(() => this.getUser())
-
-
+        }).then((res) => {
+            console.log('saveUser:', res)
+            this.getUser();
+        })
+        // this.props.showDashboard();
     }
+
+    // needs update feature above //
 
     componentDidUpdate() {
         console.log('component did update :', this.state);
@@ -271,7 +275,10 @@ class UserProfile extends Component {
                         color="primary"
                         className={classes.button}
                         endIcon={<Icon>send</Icon>}
-                        onClick={() => this.saveUser()
+                        onClick={() => {
+                            this.saveUser();
+                            this.props.showDashboard();
+                        }
                             // this.createIssue
                             /*
                             // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA

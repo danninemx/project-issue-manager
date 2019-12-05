@@ -10,7 +10,8 @@ const userSchema = new Schema({
   lastName: String,
   // firstName: { type: String, required: true },
   // lastName: { type: String, required: true },
-  photoURL: { type: String, required: false },
+  photoURL: String,
+  // { type: String, required: false },
 
   // authorship
   // submittedIssues: [{ type: [Schema.Types.ObjectId], ref: 'Issue' }],

@@ -937,9 +937,9 @@ class ManageIssue extends Component {
             //     ...this.state,
             //     issueId: res.data._id})
             console.log('updateIssue has run.', res);
+            this.createComment();
         })
 
-        await this.createComment();
     }
 
     //-------------------//
@@ -1101,10 +1101,6 @@ class ManageIssue extends Component {
 
     // UPDATE THIS
     createComment = async () => { // works
-        // (async () => {
-        //     await alert('hi')
-        //     await alert('2')
-        // })()
 
         await API.createComment({
             organization: this.state.orgId, // ObjectId

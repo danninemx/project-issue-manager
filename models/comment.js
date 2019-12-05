@@ -34,7 +34,7 @@ const commentSchema = new Schema({
 
   // timing: Date, // optional. for future scope? retired - too much separation.
   timestamps: {
-    created_at: { type: Date, required: true, default: Date.now },
+    created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, required: false }
   }, // auto generated, shared view
 

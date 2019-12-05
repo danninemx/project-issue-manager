@@ -435,7 +435,7 @@ class ProjectProfile extends Component {
         API.createVersion({
             name: this.state.verName,
             description: this.state.verDescription,
-            project: [this.state.projId] // project Id as ref
+            project: this.state.projId // project Id as ref
         })
             .then(res => console.log('Version saved.', res))
             .catch(error => console.log(error))

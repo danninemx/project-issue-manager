@@ -167,7 +167,10 @@ class OrganizationProfile extends Component {
             url: this.state.orgUrl,
             email: this.state.email,
             member: [this.props.id]
-        }).then((res) => console.log('Org saved.', res))
+        }).then((res) => {
+            console.log('Org saved.', res);
+            this.props.showDashboard();
+        })
     }
 
     componentDidUpdate() {
