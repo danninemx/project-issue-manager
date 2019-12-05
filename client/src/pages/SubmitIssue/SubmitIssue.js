@@ -331,8 +331,8 @@ class SubmitIssue extends Component {
     };
 
     handleSubmit = async () => {
-        await this.createIssue;
-        await this.createComment;
+        await this.createIssue();
+        await this.createComment();
         this.props.isSignedIn
             ? this.props.showDashboard()
             : this.props.history.push({
@@ -558,12 +558,14 @@ class SubmitIssue extends Component {
             this.setState({
                 ...this.state,
                 issueId: res.data._id
-            })
-            console.log('createIssue has run.', res);
+            }
+                // ,    () => this.createComment()
+                , console.log('createIssue has run.', res)
+            )
             // this.createComment() // save return issueId, then use it on new comment
             // )
         })
-            .then(() => this.createComment())
+        // .then(() => this.createComment())
     }
 
     createComment = () => {
@@ -578,9 +580,12 @@ class SubmitIssue extends Component {
             comment: this.state.issueComment,
             visibility: 'Organization members and reporter',
             avatar: this.props.photoURL,
-            commenterName: this.props.name // displayName
+            commenterName: this.props.name, // displayName
 
-            // createdAt: new Date
+            organizationName: this.state.orgName,
+            projectName: this.state.projName,
+            versionName: this.state.verName,
+            issueSubject: this.state.issueSubject
 
         })
             .then((res) => {

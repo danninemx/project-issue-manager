@@ -85,8 +85,10 @@ class OrganizationProfile extends Component {
         // this.state.onChange(fieldName, fieldValue);
 
         // console.log(fieldId, fieldValue);
-        this.setState(
-            { [fieldId]: fieldValue }
+        this.setState({
+            ...this.state,
+            [fieldId]: fieldValue
+        }
         ); // this works
         // this.setState({ testObj: { [fieldId]: fieldValue } }); // not rly. keeps adding indexed
 
@@ -163,8 +165,9 @@ class OrganizationProfile extends Component {
             name: this.state.orgName,
             description: this.state.orgDescription,
             url: this.state.orgUrl,
+            email: this.state.email,
             member: [this.props.id]
-        }).then(() => console.log('Org saved.'))
+        }).then((res) => console.log('Org saved.', res))
     }
 
     componentDidUpdate() {
