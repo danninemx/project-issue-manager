@@ -27,21 +27,16 @@ const styles = theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-
         alignItems: 'center',
-        // justifyContent: 'flex-end',
-        // justifyContent: 'center',
-        padding: theme.spacing(0, 1),
+        padding: theme.spacing(0, 10),
         ...theme.mixins.toolbar,
-        // width: `calc(100% - 240px)`,
-        paddingLeft: 240,
         paddingTop: '12vh',
-
+        width: '60vw',
     },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 300, // default 200
+        width: '48%',
     },
 
     content: {
@@ -54,7 +49,22 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing(1),
-    }
+    },
+    grouping: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        // justifyContent: 'space-between',
+        // width: '80vw',
+        width: '100%',
+    },
+    buttonGroup: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(15),
+        width: 'inherit',
+    },
 })
 
 class OrganizationProfile extends Component {
@@ -166,10 +176,9 @@ class OrganizationProfile extends Component {
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <div>
-                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                <Typography variant='body2' style={{ marginBottom: 8 }}>Asterisk(*) denotes required fields.</Typography>
+                <div className={classes.grouping}>
                     <br />
-                    {/* first and last name are computed, not entered */}
                     <TextField
                         id="orgName"
                         required
@@ -205,10 +214,13 @@ class OrganizationProfile extends Component {
                     />
                     <TextField
                         id="orgDescription"
-                        fullWidth
+                        // fullWidth
                         label="Description"
                         value={this.state.orgDescription}
-                        style={{ margin: 8 }}
+                        style={{
+                            margin: 8,
+                            width: '100%'
+                        }}
                         // placeholder="Placeholder"
                         // className={classes.textField} // adding this will break css
                         // helperText="What seems to be the trouble?"
@@ -221,10 +233,10 @@ class OrganizationProfile extends Component {
                     />
                     <TextField
                         id="orgUrl"
-                        fullWidth
+                        // fullWidth
                         label="URL"
                         value={this.state.orgUrl}
-                        style={{ margin: 8 }}
+                        style={{ margin: 8, width: '100%' }}
                         // placeholder="Placeholder"
                         // className={classes.textField} // adding this will break css
                         // helperText="What seems to be the trouble?"
@@ -236,7 +248,7 @@ class OrganizationProfile extends Component {
                         onChange={this.handleFieldChange.bind(this)}
                     />
                 </div>
-                <div className='button-group'>
+                <div className={classes.buttonGroup}>
                     <Button
                         variant="contained"
                         color="secondary"

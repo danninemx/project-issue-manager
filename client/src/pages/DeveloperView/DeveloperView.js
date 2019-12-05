@@ -459,8 +459,8 @@ class DeveloperView extends Component {
                     >
                         {/* {this.props.children} // this works, kinda. */}
                         {/* {this.determineView(this.props)} // doesn't work? */}
+                        {view}
                     </Sidebar>
-                    {view}
                 </React.Fragment>
             </div>
         );

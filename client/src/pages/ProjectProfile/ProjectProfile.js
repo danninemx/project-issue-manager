@@ -24,9 +24,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 // import { SnackbarProvider, useSnackbar } from 'notistack'; // later for feedback msg
+import Divider from '@material-ui/core/Divider';
 
 import API from '../../utils/API';
-import { Divider } from '@material-ui/core';
 
 const styles = theme => ({
     // const styles = makeStyles(theme => ({
@@ -34,21 +34,16 @@ const styles = theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-
         alignItems: 'center',
-        // justifyContent: 'flex-end',
-        // justifyContent: 'center',
-        padding: theme.spacing(0, 1),
+        padding: theme.spacing(0, 10),
         ...theme.mixins.toolbar,
-        // width: `calc(100% - 240px)`,
-        paddingLeft: 240,
         paddingTop: '12vh',
-
+        width: '60vw',
     },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 300, //default 200
+        width: '40%', //default 200
     },
 
     content: {
@@ -65,7 +60,7 @@ const styles = theme => ({
     // For Select
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 300,
+        minWidth: '55%',
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -73,6 +68,21 @@ const styles = theme => ({
 
     divider: {
         margin: '20px 0 20px 0',
+        width: '100%',
+    },
+    grouping: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    buttonGroup: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(15),
+        width: 'inherit',
     },
 })
 
@@ -511,10 +521,10 @@ class ProjectProfile extends Component {
 
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <div id='org-div'>
-                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
                     <br />
-                    {/* START BY SELECTING ORG > PROJ > VER */}
+                    {/* Organization */}
+                <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel
                             // ref={inputLabel} 
@@ -575,9 +585,10 @@ class ProjectProfile extends Component {
                         onChange={this.handleFieldChange.bind(this)}
                     />
                     <Divider className={classes.divider} />
-                    {/* project */}
                 </div>
-                <div id='proj-grp'>
+
+                {/* project */}
+                <div className={classes.grouping}>
                     <FormControl variant="outlined"
                         className={classes.formControl}
                     // {this.state.projectList ? null : disabled}
@@ -677,8 +688,8 @@ class ProjectProfile extends Component {
                     />
                     <Divider className={classes.divider} />
                 </div>
-                <div id='version-div'>
-                    {/* Version */}
+                {/* Version */}
+                <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label-ver">
                             Select Version
@@ -770,9 +781,9 @@ class ProjectProfile extends Component {
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
                     />
-                    <Divider className={classes.divider} />
+                    {/* <Divider className={classes.divider} /> */}
                 </div>
-                <div id='button-div' className='button-div'>
+                <div className={classes.buttonGroup}>
                     <Button
                         variant="contained"
                         color="secondary"

@@ -30,7 +30,7 @@ export default function DateTimePicker(props) {
                 <KeyboardDatePicker
                     margin="normal"
                     id="date-picker-dialog"
-                    label="Date picker dialog"
+                    label="Date of Discovery"
                     format="MM/dd/yyyy"
                     value={selectedDate}
                     onChange={
@@ -47,7 +47,7 @@ export default function DateTimePicker(props) {
                 <KeyboardTimePicker
                     margin="normal"
                     id="time-picker"
-                    label="Time picker"
+                    label="Time of Discovery"
                     value={selectedDate}
                     onChange={
                         handleChange

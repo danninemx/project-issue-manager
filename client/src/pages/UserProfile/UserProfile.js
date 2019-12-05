@@ -29,19 +29,18 @@ const styles = theme => ({
         flexWrap: 'wrap',
 
         alignItems: 'center',
-        // justifyContent: 'flex-end',
+        // justifyContent: 'flex-start',
         // justifyContent: 'center',
-        padding: theme.spacing(0, 1),
+        padding: theme.spacing(0, 10),
         ...theme.mixins.toolbar,
-        // width: `calc(100% - 240px)`,
-        paddingLeft: 240,
-        paddingTop: '12vh',
 
+        paddingTop: '12vh',
+        width: '60vw',
     },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 200,
+        width: '48%',
     },
 
     content: {
@@ -54,7 +53,22 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing(1),
-    }
+    },
+    grouping: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        // justifyContent: 'space-between',
+        // width: '80vw',
+        width: '100%',
+    },
+    buttonGroup: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(15),
+        width: 'inherit',
+    },
 })
 
 class UserProfile extends Component {
@@ -187,8 +201,8 @@ class UserProfile extends Component {
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <div>
-                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                <div className={classes.grouping}>
                     <br />
                     {/* first and last name are computed, not entered */}
                     <TextField
@@ -210,6 +224,9 @@ class UserProfile extends Component {
                         margin="normal"
                         variant="outlined"
                     />
+                </div>
+
+                <div className={classes.grouping}>
                     <TextField
                         id="userType"
                         required
@@ -224,10 +241,13 @@ class UserProfile extends Component {
                         id="photoURL"
                         label="Profile Photo (URL)"
                         value={this.props.photoURL}
-                        style={{ margin: 8 }}
+                        style={{
+                            margin: 8,
+                            width: '60vw',
+                        }}
                         // placeholder="Placeholder"
                         // helperText="What seems to be the trouble?"
-                        fullWidth
+                        // fullWidth
                         margin="normal"
                         InputLabelProps={{
                             shrink: true,
@@ -236,7 +256,8 @@ class UserProfile extends Component {
                         onChange={this.handleFieldChange.bind(this)}
                     />
                 </div>
-                <div className='button-group'>
+
+                <div className={classes.buttonGroup}>
                     <Button
                         variant="contained"
                         color="secondary"
@@ -303,6 +324,7 @@ class UserProfile extends Component {
                         }
                     > Submit
                     </Button>
+                    {/* End of button group */}
                 </div>
 
             </form >

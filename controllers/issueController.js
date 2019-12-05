@@ -29,17 +29,31 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  // Call this to update records for user. 
-  // You get to do this only if you are the developer in the org & prod for the issue.
   updateIssue: function (req, res) {
-    // console.log('\n issueController-update received this : ', req);
-    console.log('\n controller received req of : ', req);
-    db.Issue.findOneAndUpdate({ id: req.params.id }, req.body)
-      .then(dbIssue => {
-        console.log(' returned data: ', dbIssue)
-        res.json(dbIssue)
-      })
-      .catch(err => res.status(422).json(err));
+    console.log('\n issueController update w/ req: ', req);
+    console.log('\n issueController update w/ req.params: ', req.params);
+    console.log('\n issueController update w/ req.params.id: ', req.params.id);
+    console.log('\n issueController update w/ req.body: ', req.body);
+
+    db.Issue.findByIdAndUpdate(req.params.id,
+      { $set: req.body },
+      { new: true },
+      function (err, result) {
+        if (err) return next(err);
+        if (result) {
+          console.log('updateIssue returned: ', result)
+          res.json(result);
+        } else {
+          next();
+        }
+      });
+
+    // db.Issue.findOneAndUpdate({ id: req.params.id }, req.body)
+    //   .then(dbIssue => {
+    //     console.log(' returned data: ', dbIssue)
+    //     res.json(dbIssue)
+    //   })
+    //   .catch(err => res.status(422).json(err));
   }
 
 };

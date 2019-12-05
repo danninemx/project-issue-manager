@@ -18,28 +18,47 @@ import 'date-fns';
 // import DateTimePicker from '../../components/DateTimePicker/DateTimePicker';
 
 import CommentCard from '../../components/CommentCard'
+import Paper from '@material-ui/core/Paper';
 
 import API from '../../utils/API';
 
 const styles = theme => ({
     // const styles = makeStyles(theme => ({
     // const useStyles = makeStyles(theme => ({
+    topContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        height: '100vh',
+        alignItems: 'flex-start',
+    },
+
     containerOne: {
         display: 'flex',
         flexWrap: 'wrap',
-
         alignItems: 'center',
-        padding: theme.spacing(0, 1),
+        padding: theme.spacing(0, 5),
         ...theme.mixins.toolbar,
-        paddingLeft: 240,
-        paddingTop: '12vh',
+        // paddingLeft: 240,
+        paddingTop: '10vh',
+        width: '55vw', // split left & right
+        height: '100%',
+    },
+    containerTwo: { // comments section
+        width: '35vw',
+        paddingTop: '10vh',
+        paddingLeft: '1vw',
+        paddingRight: '1vw',
+        backgroundColor: '#bbdefb',
 
-        // width: '50vw', // split left & right
+        // make scrollable
+        maxHeight: window.screen.availHeight,
+        overflow: 'auto'
+        // ADD MEDIA QUERY FOR SMALL VIEWPORT. MOVE TO BOTTOM or ADD BTN THAT OPENS MODAL
     },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 300,
+        width: '40%',
     },
 
     content: {
@@ -57,7 +76,7 @@ const styles = theme => ({
     formControl: {
         margin: theme.spacing(1),
         // marginTop: theme.spacing(2), // lines up verically w textfields
-        minWidth: 300,
+        minWidth: '55%',
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -74,9 +93,11 @@ const styles = theme => ({
         padding: theme.spacing(0, 1),
         ...theme.mixins.toolbar,
     },
-    containerTwo: { // comments section
-        width: '50vw',
-        // ADD MEDIA QUERY FOR SMALL VIEWPORT. MOVE TO BOTTOM THAT OPENS MODAL?
+    grouping: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        width: '100%',
     },
 })
 
@@ -124,11 +145,13 @@ class ManageIssue extends Component {
             issueResolved: [],
             issuePriorities: [],
             issueTargetRes: [],
+
             issueTypes: [],
             issueStatus: [],
-            issueList: [],
+            issueList: [], // objects (of objid-subject pairs?)
             issueNames: [],
             issueDesc: [],
+
             issueDates: [],
             issueURLs: [],
             issueImageURLs: [],
@@ -176,7 +199,7 @@ class ManageIssue extends Component {
             subject: '', // equivalent to issue name
             description: '', // only issue needs desc on this page
             potentialImpact: '',
-            timing: '',
+            timing: '', // vs selectedDate?
             url: '',
             imageURL: '',
             comment: '', // accept string & commit into Comment model's array
@@ -348,6 +371,15 @@ class ManageIssue extends Component {
         // If index was found, get the key, name and desc. For some reason not, keep blank.
         ind !== -1 ? Id = Object.keys(this.state.issueList[ind])[0] : Id = '';
         ind !== -1 ? console.log('selected issue Id:', Id) : console.log('Issue index not found.');
+
+        ind !== -1 ? Reporter = this.state.issueReporters[ind] : Reporter = '';
+        ind !== -1 ? owner = this.state.issueOwners[ind] : owner = '';
+        ind !== -1 ? resolved = this.state.issueResolved[ind] : resolved = '';
+        ind !== -1 ? priority = this.state.issuePriorities[ind] : priority = '';
+        ind !== -1 ? targetRes = this.state.issueTargetRes[ind] : targetRes = '';
+
+        ind !== -1 ? type = this.state.issueTypes[ind] : type = '';
+        ind !== -1 ? status = this.state.issueStatus[ind] : status = '';
         ind !== -1 ? Name = this.state.issueNames[ind] : Name = '';
         ind !== -1 ? Desc = this.state.issueDesc[ind] : Desc = '';
         ind !== -1 ? timing = this.state.issueDates[ind]
@@ -357,16 +389,9 @@ class ManageIssue extends Component {
         ind !== -1 ? URL = this.state.issueURLs[ind] : URL = '';
         ind !== -1 ? ImageURL = this.state.issueImageURLs[ind] : ImageURL = '';
         ind !== -1 ? Comment = this.state.issueCommentIds[ind] : Comment = '';
-        ind !== -1 ? Reporter = this.state.issueReporters[ind] : Reporter = '';
-        ind !== -1 ? owner = this.state.issueOwners[ind] : owner = '';
-        ind !== -1 ? resolved = this.state.issueResolved[ind] : resolved = '';
-        ind !== -1 ? priority = this.state.issuePriorities[ind] : priority = '';
-        ind !== -1 ? targetRes = this.state.issueTargetRes[ind] : targetRes = '';
-        ind !== -1 ? type = this.state.issueTypes[ind] : type = '';
-        ind !== -1 ? status = this.state.issueStatus[ind] : status = '';
         ind !== -1 ? impact = this.state.issueImpacts[ind] : impact = '';
 
-
+        debugger;
         this.setState({
             ...this.state,
             issue: Id,
@@ -666,32 +691,71 @@ class ManageIssue extends Component {
     // Issue functions //
     //-----------------//
 
-    // *** add dev fields as well *** //
+    // *** add dev fields as well? *** //
     getAllIssues = () => {
         API.getIssues({
             // project: this.state.projId // may work but below logic is for unfiltered data
         })
             .then(issues => {
                 console.log('get all issues:', issues)
-                let objects = [];
-                let fullObjects = [];
-                let names = [];
-                let descriptions = [];
-                let dates = [];
-                let URLs = [];
-                let imageURLs = [];
-                let comments = []; // ObjectIds from Comment schema
+                let reporters = []
+                    , owners = []
+                    , resolved = []
+                    , priority = []
+                    , targetResolutionDate = []
+
+                    , type = []
+                    , status = []
+                    , subject = []
+                    , description = []
+                    , potentialImpact = []
+
+                    , timing = []
+                    , url = []
+                    , imageURL = []
+                    , comments = [] // ObjectId array. 
+
+                let objects = []; // ObjId-Subject pair?
+
+                let fullObjects = []; // useful?
+                // let names = [];
+                // let descriptions = [];
+                // let dates = [];
+                // let URLs = [];
+                // let imageURLs = [];
+                // let comments = []; // ObjectIds from Comment schema
 
                 for (let obj of issues.data) { // iterable array, so for-in does not work
                     if (obj.version === this.state.verId) {
+                        console.log('pushing object to State issue arrays', obj);
+                        reporters.push(obj.reporter);
+                        owners.push(obj.owner);
+                        resolved.push(obj.resolved);
+                        priority.push(obj.priority);
+                        targetResolutionDate.push(obj.targetResolutionDate);
+
+                        type.push(obj.type);
+                        status.push(obj.status);
+                        subject.push(obj.subject);
+                        alert(subject + ' was pushed as subject');
+                        description.push(obj.description);
+                        potentialImpact.push(obj.potentialImpact);
+
+                        timing.push(obj.timing);
+                        url.push(obj.url);
+                        imageURL.push(obj.imageURL);
+                        comments.push(obj.comments);
+
+
                         objects.push({ [obj._id]: obj.subject }) // key is issue ObjectId : value is issue subject
                         fullObjects.push(obj); // full issue object
-                        names.push(obj.subject); // save subjects separately
-                        descriptions.push(obj.description); // save descriptions separately
-                        dates.push(obj.timing); // save dates(timing) separately
-                        URLs.push(obj.url);
-                        imageURLs.push(obj.imageURL);
-                        comments.push(obj.comments);
+
+                        // names.push(obj.subject); // save subjects separately
+                        // descriptions.push(obj.description); // save descriptions separately
+                        // dates.push(obj.timing); // save dates(timing) separately
+                        // URLs.push(obj.url);
+                        // imageURLs.push(obj.imageURL);
+                        // comments.push(obj.comments); // makes array of arrays
                     }
                 } // .map does not work since it may create "undefined" holes in output array
                 // .filter does not work since condition sits on same level as data to save
@@ -699,39 +763,109 @@ class ManageIssue extends Component {
                 // If blanks exist, this is remnant from relevant query
                 objects.includes(undefined) ?
                     this.setState({
-                        issueList: [],
-                        issueNames: [],
+
+                        issueReporters: [],
+                        issueOwners: [],
+                        issueResolved: [],
+                        issuePriorities: [],
+                        issueTargetRes: [],
+
+                        issueTypes: [],
+                        issueStatus: [],
+                        issueList: [], // objects (of objid-subject pairs?)
+                        issueNames: [], // subjects
                         issueDesc: [],
+
                         issueDates: [],
                         issueURLs: [],
                         issueImageURLs: [],
                         issueCommentIds: [],
+                        issueImpacts: [],
 
                         issueObjectList: [],
 
                         disableIssueSelect: true // prevent select due to lack of valid choice
                     },
-                        console.log('No relevant issues.', objects, names, descriptions, dates, URLs, comments, fullObjects)
+                        console.log('No relevant issues.'
+                            // , objects, names, descriptions, dates, URLs, comments, fullObjects
+                        )
                     ) :
                     // If relevant result is found, add list to state and enable selection
                     this.setState({
-                        issueList: objects,
-                        issueNames: names,
-                        issueDesc: descriptions,
-                        issueDates: dates,
-                        issueURLs: URLs,
-                        issueImageURLs: imageURLs,
+                        issueReporters: reporters,
+                        issueOwners: owners,
+                        issueResolved: resolved,
+                        issuePriorities: priority,
+                        issueTargetRes: targetResolutionDate,
+
+                        issueTypes: type,
+                        issueStatus: status,
+                        issueList: objects, // objects (of objid-subject pairs?)
+                        issueNames: subject, // subjects
+                        issueDesc: description,
+
+                        issueDates: timing,
+                        issueURLs: url,
+                        issueImageURLs: imageURL,
                         issueCommentIds: comments,
+                        issueImpacts: potentialImpact,
 
                         issueObjectList: fullObjects,
 
                         disableIssueSelect: false // enables select
-                    }, console.log('Relevant issues found. Adding to state:', objects, names, descriptions, dates, URLs, comments, fullObjects)
+
+                        // issueDesc: descriptions,
+                        // issueDates: dates,
+                        // issueURLs: URLs,
+                        // issueImageURLs: imageURLs,
+                        // issueCommentIds: comments,
+
+
+                    }, console.log('Relevant issues found. Adding to state.'
+                        // , objects, names, descriptions, dates, URLs, comments, fullObjects
+                    )
                     )
             })
     }
 
+    updateIssue = () => {
+        API.updateIssue({ // destination keys confirmed. CONFIRM LOCAL KEYS IN STATE
+            reporter: this.props.userId, // ObjectId
+            type: this.state.issueType,
+            timing: this.state.selectedDate,
+
+            organization: this.state.orgId, // ObjectId
+            project: this.state.projId, // ObjectId
+            version: this.state.verId, // ObjectId
+
+            subject: this.state.issueSubject,
+            description: this.state.issueDescription,
+            url: this.state.issueURL,
+
+            status: this.state.status,
+            resolved: this.state.resolved,
+            owner: this.state.owner, // ObjectId
+
+            priority: this.state.priority,
+            targetResolutionDate: this.state.targetResolutionDate,
+            potentialImpact: this.state.potentialImpact,
+
+            imageURL: this.state.imageURL,
+            partImpacted: this.state.partImpacted
+
+        }).then((res) => {
+            this.setState({
+                ...this.state,
+                issueId: res.data._id
+            })
+            console.log('createIssue has run.', res);
+        })
+            .then(() => this.createComment())
+    }
+
+    //-------------------//
     // Comment functions //
+    //-------------------//
 
     getAllComments = () => { // FINISH THIS.
         API.getComments({
@@ -739,6 +873,15 @@ class ManageIssue extends Component {
         })
             .then(comments => {
                 console.log('get all comments:', comments)
+                let orgIds = [], projIds = [], verIds = []; // issueIds is above
+                let issueIds = []; // ObjectIds from Comment schema
+                let commenterIds = []; // ObjectIds from User
+
+                let actions = []; // contains arrays of string
+                let commentTexts = []; // string
+                let visibilities = []; // string
+                let photoURLs = []; // string
+
                 let objects = [];
                 let fullObjects = [];
                 let names = [];
@@ -747,18 +890,23 @@ class ManageIssue extends Component {
                 let URLs = [];
                 let imageURLs = [];
 
-                let issueIds = []; // ObjectIds from Comment schema
-                let commenterIds = []; // ObjectIds from User
-                let actions = []; // contains arrays of string
-                let commentTexts = []; // string
-                let visibilities = []; // string
-                let photoURLs = []; // string
                 let creationDates = [];
                 let updateDates = [];
-                let orgIds = [], projIds = [], verIds = []; // issueIds is above
+
 
                 for (let obj of comments.data) { // iterable array, so for-in does not work
                     if (obj.version === this.state.verId) {
+                        orgIds.push(obj.organization);
+                        projIds.push(obj.project);
+                        verIds.push(obj.version);
+                        issueIds.push(obj.issue);
+                        commenterIds.push(obj.commenter);
+
+                        actions.push(obj.actionsDescription);
+                        commentTexts.push(obj.comment);
+                        visibilities.push(obj.visibility);
+                        photoURLs.push(obj.avatar);
+
                         objects.push({ [obj._id]: obj.subject }) // key is issue ObjectId : value is issue subject
                         fullObjects.push(obj); // full issue object
                         names.push(obj.subject); // save subjects separately
@@ -767,19 +915,8 @@ class ManageIssue extends Component {
                         URLs.push(obj.url);
                         imageURLs.push(obj.imageURL);
 
-                        issueIds.push(obj.issue);
-                        commenterIds.push(obj.commenter);
-                        actions.push(obj.actionsDescription);
-                        commentTexts.push(obj.comment);
-                        visibilities.push(obj.visibility);
-                        photoURLs.push(obj.avatar);
-                        creationDates.push(obj.createdAt);
-                        updateDates.push(obj.updatedAt);
-
-                        orgIds.push(obj.organization);
-                        projIds.push(obj.project);
-                        verIds.push(obj.version);
-                        issueIds.push(obj.issue);
+                        creationDates.push(obj.timestamps.created_at);
+                        updateDates.push(obj.timestamps.updated_at);
                     }
                 } // .map does not work since it may create "undefined" holes in output array
                 // .filter does not work since condition sits on same level as data to save
@@ -829,13 +966,13 @@ class ManageIssue extends Component {
             organization: this.state.orgId, // ObjectId
             project: this.state.projId, // ObjectId
             version: this.state.verId, // ObjectId
-            issue: this.state.issue, // ObjectId
+            issue: this.state.issueId, // ObjectId
             commenter: this.props.userId, // ObjectId
 
-            actionDescription: this.state.actionDesc,
-            comment: this.state.comment,
-            visibility: this.state.visibility,
-            avatar: this.props.photoURL,
+            actionDescription: ['Reported issue'],
+            comment: this.state.issueComment,
+            visibility: 'Organization members and reporter',
+            avatar: this.props.photoURL
 
         })
             .then(() => {
@@ -848,6 +985,17 @@ class ManageIssue extends Component {
             })
         // this.props.showDashboard // forward to main view
     }
+
+    updateComment = async (id, data) => {
+        console.log(`update proj w/ ${id} and this data:`, data)
+        await API.updateComment(id, data)
+            .then(result => {
+                console.log('updateComment returned data: ', result.data)
+                return result
+            })
+            .catch(error => console.log('error occurred!', error));
+    }
+
 
     //--------------------//
     //  Lifecyle Methods  //
@@ -872,14 +1020,14 @@ class ManageIssue extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <React.Fragment>x
-            <form className={classes.containerOne} noValidate autoComplete="off" >
-                    <div>
+            <Paper className={classes.topContainer}>
+                <form className={classes.containerOne} noValidate autoComplete="off" >
+                    <div className={classes.grouping}>
                         <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
                     </div>
 
-                    <div>
                         <Divider className={classes.divider} />
+                    <div className={classes.grouping}>
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel
                                 // ref={inputLabel} 
@@ -921,28 +1069,27 @@ class ManageIssue extends Component {
                                 }
                             </Select>
                         </FormControl>
-                        {/* <TextField
-                        id="orgId"
-                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
-                        disabled
-                        // fullWidth
-                        className={classes.textField}
-                        label="Provider ID"
-                        value={this.state.orgId}
-                        style={{ margin: 8 }}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="filled"
-                        onChange={this.handleFieldChange.bind(this)}
-                    /> */}
+                        <TextField
+                            id="orgId"
+                            // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                            disabled
+                            // fullWidth
+                            className={classes.textField}
+                            label="Provider ID"
+                            value={this.state.orgId}
+                            style={{ margin: 8 }}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="filled"
+                            onChange={this.handleFieldChange.bind(this)}
+                        />
                     </div>
 
-                    <div>
 
-                        {/* Project */}
-
+                    {/* Project */}
+                    <div className={classes.grouping}>
                         <FormControl variant="outlined"
                             className={classes.formControl}
                         // {this.state.projectList ? null : disabled}
@@ -992,27 +1139,26 @@ class ManageIssue extends Component {
                             </Select>
                             {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
                         </FormControl>
-                        {/* <TextField
-                        id="projId"
-                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
-                        disabled
-                        // fullWidth
-                        label="Project ID"
-                        className={classes.textField}
-                        value={this.state.projId}
-                        style={{ margin: 8 }}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="filled"
-                        onChange={this.handleFieldChange.bind(this)}
-                    /> */}
+                        <TextField
+                            id="projId"
+                            // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                            disabled
+                            // fullWidth
+                            label="Project ID"
+                            className={classes.textField}
+                            value={this.state.projId}
+                            style={{ margin: 8 }}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="filled"
+                            onChange={this.handleFieldChange.bind(this)}
+                        />
                     </div>
-                    <div>
 
-                        {/* Version */}
-
+                    {/* Version */}
+                    <div className={classes.grouping}>
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel id="demo-simple-select-outlined-label-ver" required>
                                 Version/Specification
@@ -1054,29 +1200,28 @@ class ManageIssue extends Component {
                             </Select>
                             {console.log('Disable version selection at render is:', this.state.disableVerSelect)}
                         </FormControl>
-                        {/* <TextField
-                        id="verId"
-                        // REMEMBER, LIST IS FOR NAME BUT SAVES ID
-                        disabled
-                        className={classes.textField}
-                        label="Version ID"
-                        value={this.state.verId}
-                        style={{ margin: 8 }}
-                        margin="normal"
-                        InputLabelProps={{ shrink: true, }}
-                        onChange={this.handleFieldChange.bind(this)}
-                        variant="filled"
-                    /> */}
-                        <Divider className={classes.divider} />
+                        <TextField
+                            id="verId"
+                            // REMEMBER, LIST IS FOR NAME BUT SAVES ID
+                            disabled
+                            className={classes.textField}
+                            label="Version ID"
+                            value={this.state.verId}
+                            style={{ margin: 8 }}
+                            margin="normal"
+                            InputLabelProps={{ shrink: true, }}
+                            onChange={this.handleFieldChange.bind(this)}
+                            variant="filled"
+                        />
                     </div>
+                    <Divider className={classes.divider} />
 
                     {/* Issue */}
-
-                    <div>
+                    <div className={classes.grouping}>
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel id="demo-simple-select-outlined-label-issue" required>
                                 Issue
-                        </InputLabel>
+                            </InputLabel>
                             <Select
                                 labelId="demo-simple-select-outlined-label-issue"
                                 // id={this.state.orgId || "demo-simple-select-outlined"}
@@ -1112,8 +1257,21 @@ class ManageIssue extends Component {
                             </Select>
                             {console.log('Disable issue selection at render is:', this.state.disableIssueSelect)}
                         </FormControl>
+                        <TextField
+                            id="issueId"
+                            disabled
+                            label="Issue ID"
+                            className={classes.textField}
+                            value={this.state.issueId}
+                            style={{ margin: 8 }}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="filled"
+                        />
                     </div>
-                    <div>
+                    <div className={classes.grouping}>
                         <TextField
                             id="subject"
                             // Enable update for developer+
@@ -1127,6 +1285,7 @@ class ManageIssue extends Component {
                             margin="normal"
                             variant="outlined"
                             onChange={this.handleFieldChange.bind(this)}
+                            style={{ margin: 8 }}
                         />
                         <TextField
                             id="description"
@@ -1184,6 +1343,7 @@ class ManageIssue extends Component {
                             margin="normal"
                             variant="outlined"
                             onChange={this.handleFieldChange.bind(this)}
+                            style={{ margin: 8 }}
                         />
                         {/* <TextField
                         id="imageURL" // excess separation?
@@ -1207,6 +1367,7 @@ class ManageIssue extends Component {
                             margin="normal"
                             variant="outlined"
                             onChange={this.handleFieldChange.bind(this)}
+                            style={{ margin: 8 }}
                         />
                         <div className='button-group'>
                             <Button
@@ -1239,13 +1400,26 @@ class ManageIssue extends Component {
                         {/* end of button-group */}
                     </div>
 
+                    {/* End of containerOne */}
                 </form>
-                <div className="containerTwo">
+
+                <div width='1vw'>
+                    <Divider orientation="vertical" />
+                </div>
+
+                <div className={classes.containerTwo}>
+                    <CommentCard />
+                    <CommentCard />
+                    <CommentCard />
+                    <CommentCard />
+                    <CommentCard />
+                    <CommentCard />
+                    <CommentCard />
                     <CommentCard />
                     <CommentCard />
                     <CommentCard />
                 </div>
-            </React.Fragment>
+            </Paper>
         )
 
     }

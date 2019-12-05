@@ -43,22 +43,34 @@ import API from '../../utils/API';
 const styles = theme => ({
     // const styles = makeStyles(theme => ({
     // const useStyles = makeStyles(theme => ({
+
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-
         alignItems: 'center',
+        padding: theme.spacing(0, 10),
+        ...theme.mixins.toolbar,
+        paddingTop: '10vh',
+        width: '60vw',
+    },
+    nonAuthenticated: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: theme.spacing(0, 1),
         ...theme.mixins.toolbar,
-        paddingLeft: 240,
-        paddingTop: '12vh',
-
-        // position: 'absolute', // doesnt shift with drawer
+        paddingTop: '5vh',
+        width: '50vw',
+        margin: 'auto',
     },
+
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
-        width: 300,
+        width: '40%'
+        // 300
+        ,
     },
 
     content: {
@@ -66,9 +78,6 @@ const styles = theme => ({
         padding: theme.spacing(3),
     },
 
-    wrapper: {
-        position: 'relative',
-    },
     button: {
         margin: theme.spacing(1),
     },
@@ -76,7 +85,9 @@ const styles = theme => ({
     formControl: {
         margin: theme.spacing(1),
         // marginTop: theme.spacing(2), // lines up verically w textfields
-        minWidth: 300,
+        minWidth: '55%'
+        // 300
+        ,
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -84,6 +95,23 @@ const styles = theme => ({
 
     divider: {
         margin: '20px 0 20px 0',
+    },
+
+    grouping: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        // width: '80vw',
+        width: '100%',
+    },
+
+    buttonGroup: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(15),
+        width: 'inherit',
     },
 })
 
@@ -558,17 +586,16 @@ class SubmitIssue extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <form className={
-                classes.container
+            <form className={this.props.isSignedIn ? classes.container : classes.nonAuthenticated}
+                // Unauthenticated users do not see menu bar, so center thes contents.
                 // this.props.style.content
-            } noValidate autoComplete="off"
-                key='SI-topcontainer-form'>
-                <div>
+                noValidate autoComplete="off"
+            >
+                <div className={classes.grouping}>
                     <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
                 </div>
 
-                <div>
-                    {/* <br /> */}
+                <div className={classes.grouping}>
                     {!this.props.isSignedIn && // Render latter for "anonymous" users only
                         <React.Fragment>
                             <TextField
@@ -594,8 +621,9 @@ class SubmitIssue extends Component {
                     }
                 </div>
 
-                <div>
-                    <Divider className={classes.divider} />
+                <Divider className={classes.divider} />
+
+                <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel
                             // ref={inputLabel} 
@@ -609,9 +637,10 @@ class SubmitIssue extends Component {
                             id={"demo-simple-select-outlined"}
                             key={Date.now}
                             placeholder='Provider Name'
-                            value={
-                                this.state.orgId !== '' ? this.state.orgId : '' // does not change display
+                            value={this.state.orgId  // shouldn't be this value
+                                // this.state.orgId !== '' ? this.state.orgId : '' // does not change display
                                 // collin tried: this.state.orgId
+                                // this.state.orgId !== '' && this.state.orgId // still changing uncontrolled to controlled?
                             }
                             onChange={this.handleOrgSelect
                                 // this.handleFieldChange // not reading correctly
@@ -657,12 +686,11 @@ class SubmitIssue extends Component {
                 </div>
 
                 {/* Project */}
-                <div key='SI-project-group-div'>
+                <div className={classes.grouping}>
 
                     <FormControl variant="outlined"
                         className={classes.formControl}
-                        // {this.state.projectList ? null : disabled}
-                        key='SI-project-formcontrol'
+                    // {this.state.projectList ? null : disabled}
                     >
                         <InputLabel
                             // ref={inputLabel} 
@@ -670,11 +698,11 @@ class SubmitIssue extends Component {
                             required>
                             Project/Product
                         </InputLabel>
+
                         <Select
                             labelId="demo-simple-select-outlined-label-proj"
                             // id={this.state.orgId || "demo-simple-select-outlined"}
                             id={"SI-demo-simple-select-outlined-proj"}
-                            key={"SI-demo-simple-select-outlined-proj"}
                             placeholder='Project Name'
                             // value={this.state.orgName}
                             onChange={
@@ -692,7 +720,7 @@ class SubmitIssue extends Component {
                                         // Object.keys(this.state.projectList[i])[0]: 
                                         return <MenuItem
                                             id={proj}
-                                            key={Date.now}
+                                            key={Date.now + Math.random() * 10000}
                                             name={proj}
                                             value={proj}
                                             disabled={
@@ -707,6 +735,7 @@ class SubmitIssue extends Component {
                                 // 'None' should not be an option. Create org first if missing.
                             }
                         </Select>
+
                     </FormControl>
                     <TextField
                         id="projId"
@@ -725,10 +754,9 @@ class SubmitIssue extends Component {
                         onChange={this.handleFieldChange.bind(this)}
                     />
                 </div>
-                <div>
 
-                    {/* Version */}
-
+                {/* Version */}
+                <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label-ver" required>
                             Version/Specification
@@ -737,6 +765,7 @@ class SubmitIssue extends Component {
                             labelId="demo-simple-select-outlined-label-ver"
                             // id={this.state.orgId || "demo-simple-select-outlined"}
                             id={"demo-simple-select-outlined-ver"}
+                            // key={Math.random()}
                             placeholder='Version / Specification'
                             // value={this.state.verName}
                             onChange={
@@ -754,7 +783,7 @@ class SubmitIssue extends Component {
                                         // Object.keys(this.state.versionList[i])[0]: 
                                         return <MenuItem
                                             id={ver}
-                                            key={ver}
+                                            key={Math.random()}
                                             name={ver}
                                             value={ver}
                                             disabled={
@@ -783,9 +812,10 @@ class SubmitIssue extends Component {
                         onChange={this.handleFieldChange.bind(this)}
                         variant="filled"
                     />
-                    <Divider className={classes.divider} />
                 </div>
-                <div>
+                <Divider className={classes.divider} />
+
+                <div className={classes.grouping}>
                     {/* <TextField // stopped responding?
                         id="issueSubject"
                         required
@@ -813,6 +843,7 @@ class SubmitIssue extends Component {
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
+                        style={{ margin: 8 }}
                     />
                     <TextField
                         id="issueDescription"
@@ -857,6 +888,7 @@ class SubmitIssue extends Component {
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
+                        style={{ margin: 8 }}
                     />
                     <TextField
                         id="issueComment"
@@ -869,9 +901,10 @@ class SubmitIssue extends Component {
                         margin="normal"
                         variant="outlined"
                         onChange={this.handleFieldChange.bind(this)}
+                        style={{ margin: 8 }}
                     />
 
-                    <div className='button-group'>
+                    <div className={classes.buttonGroup}>
                         <Button
                             variant="contained"
                             color="secondary"
@@ -884,7 +917,7 @@ class SubmitIssue extends Component {
                                 }
                             }
                         > Reset Form
-                    </Button>
+                        </Button>
                         <Button
                             variant="contained"
                             color="primary"

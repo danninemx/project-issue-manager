@@ -117,11 +117,10 @@ export default {
     return axios.get("/api/issues", { params: { q } });
   },
 
-  updateIssue: function (id) {
-    console.log(`\n API: updating issue`);
-    return axios.put("/api/issues/" + id);
+  updateIssue: function (id, data) {
+    console.log(`\n API updateIssue w/ id: `, id);
+    return axios.put("/api/issues/" + id, data);
   },
-
 
   // Comment //
 
@@ -129,10 +128,14 @@ export default {
     console.log(`\n API create comment : `, data);
     return axios.post("/api/comments", data);
   },
-  
+
   getComments: function (q) {
     console.log(`\n API getComments : ${q}`);
     return axios.get("/api/comments", { params: { q } });
-  }
+  },
 
+  updateComment: function (id, data) {
+    console.log(`\n API updateComment w/ id: `, id);
+    return axios.put("/api/comments/" + id, data);
+  }
 };

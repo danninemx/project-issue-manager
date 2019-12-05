@@ -28,12 +28,14 @@ const useStyles = makeStyles(theme => ({
   //   display: 'flex',
   // },
   cardsContent: {
-    // padding: 15,
+    padding: 15,
     paddingTop: '12vh',
-    paddingLeft: 15,
+    // paddingLeft: 15,
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
+    width: '80vw',
+
     [theme.breakpoints.only('xs')]: {
       width: '100%',
       padding: 0,
@@ -44,9 +46,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   card: {
-    minWidth: "37vw",
+    // minWidth: "37vw",
     // maxWidth: 350,
-    maxWidth: "50%",
+    width: "35vw",
     margin: 15,
     [theme.breakpoints.only('xs')]: {
       minWidth: 275,
@@ -59,9 +61,10 @@ const useStyles = makeStyles(theme => ({
     // }
   },
   wideCard: {
-    minWidth: "90%",
+    // minWidth: "90%",
     // maxWidth: 350,
-    maxWidth: "90%",
+    // maxWidth: "100vw",
+    width: '100vw',
     margin: 15,
     [theme.breakpoints.only('xs')]: {
       width: '100%',
@@ -207,6 +210,7 @@ function Dashboard() {
 
         </Card>
 
+        {/* End of cardsContent div */}
       </div>
     </React.Fragment>
   )

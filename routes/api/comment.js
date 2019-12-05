@@ -7,6 +7,6 @@ router
   .route("/")
   .get(commentController.getComments)
   .post(commentController.createComment)
-  // .put(commentController.updateComment)
+  .put(commentController.updateComment)
 
 module.exports = router;
