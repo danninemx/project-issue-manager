@@ -109,7 +109,6 @@ class ManageIssue extends Component {
         this.state = {
             selectedDate: '-',
             userId: '',
-            // new Date(), // picker debugging
 
             // organization info //
             // orgId: '', // ObjectId of org. For now, do not force clear?
@@ -158,7 +157,10 @@ class ManageIssue extends Component {
             issueCommentIds: [],
             issueImpacts: [],
 
+            issueReporterNames: [],
+
             issueObjectList: [],
+            // issue now has reporter name. use it?
 
             // Toggle these to disable Select tag below un-selected higher category
             disableProjSelect: true, // string data type seems to work as well
@@ -176,17 +178,26 @@ class ManageIssue extends Component {
                 'reporter', // basically immutable
                 'owner',
                 'resolved',
+
                 'priority',
                 'targetResolutionDate',
                 'type',
+
                 'status',
                 'subject',
                 'description',
+
                 'potentialImpact',
                 'timing',
                 'url',
+
                 'imageURL',
-                'comments' // ObjectId array. 
+                'organization',
+                'project',
+
+                'version',
+                'comments', // ObjectId array. 
+                'reporterName'
             ],
 
             reporter: '', // basically immutable
@@ -203,10 +214,11 @@ class ManageIssue extends Component {
             url: '',
             imageURL: '',
             comment: '', // accept string & commit into Comment model's array
+            reporterName: '',
 
             // also Id for org, proj & ver as ref
 
-            // comment info //
+            // comment creation info //
 
             commentVisibilityChoices: [  // do not clear
                 // 'Everyone', 
@@ -224,7 +236,25 @@ class ManageIssue extends Component {
             image: '', // from User Profile
             // timestamps
             createdAt: '', // to be read from db only
-            updatedAt: '' // to be read from db only
+            updatedAt: '', // to be read from db only
+            commenterName: this.props.userName,
+
+            // comment query info //
+
+            commentOrgIds: [],
+            commentProjIds: [],
+            commentVerIds: [],
+            commentIssueIds: [],
+            commentCommenterIds: [],
+
+            commentActionsDescriptions: [],
+            commentTexts: [],
+            commentVisibilities: [],
+            commentPhotoURLs: [],
+            commentTimestamps: [],
+
+            commentFullObjects: [],
+            commentAuthors: [] // displayName
         }
     }
 
@@ -302,6 +332,8 @@ class ManageIssue extends Component {
             actionDesc: [],
             visibility: '',
             comment: '' // String on a Comment object
+
+            // CLEAR ISSUES AND COMMENTS INFO AS WELL //
         }
             , () => { this.getAllProj() } // on org select, query proj list
         );
@@ -324,6 +356,8 @@ class ManageIssue extends Component {
             verId: '',
             verName: '',
             verDescription: ''
+
+            // CLEAR ISSUES AND COMMENTS INFO AS WELL // 
         }
             , () => this.getAllVers()) // on proj select, query version list
     };
@@ -345,6 +379,8 @@ class ManageIssue extends Component {
             verId: selectedId,
             verName: selectedName,
             verDescription: selectedDesc
+
+            // CLEAR ISSUES AND COMMENTS INFO AS WELL //
         }
             , () => this.getAllIssues()) // on ver select, query issue list
     };
@@ -352,9 +388,9 @@ class ManageIssue extends Component {
     handleIssueSelect = event => {
         console.log('select issue event.target: ', event.target)
         let ind = this.state.issueNames.indexOf(event.target.value) // get the index of selected item from array
-        let Id = '';
-        let Name = ''; // subject
-        let Desc = '';
+        let id = '';
+        let name = ''; // subject
+        let desc = '';
         let timing = '';
         let URL = '';
         let ImageURL = '';
@@ -366,11 +402,12 @@ class ManageIssue extends Component {
         let targetRes = '';
         let type = '';
         let status = '';
-        let impact = '';
+        let impact = '',
+            reporterName = ''
 
         // If index was found, get the key, name and desc. For some reason not, keep blank.
-        ind !== -1 ? Id = Object.keys(this.state.issueList[ind])[0] : Id = '';
-        ind !== -1 ? console.log('selected issue Id:', Id) : console.log('Issue index not found.');
+        ind !== -1 ? id = Object.keys(this.state.issueList[ind])[0] : id = '';
+        ind !== -1 ? console.log('selected issue Id:', id) : console.log('Issue index not found.');
 
         ind !== -1 ? Reporter = this.state.issueReporters[ind] : Reporter = '';
         ind !== -1 ? owner = this.state.issueOwners[ind] : owner = '';
@@ -380,8 +417,8 @@ class ManageIssue extends Component {
 
         ind !== -1 ? type = this.state.issueTypes[ind] : type = '';
         ind !== -1 ? status = this.state.issueStatus[ind] : status = '';
-        ind !== -1 ? Name = this.state.issueNames[ind] : Name = '';
-        ind !== -1 ? Desc = this.state.issueDesc[ind] : Desc = '';
+        ind !== -1 ? name = this.state.issueNames[ind] : name = '';
+        ind !== -1 ? desc = this.state.issueDesc[ind] : desc = '';
         ind !== -1 ? timing = this.state.issueDates[ind]
             // Date.parse
             // new Date(this.state.issueDates[ind])  // convert string to Date object in ms unit
@@ -390,13 +427,13 @@ class ManageIssue extends Component {
         ind !== -1 ? ImageURL = this.state.issueImageURLs[ind] : ImageURL = '';
         ind !== -1 ? Comment = this.state.issueCommentIds[ind] : Comment = '';
         ind !== -1 ? impact = this.state.issueImpacts[ind] : impact = '';
+        ind !== -1 ? reporterName = this.state.issueReporterNames[ind] : reporterName = '';
 
-        debugger;
         this.setState({
             ...this.state,
-            issue: Id,
-            subject: Name,
-            description: Desc,
+            issue: id,
+            subject: name,
+            description: desc,
             // timing: timing,
             selectedDate: timing,
             url: URL,
@@ -409,10 +446,17 @@ class ManageIssue extends Component {
             targetResolutionDate: targetRes,
             type: type,
             status: status,
-            potentialImpact: impact
+            potentialImpact: impact,
+            reporterName: reporterName
+
+            // CLEAR COMMENTS INFO AS WELL //
         },
             () => this.getAllComments())
     };
+
+    // handleSubmit = () => {
+    //     await 
+    // }
 
     clearState = () => {
         this.setState({
@@ -495,7 +539,7 @@ class ManageIssue extends Component {
             comment: [], // accept string & commit into Comment model's array
             // also Id for org, proj & ver as ref
 
-            // comment info //
+            // comment creation info //
 
             issue: '', // ObjectId. Issue ref
             commenter: '', // ObjectId. User ref
@@ -506,7 +550,24 @@ class ManageIssue extends Component {
 
             // timestamps
             createdAt: '', // read from db only
-            updatedAt: '' // read from db only
+            updatedAt: '', // read from db only
+
+            // comment query info //
+
+            commentOrgIds: [],
+            commentProjIds: [],
+            commentVerIds: [],
+            commentIssueIds: [],
+            commentCommenterIds: [],
+
+            commentActionsDescriptions: [],
+            commentTexts: [],
+            commentVisibilities: [],
+            commentPhotoURLs: [],
+            commentTimestamps: [],
+
+            commentFullObjects: [],
+            commentAuthors: []
         })
     };
 
@@ -516,7 +577,7 @@ class ManageIssue extends Component {
     getAllOrgs = () => {
         API.getOrgs() // works if {} is omitted
             .then(orgs => { // hits w no params for query
-                console.log('API getOrgs returned: ', orgs.data);
+                // console.log('API getOrgs returned: ', orgs.data);
                 let objects = orgs.data.map(obj => {
                     return { [obj._id]: obj.name } // orgId : orgName
                 })
@@ -528,7 +589,7 @@ class ManageIssue extends Component {
                     organizationNames: names
                 })
             })
-            .then(() => console.log('state after getAllOrg:', this.state))
+        // .then(() => console.log('state after getAllOrg:', this.state))
     }
 
     // NEEDS DUPLICATION PREVENTION
@@ -573,7 +634,7 @@ class ManageIssue extends Component {
             { // organization: this.state.orgId // non func
             })
             .then(projects => {
-                console.log('get all proj', projects);
+                // console.log('get all proj', projects);
 
                 let objects = [];
                 let names = [];
@@ -613,7 +674,7 @@ class ManageIssue extends Component {
                     )
 
             })
-            .then(() => console.log('state after getAllProj, filtered :', this.state))
+            // .then(() => console.log('state after getAllProj, filtered :', this.state))
             .then(this.getAllVers()) // query matching versions on proj select // works?
             .catch(err => console.log(err));
     }
@@ -628,7 +689,7 @@ class ManageIssue extends Component {
             description: this.state.verDescription,
             project: [this.state.projId] // project Id as ref
         })
-            .then(res => console.log('Version saved.', res))
+            // .then(res => console.log('Version saved.', res))
             .catch(error => console.log(error))
     }
 
@@ -647,7 +708,7 @@ class ManageIssue extends Component {
             // project: this.state.projId // seems to work but below logic is for unfiltered data
         })
             .then(versions => {
-                console.log('get all vers', versions)
+                // console.log('get all vers', versions)
                 let objects = [];
                 let names = [];
                 let descriptions = [];
@@ -713,7 +774,8 @@ class ManageIssue extends Component {
                     , timing = []
                     , url = []
                     , imageURL = []
-                    , comments = [] // ObjectId array. 
+                    , comments = [] // ObjectId array.
+                    , reporterNames = []
 
                 let objects = []; // ObjId-Subject pair?
 
@@ -737,7 +799,7 @@ class ManageIssue extends Component {
                         type.push(obj.type);
                         status.push(obj.status);
                         subject.push(obj.subject);
-                        alert(subject + ' was pushed as subject');
+                        // alert(subject + ' was pushed as subject');
                         description.push(obj.description);
                         potentialImpact.push(obj.potentialImpact);
 
@@ -745,9 +807,10 @@ class ManageIssue extends Component {
                         url.push(obj.url);
                         imageURL.push(obj.imageURL);
                         comments.push(obj.comments);
+                        reporterNames.push(obj.reporterName); // displayNames
 
-
-                        objects.push({ [obj._id]: obj.subject }) // key is issue ObjectId : value is issue subject
+                        objects.push({ [obj._id]: obj.subject })
+                        console.log('issue object is now == ', objects) // key is issue ObjectId : value is issue subject
                         fullObjects.push(obj); // full issue object
 
                         // names.push(obj.subject); // save subjects separately
@@ -783,6 +846,7 @@ class ManageIssue extends Component {
                         issueImpacts: [],
 
                         issueObjectList: [],
+                        issueReporterNames: [],
 
                         disableIssueSelect: true // prevent select due to lack of valid choice
                     },
@@ -811,6 +875,7 @@ class ManageIssue extends Component {
                         issueImpacts: potentialImpact,
 
                         issueObjectList: fullObjects,
+                        issueReporterNames: reporterNames,
 
                         disableIssueSelect: false // enables select
 
@@ -828,8 +893,8 @@ class ManageIssue extends Component {
             })
     }
 
-    updateIssue = () => {
-        API.updateIssue({ // destination keys confirmed. CONFIRM LOCAL KEYS IN STATE
+    updateIssue = async () => {
+        await API.updateIssue(this.state.issue, {
             reporter: this.props.userId, // ObjectId
             type: this.state.issueType,
             timing: this.state.selectedDate,
@@ -838,9 +903,9 @@ class ManageIssue extends Component {
             project: this.state.projId, // ObjectId
             version: this.state.verId, // ObjectId
 
-            subject: this.state.issueSubject,
-            description: this.state.issueDescription,
-            url: this.state.issueURL,
+            subject: this.state.subject,
+            description: this.state.description,
+            url: this.state.url,
 
             status: this.state.status,
             resolved: this.state.resolved,
@@ -853,109 +918,168 @@ class ManageIssue extends Component {
             imageURL: this.state.imageURL,
             partImpacted: this.state.partImpacted
 
+            // comment should be added separately.
+            // findOneAndUpdate does not remove omitted prop
+            // displayNames(reporterName) does not change.
+
         }).then((res) => {
-            this.setState({
-                ...this.state,
-                issueId: res.data._id
-            })
-            console.log('createIssue has run.', res);
+            // this.setState({
+            //     ...this.state,
+            //     issueId: res.data._id})
+            console.log('updateIssue has run.', res);
         })
-            .then(() => this.createComment())
+
+        await this.createComment();
     }
 
     //-------------------//
     // Comment functions //
     //-------------------//
 
-    getAllComments = () => { // FINISH THIS.
-        API.getComments({
+
+    findCommenter = async (id) => {
+        await API.findUserById(id)
+            .then(res => {
+                console.log('findCommenter returned :', res.data)
+                return res.data.displayName
+                // let tempCommenters = this.state.commentAuthors;
+                // tempCommenters.push(res.data.displayName);
+                // res.data // If user data was returned, add to state.
+                //     ? this.setState({
+                //         ...this.state,
+                //         commentAuthors: tempCommenters // Note that filter will be needed if later auto-generating Organization User Account for Orgs.
+                //     })
+                //     : console.log('Id not found in DB!', res.data)
+            })
+            .catch((err) => console.log(err)
+                // this.setState({
+                //     message: "No results. Please try another query."
+                // })
+            );
+    }
+
+    findCommenterNames = () => {
+
+    }
+
+    getAllComments = async () => {
+        await API.getComments({
             // project: this.state.projId // may work but below logic is for unfiltered data
         })
             .then(comments => {
                 console.log('get all comments:', comments)
-                let orgIds = [], projIds = [], verIds = []; // issueIds is above
-                let issueIds = []; // ObjectIds from Comment schema
-                let commenterIds = []; // ObjectIds from User
 
-                let actions = []; // contains arrays of string
-                let commentTexts = []; // string
-                let visibilities = []; // string
-                let photoURLs = []; // string
+                let orgIds = [], projIds = [], verIds = [], // issueIds is above
+                    issueIds = [], // ObjectIds from Comment schema
+                    commenterIds = [], // ObjectIds from User
 
-                let objects = [];
-                let fullObjects = [];
-                let names = [];
-                let descriptions = [];
-                let dates = [];
-                let URLs = [];
-                let imageURLs = [];
+                    actions = [], // contains arrays of string
+                    commentTexts = [], // string
+                    visibilities = [], // string
+                    photoURLs = [], // string
+                    timestamps = [], // obj
 
-                let creationDates = [];
-                let updateDates = [];
+                    fullObjects = [],
+                    commenterNames = [],
+                    objects = []; // key-val pairs
+                // commenterNames = []
+
+                (async () => {
+                    for (let obj of comments.data) { // iterable array, so for-in does not work
+                        if (obj.issue === this.state.issue) { // match issue Id
+                            orgIds.push(obj.organization);
+                            projIds.push(obj.project);
+                            verIds.push(obj.version);
+                            issueIds.push(obj.issue);
+                            await commenterIds.push(obj.commenter);
+                            console.log('commenterIds:', commenterIds)
+
+                            actions.push(obj.actionDescription);
+                            commentTexts.push(obj.comment);
+                            visibilities.push(obj.visibility);
+                            photoURLs.push(obj.avatar);
+                            timestamps.push(obj.timestamps);
+
+                            fullObjects.push(obj); // full issue object
+                            // commenterNames.push()
+
+                            objects.push({ [obj._id]: obj.subject }) // key is comment ObjectId : value is comment subject
+                            // Just for undefined checker
+                            commenterNames.push(obj.commenterName);
+                        }
+                    } // .map does not work since it may create "undefined" holes in output array
+                    // .filter does not work since condition sits on same level as data to save
+
+                    console.log('commenterIds after:', commenterIds);
+
+                    // for (let id of commenterIds) {
+                    //     let val = this.findCommenter(id);
+
+                    //     await commenterNames.push(val);
+                    // }
+
+                    await console.log('commenterNames was filled!', commenterNames)
+                    // commenterNames = await commenterIds.map(function (commenterId) {
+                    //     this.findCommenter(commenterId)
+                    // })
 
 
-                for (let obj of comments.data) { // iterable array, so for-in does not work
-                    if (obj.version === this.state.verId) {
-                        orgIds.push(obj.organization);
-                        projIds.push(obj.project);
-                        verIds.push(obj.version);
-                        issueIds.push(obj.issue);
-                        commenterIds.push(obj.commenter);
+                    // let tempAuthors = this.state.commentAuthors;
+                    // tempAuthors.push(res.data.displayName);
+                    // this.setState({
+                    //     ...this.state,
+                    //     commentAuthors: tempAuthors
+                    // })
 
-                        actions.push(obj.actionsDescription);
-                        commentTexts.push(obj.comment);
-                        visibilities.push(obj.visibility);
-                        photoURLs.push(obj.avatar);
+                    // If blanks exist, this is remnant from relevant query
+                    objects.includes(undefined) ?
+                        await this.setState({
+                            commentOrgIds: [],
+                            commentprojIds: [],
+                            commentverIds: [],
+                            commentIssueIds: [],
+                            commentCommenterIds: [],
 
-                        objects.push({ [obj._id]: obj.subject }) // key is issue ObjectId : value is issue subject
-                        fullObjects.push(obj); // full issue object
-                        names.push(obj.subject); // save subjects separately
-                        descriptions.push(obj.description); // save descriptions separately
-                        dates.push(obj.timing); // save dates(timing) separately
-                        URLs.push(obj.url);
-                        imageURLs.push(obj.imageURL);
+                            commentActionsDescriptions: [],
+                            commentTexts: [],
+                            commentVisibilities: [],
+                            commentPhotoURLs: [],
+                            commentTimestamps: [],
 
-                        creationDates.push(obj.timestamps.created_at);
-                        updateDates.push(obj.timestamps.updated_at);
-                    }
-                } // .map does not work since it may create "undefined" holes in output array
-                // .filter does not work since condition sits on same level as data to save
+                            commentfullObjects: [],
+                            commentAuthors: []
+                        },
+                            console.log('No relevant comments.', fullObjects)
+                        ) :
+                        // If relevant result is found, add list to state and enable selection
+                        await this.setState({
+                            commentOrgIds: orgIds,
+                            commentProjIds: projIds,
+                            commentVerIds: verIds,
+                            commentIssueIds: issueIds,
+                            commentCommenterIds: commenterIds,
 
-                // If blanks exist, this is remnant from relevant query
-                objects.includes(undefined) ?
-                    this.setState({
-                        issueList: [],
-                        issueNames: [],
-                        issueDesc: [],
-                        issueDates: [],
-                        issueURLs: [],
-                        issueImageURLs: [],
-                        issueCommentIds: [],
+                            commentActionsDescriptions: actions,
+                            commentTexts: commentTexts,
+                            commentVisibilities: visibilities,
+                            commentPhotoURLs: photoURLs,
+                            commentTimestamps: timestamps,
 
-                        issueObjectList: [],
+                            commentFullObjects: fullObjects,
+                            commentAuthors: commenterNames
+                        },
+                            () => {
+                                this.state.commentFullObjects.length > 0
+                                    ? console.log('Relevant comments found and added to state:', fullObjects)
+                                    : console.log('No comments found.')
+                            }
+                        )
+                })()
 
-                        disableIssueSelect: true // prevent select due to lack of valid choice
-                    },
-                        console.log('No relevant issues.', objects, names, descriptions, dates, URLs, comments, fullObjects)
-                    ) :
-                    // If relevant result is found, add list to state and enable selection
-                    this.setState({
-                        issueList: objects,
-                        issueNames: names,
-                        issueDesc: descriptions,
-                        issueDates: dates,
-                        issueURLs: URLs,
-                        issueImageURLs: imageURLs,
-                        issueCommentIds: comments,
-
-                        issueObjectList: fullObjects,
-
-                        disableIssueSelect: false // enables select
-                    }, console.log('Relevant issues found. Adding to state:', objects, names, descriptions, dates, URLs, comments, fullObjects)
-                    )
             })
-    }
+    }  // End of getAllComments function
 
+    // UPDATE THIS
     createComment = async () => { // works
         // (async () => {
         //     await alert('hi')
@@ -966,25 +1090,39 @@ class ManageIssue extends Component {
             organization: this.state.orgId, // ObjectId
             project: this.state.projId, // ObjectId
             version: this.state.verId, // ObjectId
-            issue: this.state.issueId, // ObjectId
+            issue: this.state.issue, // ObjectId
             commenter: this.props.userId, // ObjectId
 
-            actionDescription: ['Reported issue'],
-            comment: this.state.issueComment,
+            actionDescription: ['Commented'], // EXPAND ON THIS W PRE STATE //
+            comment: this.state.comment,
             visibility: 'Organization members and reporter',
-            avatar: this.props.photoURL
+            avatar: this.props.photoURL,
+
+            timestamps: { updated_at: this.state.selectedDate },
+            commenterName: this.props.userName
+
+            // ADD ISSUE ID TO REFS IN USER AND ISSUE?
 
         })
-            .then(() => {
-                console.log('createComment has run.');
+            .then((res) => {
+                console.log('createComment has run.', res);
+                this.getAllComments();
                 // Query relevant comments & display.
                 // await API.getComments()
-
                 // this.clearState(); 
-
             })
-        // this.props.showDashboard // forward to main view
+
+        // for (let id of this.state.commentCommenterIds) {
+        //     await this.findCommenter(id);
+        // }
+        // console.log('renderComments collected commenter names:', this.state.commentAuthors);
+
+
+        // let x = await this.state.commentFullObjects.map(function (commentObj, index) {
+        // this.findCommenter(commentObj.commenter)
     }
+    // this.props.showDashboard // forward to main view
+
 
     updateComment = async (id, data) => {
         console.log(`update proj w/ ${id} and this data:`, data)
@@ -996,6 +1134,31 @@ class ManageIssue extends Component {
             .catch(error => console.log('error occurred!', error));
     }
 
+    // renderComments = async () => {
+    //     // for (let i of this.state.commentFullObjects) {
+    //     //     console.log('RENDERING:', i)
+    //     //     return <CommentCard
+    //     //         displayName={this.findCommenter(i.commenter)}
+    //     //         photoURL={i.avatar}
+    //     //         createdAt={i.timestamps.created_at}
+    //     //         actionDesc={i[0]} // for now, just 1st action //
+    //     //         comment={i.comment}
+    //     //     />
+    //     // }
+
+    //     this.state.commentFullObjects.map(function (commentObj, index) {
+    //         console.log('RENDERING:', commentObj)
+    //         return <CommentCard
+    //             key={index}
+    //             displayName="test name"
+    //             // {this.state.commentCommenterIds[0]} // need names, not id
+    //             photoURL={commentObj.avatar}
+    //             createdAt={commentObj.timestamps.created_at}
+    //             actionDesc={commentObj.actionDescription[0]} // for now, just 1st action //
+    //             comment={commentObj.comment}
+    //         />
+    //     })
+    // }
 
     //--------------------//
     //  Lifecyle Methods  //
@@ -1025,8 +1188,9 @@ class ManageIssue extends Component {
                     <div className={classes.grouping}>
                         <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
                     </div>
+                    <Divider className={classes.divider} />
 
-                        <Divider className={classes.divider} />
+                    {/* Organization */}
                     <div className={classes.grouping}>
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel
@@ -1131,13 +1295,13 @@ class ManageIssue extends Component {
                                                 }
                                             >
                                                 {proj}
-                                                {console.log('proj list at render:', this.state.projectList[i])}
+                                                {/* {console.log('proj list at render:', this.state.projectList[i])} */}
                                             </MenuItem>
                                         }) : <br />
                                     // 'None' should not be an option. Create org first if missing.
                                 }
                             </Select>
-                            {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
+                            {/* {console.log('Disable project selection at render is:', this.state.disableProjSelect)} */}
                         </FormControl>
                         <TextField
                             id="projId"
@@ -1165,26 +1329,19 @@ class ManageIssue extends Component {
                         </InputLabel>
                             <Select
                                 labelId="demo-simple-select-outlined-label-ver"
-                                // id={this.state.orgId || "demo-simple-select-outlined"}
                                 id={"demo-simple-select-outlined-ver"}
                                 placeholder='Version / Specification'
                                 // value={this.state.verName}
                                 onChange={
-                                    // onOpen={ // doesn't work but unsure if due to choice
-                                    // this.handleFieldChange // not reading correctly?
-                                    // this.setState({ event.target.value })
                                     this.handleVerSelect
                                 }
-                            // labelWidth={'500px'}
                             >
                                 {
                                     this.state.versionNames ?
                                         this.state.versionNames.map((ver, i) => {
-                                            // this.state.versionList ? // unexpected
-                                            // Object.keys(this.state.versionList[i])[0]: 
                                             return <MenuItem
                                                 id={ver}
-                                                key={ver}
+                                                key={Math.random()}
                                                 name={ver}
                                                 value={ver}
                                                 disabled={
@@ -1192,17 +1349,16 @@ class ManageIssue extends Component {
                                                 }
                                             >
                                                 {ver}
-                                                {console.log('ver list at render:', this.state.versionList[i])}
+                                                {/* {console.log('ver list at render:', this.state.versionList[i])} */}
                                             </MenuItem>
                                         }) : <br />
                                     // 'None' should not be an option. Create org first if missing.
                                 }
                             </Select>
-                            {console.log('Disable version selection at render is:', this.state.disableVerSelect)}
+                            {/* {console.log('Disable version selection at render is:', this.state.disableVerSelect)} */}
                         </FormControl>
                         <TextField
                             id="verId"
-                            // REMEMBER, LIST IS FOR NAME BUT SAVES ID
                             disabled
                             className={classes.textField}
                             label="Version ID"
@@ -1224,14 +1380,9 @@ class ManageIssue extends Component {
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-outlined-label-issue"
-                                // id={this.state.orgId || "demo-simple-select-outlined"}
                                 id={"demo-simple-select-outlined-issue"}
                                 placeholder='Issue'
-                                // value={this.state.verName}
                                 onChange={
-                                    // onOpen={ // doesn't work but unsure if due to choice
-                                    // this.handleFieldChange // not reading correctly?
-                                    // this.setState({ event.target.value })
                                     this.handleIssueSelect
                                 }
                             // labelWidth={'500px'}
@@ -1241,7 +1392,7 @@ class ManageIssue extends Component {
                                         this.state.issueNames.map((iss, i) => {
                                             return <MenuItem
                                                 id={iss}
-                                                key={iss}
+                                                key={Math.random()}
                                                 name={iss}
                                                 value={iss}
                                                 disabled={
@@ -1249,20 +1400,22 @@ class ManageIssue extends Component {
                                                 }
                                             >
                                                 {iss}
-                                                {console.log('issue list at render:', this.state.issueList[i])}
+                                                {/* {console.log('issue list at render:', this.state.issueList[i])} */}
                                             </MenuItem>
+
+                                            debugger;
                                         }) : <br />
                                     // 'None' should not be an option. Create org first if missing.
                                 }
                             </Select>
-                            {console.log('Disable issue selection at render is:', this.state.disableIssueSelect)}
+                            {/* {console.log('Disable issue selection at render is:', this.state.disableIssueSelect)} */}
                         </FormControl>
                         <TextField
-                            id="issueId"
+                            id="issue"
                             disabled
                             label="Issue ID"
                             className={classes.textField}
-                            value={this.state.issueId}
+                            value={this.state.issue}
                             style={{ margin: 8 }}
                             margin="normal"
                             InputLabelProps={{
@@ -1297,8 +1450,6 @@ class ManageIssue extends Component {
                             label="Issue Description"
                             value={this.state.description}
                             style={{ margin: 8 }}
-                            // placeholder="Placeholder"
-                            // helperText="What seems to be the trouble?"
                             margin="normal"
                             onChange={this.handleFieldChange.bind(this)}
                             InputLabelProps={{
@@ -1390,8 +1541,7 @@ class ManageIssue extends Component {
                                 endIcon={<Icon>send</Icon>}
                                 onClick={
                                     () => {
-                                        this.createIssue();
-                                        console.log('MAKE COMMENT HERE')// this.createComment();
+                                        this.updateIssue();
                                     }
                                 }
                             > Submit
@@ -1408,16 +1558,25 @@ class ManageIssue extends Component {
                 </div>
 
                 <div className={classes.containerTwo}>
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
+                    {this.state.commentAuthors.length > 0
+                        ? this.state.commentFullObjects.reverse().map(function (commentObj, index) {
+                            // console.log('RENDERING:', commentObj)
+                            return <CommentCard
+                                key={index}
+                                displayName={commentObj.commenterName
+                                    // this.state.commentAuthors.reverse()[index]
+                                }
+                                photoURL={commentObj.avatar}
+                                createdAt={commentObj.timestamps.created_at}
+                                actionDesc={commentObj.actionDescription[0]} // for now, just 1st action //
+                                comment={commentObj.comment}
+                            />
+                        })
+
+                        // ()=>this.renderComments()
+                        : <Typography>(No Comments to Display.)</Typography>
+                    }
+
                 </div>
             </Paper>
         )

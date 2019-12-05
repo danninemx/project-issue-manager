@@ -169,6 +169,7 @@ class UserProfile extends Component {
             );
     }
 
+    // add UPDATE feature //
     saveUser = () => {
         API.createUser({
             email: this.props.email,
@@ -181,15 +182,7 @@ class UserProfile extends Component {
             userType: this.props.userType
         }).then(() => this.getUser())
 
-        // API.saveBook({
-        //     googleId: book.id,
-        //     title: book.volumeInfo.title,
-        //     subtitle: book.volumeInfo.subtitle,
-        //     link: book.volumeInfo.infoLink,
-        //     authors: book.volumeInfo.authors,
-        //     description: book.volumeInfo.description,
-        //     image: book.volumeInfo.imageLinks.thumbnail
-        //   }).then(() => this.getBooks());
+
     }
 
     componentDidUpdate() {
@@ -278,7 +271,7 @@ class UserProfile extends Component {
                         color="primary"
                         className={classes.button}
                         endIcon={<Icon>send</Icon>}
-                        onClick={() => alert('I do nothing yet')
+                        onClick={() => this.saveUser()
                             // this.createIssue
                             /*
                             // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA

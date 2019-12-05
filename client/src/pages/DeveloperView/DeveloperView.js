@@ -432,6 +432,7 @@ class DeveloperView extends Component {
         else if (newView === 'Manage Issue') {
             view = <ManageIssue
                 userId={this.state.id}
+                userName={this.state.name}
                 photoURL={this.state.photoURL}
                 isSignedIn={this.state.isSignedIn}
                 showDashboard={this.showDashboard}

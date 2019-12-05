@@ -123,6 +123,7 @@ class SubmitIssue extends Component {
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
             userId: this.props.userId,
+            userName: this.props.name,
             selectedDate: new Date(), // default is current date-time
             // .toLocaleDateString('en-US'),
 
@@ -514,6 +515,7 @@ class SubmitIssue extends Component {
         API.createIssue({
             // this.state
             reporter: this.props.userId, // ObjectId
+            reporterName: this.props.name, // displayName
 
             type: this.state.issueType,
             timing: this.state.selectedDate,
@@ -558,7 +560,8 @@ class SubmitIssue extends Component {
             actionDescription: ['Reported issue'],
             comment: this.state.issueComment,
             visibility: 'Organization members and reporter',
-            avatar: this.props.photoURL
+            avatar: this.props.photoURL,
+            commenterName: this.props.name // displayName
 
             // createdAt: new Date
 

@@ -46,6 +46,7 @@ const issueSchema = new Schema({
 
   // Developer input & view
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
+
   priority: String,
   targetResolutionDate: Date,
   potentialImpact: String,
@@ -60,8 +61,10 @@ const issueSchema = new Schema({
   // image: { type: String, required: false },
   // partImpacted: { type: String, required: false }  // which part of the project is impacted
 
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }] // sequential array
-});
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // sequential array
+
+  reporterName: String
+}); // 19 total
 
 const Issue = mongoose.model("Issue", issueSchema);
 

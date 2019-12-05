@@ -21,7 +21,9 @@ const userSchema = new Schema({
 
   // Developer type only
   affiliatedOrganization: [{ type: Schema.Types.ObjectId, ref: 'Organization' }],
-  affiliatedProject: [{ type: Schema.Types.ObjectId, ref: 'Project' }]
+  affiliatedProject: [{ type: Schema.Types.ObjectId, ref: 'Project' }],
+  affiliatedVersion: [{ type: Schema.Types.ObjectId, ref: 'Version' }],
+  affiliatedIssue: [{ type: Schema.Types.ObjectId, ref: 'Issue' }]
 });
 
 const User = mongoose.model("User", userSchema);

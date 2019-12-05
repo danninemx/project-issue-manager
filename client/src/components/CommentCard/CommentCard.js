@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { Divider } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 
+import API from '../../utils/API'
+
 const useStyles = makeStyles(theme => ({
     // card
     card: {
@@ -58,6 +60,8 @@ const useStyles = makeStyles(theme => ({
 export default function CommentCard(props) {
     const classes = useStyles();
 
+
+
     return (
         <Card className={classes.card}>
             <CardActionArea>
@@ -69,27 +73,26 @@ export default function CommentCard(props) {
                 <CardContent>
                     <div className={classes.avatarRoot}>
                         <div className={classes.avatarBlock}>
-                            <Avatar alt="Danny K."
-                                src="https://support.wwf.org.uk/sites/default/files/styles/attachment_image/public/benefit-images/lion_toy.jpg"
+                            <Avatar alt={props.displayName}
+                                src={props.photoURL}
                                 className={classes.avatar}
-                            // display='inline-block'
                             >
-                                Danny
-                                </Avatar>
-                            <Typography gutterBottom variant="h6" component="h2" display='inline'>Dan K.</Typography>
+                                {props.displayName}
+                            </Avatar>
+                            <Typography gutterBottom variant="h6" component="h2" display='inline'>{props.displayName}</Typography>
                         </div>
                         <div>
-                            <Typography>12/15/2019 12:34 PM</Typography>
+                            <Typography>{props.createdAt}</Typography>
                         </div>
                     </div>
                     <Typography display='inline' variant="subtitle1" color="textSecondary" component="p">
-                        Changed <span>XXXXXX</span> to <span className={classes.target}>YYYYYYY</span>.
-                        </Typography>
-                    <Typography display='inline' variant="subtitle2" color="textSecondary" component="p">{'\xa0\xa0'}(+3 other changes)</Typography>
+                        {props.actionDesc}
+                        {/* Changed <span>XXXXXX</span> to <span className={classes.target}>YYYYYYY</span>. */}
+                    </Typography>
+                    {/* <Typography display='inline' variant="subtitle2" color="textSecondary" component="p">{'\xa0\xa0'}(+3 other changes)</Typography> */}
                     <Divider className={classes.divider} />
                     <Typography variant="body2" color="textSecondary" component="p">
-                        Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                        across all continents except Antarctica
+                        {props.comment}
                     </Typography>
                 </CardContent>
             </CardActionArea>

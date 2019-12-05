@@ -36,8 +36,9 @@ const commentSchema = new Schema({
   timestamps: {
     created_at: { type: Date, required: true, default: Date.now },
     updated_at: { type: Date, required: false }
-  } // auto generated, shared view
+  }, // auto generated, shared view
 
+  commenterName: String
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

@@ -30,7 +30,7 @@ module.exports = {
   },
 
   updateIssue: function (req, res) {
-    console.log('\n issueController update w/ req: ', req);
+    // console.log('\n issueController update w/ req: ', req);
     console.log('\n issueController update w/ req.params: ', req.params);
     console.log('\n issueController update w/ req.params.id: ', req.params.id);
     console.log('\n issueController update w/ req.body: ', req.body);
@@ -39,12 +39,10 @@ module.exports = {
       { $set: req.body },
       { new: true },
       function (err, result) {
-        if (err) return next(err);
+        if (err) return err;
         if (result) {
           console.log('updateIssue returned: ', result)
           res.json(result);
-        } else {
-          next();
         }
       });
 

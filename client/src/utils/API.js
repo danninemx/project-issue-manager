@@ -29,6 +29,11 @@ export default {
     // return axios.get("/api/users", email);
   },
 
+  findUserById: function (id) {
+    console.log(`\n API findUserById w/ id: `, id);
+    return axios.get("/api/users/" + id);
+  },
+
   // syntax FYI
   // delete(function (req, res, next) {
   //   //Only allow deleting user without an entry

@@ -7,6 +7,11 @@ router
   .route("/")
   .get(issueController.getIssues)
   .post(issueController.createIssue)
+
+router
+  // :id
+  .route("/:id")
   .put(issueController.updateIssue)
+
 
 module.exports = router;

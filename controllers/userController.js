@@ -31,6 +31,24 @@ module.exports = {
     // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
   },
 
+  // :id
+  findOneById: function (req, res) {
+    console.log('Controller: find a user by Id')
+  db.User.findById( req.params.id )
+  .then(dbUser => {
+    console.log('findOneById returned:', dbUser)
+    res.json(dbUser)
+  })
+  .catch(err => res.status(422).json(err));
+    // function (err, resp) {
+    // if (err) return next(err);
+    // if (typeof resp === 'object') {
+    //   err = new Error("This user owns entries, remove the entries first");
+    //   err.status = 412; //precondition failed
+    //   return next(err);
+    // }
+  },
+
   // Call this to update records for user. 
   // You get to do this only if you are the developer in the org & prod for the issue.
   update: function (req, res) {
