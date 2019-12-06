@@ -71,7 +71,7 @@ app.use(routes);
 // parse application/json
 
 app.use(function (req, res) {
-  res.setHeader('Content-Type', 'text/plain')
+  // res.setHeader('Content-Type', 'text/plain') // testing to see if this is why manifest.json is being read as text
   res.write('you posted:\n')
   res.end(JSON.stringify(req.body, null, 2))
 })
