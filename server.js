@@ -34,7 +34,11 @@ server.listen(PORT, () =>
 
 app.get('/', function (req, res) {
   console.log(__dirname);
-  res.sendFile(__dirname + '/client/public/index.html');
+  if (process.env.NODE_ENV === "production") {
+    res.sendFile(__dirname + '/client/build/index.html');
+  } else {
+    res.sendFile(__dirname + '/client/public/index.html');
+  }
 });
 
 io.on('connection', function (socket) {
