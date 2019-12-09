@@ -1,9 +1,9 @@
 {
-  "short_name": "Bug Tracker",
+  "short_name": "Issue-O-Matic",
   "name": "Project Issue Manager",
   "icons": [
     {
-      "src": "book.gif",
+      "src": "bug_magnifier-128.png",
       "sizes": "64x64",
       "type": "image/png"
     }

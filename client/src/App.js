@@ -33,6 +33,7 @@ import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone';
 // Styling
 import "./App.css";
 import bgvideo from './utils/bgvideo.mp4';
+// import bgvideo from 'https://www.dropbox.com/s/nih1jqgvw29bjh0/bgvideo.mp4'; // no good
 
 // // Hashing. Later when I have to register a new user.
 // import bcrypt from 'bcrypt';
@@ -116,11 +117,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1) * 3,
   },
 
-buttonGroup: {
-  [theme.breakpoints.only('xs')]: {
-    textAlign: 'center',
-  }
-},
+  buttonGroup: {
+    [theme.breakpoints.only('xs')]: {
+      textAlign: 'center',
+    }
+  },
 
   logo: {
     color: 'secondary',
@@ -156,6 +157,10 @@ buttonGroup: {
     // maxWidth: 350,
     maxWidth: "50%",
     margin: 15,
+
+    flexGrow: 1,
+    width: 400,
+
     [theme.breakpoints.only('xs')]: {
       width: '100%',
       margin: 0,
@@ -167,13 +172,14 @@ buttonGroup: {
     margin: '0 2px',
     transform: 'scale(0.8)'
   },
-  cardTitle: {
-    marginBottom: 16,
-    fontSize: 14
-  },
+
   pos: {
     marginBottom: 12
   },
+
+  ulist: {
+    color: 'rgba(0, 0, 0, 0.54)',
+  }
 }))
 
 class App extends Component {
@@ -337,7 +343,7 @@ class App extends Component {
               }}
             >
 
-              <video id="background-video" loop autoPlay
+              <video id="background-video" loop autoPlay muted playsInline
                 style={{
                   position: 'absolute',
                   top: '0',
@@ -379,7 +385,7 @@ class App extends Component {
                   {"Issue-O-Matic"}
                 </Typography>
                 <Typography variant="h5" component="h2" color="inherit" gutterBottom className={classes.h5}>
-                  {'For all issue control needs, from submission to resolution.'}
+                  {'Your work issues, from submission to resolution.'}
                 </Typography>
 
                 <div className={classes.buttonGroup}>
@@ -413,18 +419,20 @@ class App extends Component {
                 <Card className={classes.card}>
                   <CardContent>
                     <Typography variant="h5" component="h2">
-                      What is this app?
+                      What is this?
                   </Typography>
-                    <Typography noWrap={false} color="textSecondary">
-                      <br></br>
-                      {`This is an open source bug tracker system.`}
-                      <br></br>
-                      {`It's free. Setup takes less than 5 minutes.`}
-                      <br></br>
-                      {`Whether you are reporting or fixing a bug, we got you covered. `}
+                    <br></br>
+                    <Typography color='textSecondary'>{`Open source issue tracking tool ideal for:`}</Typography>
+                    <br />
+                    <Typography color='textSecondary' component="li">SMB Incident Recorder</Typography>
+                    <Typography color='textSecondary' component="li">Bug Tracker</Typography>
+                    <Typography color='textSecondary' component="li">Customer Feedback Platform</Typography>
+                    <br />
+                    <Typography color="textSecondary">
+                      {`Simple, fast -- and completely free.`}
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  {/* <CardActions>
                     <Button
                       size="small"
                       onClick={() => {
@@ -433,27 +441,26 @@ class App extends Component {
                     >
                       Get started
                   </Button>
-                  </CardActions>
+                  </CardActions> */}
                 </Card>
                 {/* End of  */}
 
                 <Card className={classes.card}>
                   <CardContent>
                     <Typography variant="h5" component="h2">
-                      Want to test it out on desktop?
+                      How do I start?
                   </Typography>
                     <br />
-                    <Typography>{'Paste this in Node command line:'}</Typography>
+                    <Typography color='textSecondary'>{'Simply sign in with your SNS or email.'}</Typography>
                     <br />
-                    <Typography className={classes.pos} color="textSecondary">
+                    <Typography color="textSecondary">
+                      {/* className={classes.pos}  */}
+                      {'Setup takes < 5 minutes.'}
+                      <br />
                       {' '}
-                      git clone https://github.com/danninemx/project-issue-manager{' '}
-                      <br></br>
-                      {' '}
-                      npm i  #or yarn{' '}
-                      <br></br>
-                      {' '}
-                      npm start  #or yarn run start{' '}
+                      <br />
+                      Customers may report an issue to begin.
+                      <br />
                     </Typography>
                   </CardContent>
                   <CardActions>
