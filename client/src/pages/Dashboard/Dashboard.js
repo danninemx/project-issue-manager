@@ -30,9 +30,7 @@ const useStyles = makeStyles(theme => ({
   //   display: 'flex',
   // },
   cardsContent: {
-    padding: 15,
     paddingTop: '12vh',
-    // paddingLeft: 15,
     display: 'flex',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -41,7 +39,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('xs')]: {
       width: '100%',
       padding: 0,
-      // paddingTop: 15
       paddingTop: 60,
       paddingLeft: 0,
 
@@ -146,6 +143,7 @@ function Dashboard(props) {
           // console.log('date=', prettyDate)
           dates.push(prettyDate);
           times.push(prettyTime);
+          return ind; // simply avoids unhelpful msg
         })
       }
       <div className={classes.cardsContent}>
@@ -160,26 +158,7 @@ function Dashboard(props) {
             <Typography variant='h6'>
               {props.orgCount} organizations <Typography variant='body1'>and</Typography> {props.projCount} projects.
             </Typography>
-            {/* <br />
-            <Typography>
-              and
-              </Typography>
-            <br />
-            <Typography variant='h6'>
-              {props.projCount} projects.
-              {' '}</Typography> */}
           </CardContent>
-          {/* <CardActions>
-            <Button
-              size="small"
-              onClick={() => {
-                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
-                win.focus()
-              }}
-            >
-              Learn More
-          </Button>
-          </CardActions> */}
         </Card>
 
         <Card className={classes.card}>
@@ -197,17 +176,6 @@ function Dashboard(props) {
               {' '}
             </Typography>
           </CardContent>
-          {/* <CardActions>
-            <Button
-              size="small"
-              onClick={() => {
-                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
-                win.focus()
-              }}
-            >
-              Learn More
-          </Button>
-          </CardActions> */}
         </Card>
 
 

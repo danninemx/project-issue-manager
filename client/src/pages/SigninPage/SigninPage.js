@@ -148,55 +148,20 @@ class SigninPage extends Component {
 
     render() {
         return (
-            // <div className="App">
             <React.Fragment>
                 <CssBaseline />
-                <Container maxWidth="sm"
+                <Container
+                    // maxWidth="sm"
                     style={{
                         backgroundColor: '#cfe8fc'
                         , height: '100vh'
                         , width: '100vw'
+                        , textAlign: 'center',
                     }}>
-                    <Typography component="div"
-                    // style={{
-                    //     backgroundColor: '#cfe8fc'
-                    // , height: '100vh' 
-                    // }}
+                    <Typography component="div" style={{ paddingTop: '2rem'}}
                     >
                         <h3>Please sign in to proceed.</h3>
                         <h4>(If you do not have an account, one will be created for you.)</h4>
-                        {/* <Button onClick={this.props.handler}> */}
-                        {/*
-                    // this.routeChange
-                    
-                    // <Redirect
-                    //     to={{
-                    //         pathname: "/",
-                    //         state: {
-                    //             isAuthenticated: true,
-                    //             referrer: "/signinpage"
-                    //         }
-                    //     }}
-                    // />
-
-                    // this.props.history.push({
-                    //     pathname: '/',
-                    //     state: { isAuthenticated: true }
-                    // }); // redirect to LandingPage
-
-                    // console.log(this.props)
-
-                    // return <Redirect
-                    // to={{
-                    //     pathname: "/",
-                    //     state: {
-                    //         referrer: "/signinpage"
-                    //     }
-                    // }}
-                    // />
-                }>
-                */}
-                        {/* test button</Button> */}
                         {/* If auth succeeded, render DeveloperView */}
                         {this.state.isSignedIn ? (
                             <Redirect

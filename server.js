@@ -34,6 +34,7 @@ server.listen(PORT, () =>
 
 app.get('/', function (req, res) {
   console.log(__dirname);
+  // needed to allow deploy site to distinguish prod vs dev
   if (process.env.NODE_ENV === "production") {
     res.sendFile(__dirname + '/client/build/index.html');
   } else {

@@ -7,7 +7,6 @@ import {
   // useLocation, withRouter 
 } from "react-router-dom";
 // import PropTypes from 'prop-types';
-
 // import { Helmet } from 'react-helmet' // manages document head
 
 // Pages
@@ -28,36 +27,32 @@ import LockIcon from '@material-ui/icons/Lock'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-// import { withStyles } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/core/styles'
 import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone';
 
 // Styling
 import "./App.css";
-
-// import session from 'express-session';
+import bgvideo from './utils/bgvideo.mp4';
 
 // // Hashing. Later when I have to register a new user.
 // import bcrypt from 'bcrypt';
 // const saltRounds =10;
 
-// import Sidebar from "./components/Sidebar";
-// import LoginPage from "./pages/LoginPage";
 import SigninPage from "./pages/SigninPage";
 import DeveloperView from "./pages/DeveloperView";
 
 // Default style settings for Material UI
-// const styles = theme => ({ // This will cause error possibly because the outcome is not being exported anywhere using withStyles.
 const useStyles = makeStyles(theme => ({
   main: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: '100vh',
   },
   root: {
     flexGrow: 1,
-    flex: '1 0 100%'
+    // flex: '1 0 100%',
     // height: '100%',
-    // overflow: 'hidden'
+    overflow: 'cover', //'hidden',
   },
   hero: {
     height: '100%',
@@ -67,8 +62,16 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
-    color: theme.palette.type === 'light' ? theme.palette.primary.dark : theme.palette.primary.main
+    color: theme.palette.type === 'light' ? theme.palette.primary.dark : theme.palette.primary.main,
+
+    // addition for image
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // fallback
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    padding: '0 30px',
   },
+
   text: {
     display: 'flex',
     flexDirection: 'column',
@@ -97,7 +100,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   content: {
-    height: '100%',
+    height: '100vh',
+
+    opacity: '0.99',
+    backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.01), rgba(240,255,255,0.9), rgba(240,255,255,0.9), rgba(240,255,255,0.9), rgba(255,255,255,0.01))',
+
     // paddingTop: theme.spacing(1) * 8,
     [theme.breakpoints.up('sm')]: {
       paddingTop: theme.spacing(1)
@@ -108,10 +115,13 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1) * 3,
     marginRight: theme.spacing(1) * 3,
   },
-  // buttonGroup: {
-  //   marginLeft: theme.spacing(1) * 3,
-  //   marginRight: theme.spacing(1) * 3
-  // },
+
+buttonGroup: {
+  [theme.breakpoints.only('xs')]: {
+    textAlign: 'center',
+  }
+},
+
   logo: {
     color: 'secondary',
     margin: `${theme.spacing(1) * 3}px 0 ${theme.spacing(1) * 4}px`,
@@ -163,7 +173,7 @@ const useStyles = makeStyles(theme => ({
   },
   pos: {
     marginBottom: 12
-  }
+  },
 }))
 
 class App extends Component {
@@ -181,23 +191,10 @@ class App extends Component {
       isAuthenticated: false,
     };
   }
-  // state = {
-  //   user: {
-  //     email: '',
-  //     firstName: '',
-  //     lastName: '',
-  //     organization: '',
-  //     affiliatedProducts: [],
-  //   },
-  // issues: {
-  //   submitted: [],
-  //   assigned: [],
-  // },
-  // };
 
-  // This method will be sent to the child component
   handler() {
     this.setState({
+      ...this.state,
       isAuthenticated: true
     })
     alert('Welcome, user!');
@@ -206,6 +203,7 @@ class App extends Component {
 
   handleSignIn() {
     this.setState({
+      ...this.state,
       isAuthenticated: true
     })
     alert('Welcome, user!');
@@ -216,17 +214,6 @@ class App extends Component {
       isAuthenticated: false
     })
   }
-
-  // authentication = {
-  //   // isAuthenticated: true, // Once actual authentication is implemented, change this to "false".
-  //   authenticate(callback) {
-  //     this.isAuthenticated = true;
-  //   },
-  //   signout(callback) {
-  //     this.isAuthenticated = false;
-  //   }
-  // }
-
 
   ProtectedRoute = ({ children, ...rest }) => {
     return (
@@ -248,30 +235,6 @@ class App extends Component {
     );
   }
 
-  // A wrapper for <Route> that redirects to the login screen if you're not yet authenticated.
-  // ProtectedRoute = ({ children, ...rest }) => {
-  //   return (
-  //     <Route
-  //       {...rest}
-  //       // If authenticated, use the children route. If not, send to login.
-  //       render={({ location }) =>
-  //         this.state.isAuthenticated ? (
-  //           children
-  //         ) : (
-  //             <Redirect
-  //               to={{
-  //                 pathname: "/signinpage",
-  //                 state: { from: location }
-  //               }}
-  //             />
-  //           )
-  //       }
-  //     />
-  //   );
-  // }
-
-
-
   AuthenticateButton = () => {
     let history = useHistory();
 
@@ -290,27 +253,6 @@ class App extends Component {
         <p>You are not logged in.</p>
       );
   }
-
-  // LoginPage = () => {
-  //   let history = useHistory();
-  //   let location = useLocation();
-
-  //   // 
-  //   let { from } = location.state || { from: { pathname: "/" } };
-  //   let login = () => {
-  //     this.authentication.authenticate(() => {
-  //       history.replace(from);
-  //     });
-  //   };
-
-  //   return (
-  //     <div>
-  //       <p>You must log in to view the page at {from.pathname}</p>
-  //       <button onClick={login}>Log in</button>
-  //     </div>
-  //   );
-  // }
-
 
   LandingPage = ({
     // classes, 
@@ -343,11 +285,12 @@ class App extends Component {
         <title>Bug Tracker</title>
       </Helmet> */}
 
-        <AppBar position="static">
-
+        <AppBar position="sticky"// position="static"
+        >
           <Toolbar disableGutters>
+            {/* Appbar text */}
             <Typography variant="h6" className={classes.title}>
-              Project   Issue Manager
+              Issue-O-Matic
           </Typography>
             <div style={{ flex: 1 }} />
             <Tooltip id="tooltip-icon1" title="Sign in">
@@ -381,23 +324,62 @@ class App extends Component {
 
         <div className={classes.root}>
           <div className={classes.hero}>
+
+            <div className="videoContainer"
+              style={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // fallback
+
+                position: 'fixed',
+                top: '-50%',
+                left: '-50%',
+                width: '200%',
+                height: '200%',
+              }}
+            >
+
+              <video id="background-video" loop autoPlay
+                style={{
+                  position: 'absolute',
+                  top: '0',
+                  bottom: '0',
+                  right: '0',
+                  left: '0',
+                  margin: 'auto',
+                  minHeight: '50%',
+                  minWidth: '50%',
+                }}
+              // style={{ // works in standalone
+              //   position: 'fixed',
+              //   right: '0',
+              //   bottom: '0',
+              //   minWidth: '100%',
+              //   minHeight: '100%',
+              //   zIndex: '-99'
+              // }}
+              >
+                <source src={bgvideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+
+              {/* End of videoContainer */}
+            </div>
+
             <div className={classes.content}>
 
-              {/* <img src="/rmw.svg" alt="Material-UI Logo" className={classes.logo} /> */}
               <BugReportTwoToneIcon alt="Material-UI Logo" className={classes.logo} />
               <div className={classes.text}>
                 <Typography
-                  variant="h3"
+                  variant="h2"
                   align="center"
                   component="h1"
                   color="inherit"
                   gutterBottom
                   className={classes.title}
                 >
-                  {'Project Issue Manager'}
+                  {"Issue-O-Matic"}
                 </Typography>
                 <Typography variant="h5" component="h2" color="inherit" gutterBottom className={classes.h5}>
-                  {'For all bug control needs, from submission to resolution.'}
+                  {'For all issue control needs, from submission to resolution.'}
                 </Typography>
 
                 <div className={classes.buttonGroup}>
@@ -425,6 +407,7 @@ class App extends Component {
                   </Button>
                 </div>
               </div>
+              {/* End of text */}
 
               <div className={classes.cardsContent}>
                 <Card className={classes.card}>
@@ -489,20 +472,24 @@ class App extends Component {
 
               {/* End of cardsContent */}
             </div>
+
+            {/* End of hero */}
           </div>
+
+          {/* End of root */}
         </div>
-      </div>
+
+        {/* End of main */}
+      </div >
     )
   }
 
   componentDidMount = () => {
-    // console.log(' landing props: ', this.props)
-    // console.log('landing state: ', this.state)
+    console.log('did mount. State: ', this.state);
   }
 
   componentDidUpdate = () => {
-    // console.log(' landing props: ', this.props)
-    // console.log('landing state: ', this.state)
+    console.log('did update. State: ', this.state);
   }
 
   render() {
