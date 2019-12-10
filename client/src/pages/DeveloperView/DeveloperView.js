@@ -18,6 +18,9 @@ import OrganizationProfile from '../OrganizationProfile';
 import ProjectProfile from '../ProjectProfile';
 import ManageIssue from '../ManageIssue';
 
+import BottomAppBar from '../../components/BottomAppBar';
+
+
 // Auth
 import firebase from "firebase";
 
@@ -640,6 +643,7 @@ class DeveloperView extends Component {
                 <React.Fragment>
                     {/* {console.log('state in render', this.state)} */}
                     {/* {this.seed()}  // this works but wont use now */}
+                    {/* <BottomAppBar> */}
                     <Sidebar
                         activeView={this.state.activeView}
                         name={this.state.name}
@@ -653,10 +657,10 @@ class DeveloperView extends Component {
                         showProjectProfile={this.showProjectProfile}
                         showManageIssue={this.showManageIssue}
                     >
-                        {/* {this.props.children} // this works, kinda. */}
-                        {/* {this.determineView(this.props)} // doesn't work? */}
+                        {/* {this.props.children} // this works somewhat */}
                         {view}
                     </Sidebar>
+                    {/* </BottomAppBar> */}
                 </React.Fragment>
             </div>
         );

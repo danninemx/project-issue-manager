@@ -248,7 +248,7 @@ function Sidebar(props) {
   // let testprint = 10000;
   // console.log(props.context)
   return (
-    // <ViewContext.Consumer>
+
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -468,7 +468,7 @@ function Sidebar(props) {
 
       {props.children}
     </div>
-    // </ViewContext.Consumer>
+
   );
 }
 

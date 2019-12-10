@@ -45,13 +45,22 @@ const styles = theme => ({
     // const useStyles = makeStyles(theme => ({
 
     container: {
-        display: 'flex',
+        // display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         padding: theme.spacing(0, 10),
         ...theme.mixins.toolbar,
         paddingTop: '10vh',
         width: '60vw',
+
+        [theme.breakpoints.only('md')]: {
+            width: '100vw',
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: '100vw',
+            flex: 'none',
+            paddingLeft: 0,
+        },
     },
     nonAuthenticated: {
         display: 'flex',
