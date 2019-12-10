@@ -13,12 +13,12 @@ router
 router
   .route("/:id")
   .get(userController.findOneById)
-  .put(userController.update)
+  .put(userController.updateUser)
 // .delete(userController.remove)
 
 // Matches with "/api/users/:email"
-router
-  .route("/:email")
+// router
+//   .route("/:email")
 
 
 module.exports = router;

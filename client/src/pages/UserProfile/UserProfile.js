@@ -78,9 +78,11 @@ class UserProfile extends Component {
         super(props);
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
-            // name: this.props.name,
-            // email: this.props.email,
-            // type: 'Technical'
+            id: '',
+            name: '',
+            email: '',
+            userType: '',
+            photoURL: ''
         }
     }
 
@@ -96,19 +98,28 @@ class UserProfile extends Component {
             { [fieldId]: fieldValue }
         ); // this works
         // this.setState({ testObj: { [fieldId]: fieldValue } }); // not rly. keeps adding indexed
-
-        // this.setState({
-        //         testArr: [
-        //             // ...this.state.testArr, 
-        //             {
-        //                 [fieldId]: fieldValue
-        //             }
-        //         ]
-
-        //     }
-
-        // }); // 
         // console.log('handle field change :', this.state); // this will be one step slower
+    }
+
+    handleSubmit = event => {
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        // If user ID exists, update profile.  If new, create one anew.
+        (async () => {
+            if (this.props.id && this.props.id.length > 0) {
+                this.updateUser();
+            } else { this.createUser() }
+
+            await delay(500);
+
+            // redirect to landing if authenticated; root if not
+            this.props.isSignedIn
+                ? this.props.showDashboard()
+                : this.props.history.push({
+                    pathname: '/',
+                    state: { isSignedIn: false }
+                });
+        })()
     }
 
     clearState = () => {
@@ -149,7 +160,6 @@ class UserProfile extends Component {
     // };
 
     getUser = () => {
-
         // ***** This is hitting controller's getUsers, not findOneUser. //
         API.findOneUser(
             this.props.email
@@ -169,8 +179,7 @@ class UserProfile extends Component {
             );
     }
 
-    // add UPDATE feature //
-    saveUser = () => {
+    createUser = () => {
         API.createUser({
             email: this.props.email,
             displayName: this.props.name,
@@ -181,13 +190,40 @@ class UserProfile extends Component {
             photoURL: this.props.photoURL,
             userType: this.props.userType
         }).then((res) => {
-            console.log('saveUser:', res)
+            console.log('createUser:', res)
             this.getUser();
         })
         // this.props.showDashboard();
     }
 
-    // needs update feature above //
+    updateUser = () => {
+        API.updateUser({
+            email: this.props.email,
+            displayName: this.props.name,
+            // first word in display name
+            firstName: this.props.name.split(' ')[0],
+            // last word in display name
+            lastName: this.props.name.split(' ')[this.props.name.split(' ').length - 1],
+            photoURL: this.props.photoURL,
+            userType: this.props.userType
+        }).then(res => {
+            console.log('updateUser:', res)
+            this.getUser();
+        })
+    }
+
+ 
+    componentDidMount() {
+        this.setState({
+            ...this.state,
+            id: this.props.id,
+            name: this.props.name,
+            email: this.props.email,
+            userType: 'Developer', // future scope will include others
+            photoURL: this.props.photoURL
+        })
+
+    }
 
     componentDidUpdate() {
         console.log('component did update :', this.state);
@@ -226,7 +262,8 @@ class UserProfile extends Component {
                 <div className={classes.grouping}>
                     <TextField
                         id="userType"
-                        required
+                        // required
+                        disabled
                         label="User / Developer"
                         defaultValue={this.props.userType}
                         className={classes.textField}
@@ -260,14 +297,7 @@ class UserProfile extends Component {
                         color="secondary"
                         className={classes.button}
                         endIcon={<RotateLeftIcon>Reset Form</RotateLeftIcon>}
-                        onClick={
-                            // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
-                            () => {
-                                console.log('clicked reset while state is', this.state)
-                                // this.props.handleSubmitIssue()
-                                this.clearState()
-                            }
-                        }
+                        onClick={this.clearState}
                     > Reset Form
                     </Button>
                     <Button
@@ -275,53 +305,7 @@ class UserProfile extends Component {
                         color="primary"
                         className={classes.button}
                         endIcon={<Icon>send</Icon>}
-                        onClick={() => {
-                            this.saveUser();
-                            this.props.showDashboard();
-                        }
-                            // this.createIssue
-                            /*
-                            // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
-                            () => {
-                                console.log('clicked button', this.state)
-
-                                const keys = [
-                                    "type",
-                                    "organization",
-                                    "project",
-                                    "subject",
-                                    "description",
-                                    "comment",
-                                    "owner",
-
-                                    // optional in this version
-                                    "url",
-                                    "status",
-                                    "resolved",
-                                    "priority",
-                                    "targetResolutionDate",
-                                    "potentialImpact",
-                                    "image",
-                                    "partImpacted"
-                                ]
-
-                                // Loop through keys and get values
-                                // let values = keys.map(
-                                    // (key) => {
-                                for (let key of keys) {
-                                    // this.props.handleSubmitIssue(key, this.state[key]) // works
-
-                                }
-                                    // }
-                                    // console.log(this.state[key]) // works
-                                // )
-
-                                // this.props.handleSubmitIssue(values)
-
-
-                            }
-                            */
-                        }
+                        onClick={this.handleSubmit}
                     > Submit
                     </Button>
                     {/* End of button group */}
@@ -333,5 +317,4 @@ class UserProfile extends Component {
     }
 }
 
-// export default withRouter(SubmitIssue)
 export default withRouter(withStyles(styles, { withTheme: true })(UserProfile))

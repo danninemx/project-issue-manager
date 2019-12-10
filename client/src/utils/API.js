@@ -34,6 +34,11 @@ export default {
     return axios.get("/api/users/" + id);
   },
 
+  updateUser: function (id, data) {
+    console.log(`\n API updateUser w/ id: `, id);
+    return axios.put("/api/users/" + id, data);
+  },
+
   // syntax FYI
   // delete(function (req, res, next) {
   //   //Only allow deleting user without an entry

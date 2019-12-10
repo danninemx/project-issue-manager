@@ -88,22 +88,30 @@ class OrganizationProfile extends Component {
         this.setState({
             ...this.state,
             [fieldId]: fieldValue
-        }
-        ); // this works
+        }); // this works
         // this.setState({ testObj: { [fieldId]: fieldValue } }); // not rly. keeps adding indexed
-
-        // this.setState({
-        //         testArr: [
-        //             // ...this.state.testArr, 
-        //             {
-        //                 [fieldId]: fieldValue
-        //             }
-        //         ]
-
-        //     }
-
-        // }); // 
         // console.log('handle field change :', this.state); // this will be one step slower
+    }
+
+    handleSubmit = async () => { // works
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        (async () => {
+            // create org, then add affiliation
+            this.saveOrg();
+            await delay(500);
+            // this.createComment();
+            await delay(500);
+
+            // redirect to landing if authenticated; root if not
+            this.props.isSignedIn
+                ? this.props.showDashboard()
+                : this.props.history.push({
+                    pathname: '/',
+                    state: { isSignedIn: false }
+                });
+
+        })()
     }
 
     clearState = () => {
@@ -117,28 +125,11 @@ class OrganizationProfile extends Component {
             member: [this.props.id]
             // userType: 'User',
             // implement later for devs
-            // project: '',
-            // subject: '',
-            // description: '',
-            // owner: '',
-
-            // This is string here but DB stores it as array
-            // comment: '',
-
-            // optional in current scope
-            // url: '',
-            // status: '',
-            // resolved: '',
-            // priority: '',
-            // targetResolutionDate: '',
-            // potentialImpact: '',
-            // image: '',
-            // partImpacted: ''
         })
     };
 
     getAllOrgs = () => {
-        // console.log('do me')
+        // console.log('read me')
     }
 
     getOneOrg = () => {
@@ -169,8 +160,12 @@ class OrganizationProfile extends Component {
             member: [this.props.id]
         }).then((res) => {
             console.log('Org saved.', res);
-            this.props.showDashboard();
+            // this.props.showDashboard(); // done via handler
         })
+    }
+
+    addUserAffiliation = () => {
+        alert('hi')
     }
 
     componentDidUpdate() {
@@ -178,7 +173,6 @@ class OrganizationProfile extends Component {
     }
 
     render() {
-        // this.getAllOrgs();
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off" >
@@ -275,10 +269,7 @@ class OrganizationProfile extends Component {
                         color="primary"
                         className={classes.button}
                         endIcon={<Icon>send</Icon>}
-                        onClick={this.saveOrg
-                            // console.log('clicked button', this.state)
-
-                        }
+                        onClick={this.handleSubmit}
                     > Submit
                     </Button>
                 </div>
