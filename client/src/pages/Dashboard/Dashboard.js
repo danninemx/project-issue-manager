@@ -6,9 +6,11 @@ import React from 'react'
 // import Group from '@material-ui/icons/Group';
 import Card from '@material-ui/core/Card';
 // import CardActions from '@material-ui/core/CardActions';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 
 import {
   // withStyles, 
@@ -16,6 +18,10 @@ import {
   // useTheme 
 } from '@material-ui/core/styles';
 // import Link from '@material-ui/core/Link';
+
+import ChartDoughnut from '../../components/ChartDoughnut'
+import ChartHorizontalBar from '../../components/ChartHorizontalBar'
+import ChartRadar from '../../components/ChartRadar'
 
 // Other modules
 // import CountUp from 'react-countup'
@@ -25,10 +31,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   // const styles = makeStyles(theme => ({
-  // root: {
-  //   align: 'center',
-  //   display: 'flex',
-  // },
+
   cardsContent: {
     paddingTop: '12vh',
     display: 'flex',
@@ -91,6 +94,15 @@ const useStyles = makeStyles(theme => ({
 
     // display: 'inline-block',
   },
+
+  avatarRoot: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+    alignItems: 'center',
+    // justifyContent: 'flex-start'
+  },
 }))
 
 function Dashboard(props) {
@@ -116,20 +128,18 @@ function Dashboard(props) {
   */
   const classes = useStyles();
 
-  const dates = [], times = [];
+  const dates = [], times = []; // timestamps
 
-  // immediately invoke
-  // function prettify() {
-  //   props.commentObjects.map(function (obj, ind) {
-  //     let timeInMs = Date.parse(obj.timestamps.created_at);
-  //     let prettyDate = new Date(timeInMs).toLocaleDateString;
-  //     let prettyTime = new Date(timeInMs).toLocaleTimeString;
+  const backgroundColors = [];
 
-  //     dates.push(prettyDate);
-  //     times.push(prettyTime);
-  //   })
-  // }
-
+  function getRandomColor() {
+    let letters = '0123456789ABCDEF'.split('');
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
   return (
     <React.Fragment>
@@ -146,6 +156,11 @@ function Dashboard(props) {
           return ind; // simply avoids unhelpful msg
         })
       }
+      {
+        props.orgNames.map(function (val, ind) {
+          backgroundColors.push(getRandomColor())
+        })
+      }
       <div className={classes.cardsContent}>
         <Card className={classes.card}>
           <CardContent>
@@ -154,10 +169,25 @@ function Dashboard(props) {
           </Typography>
             <br />
             <Typography className={classes.pos} color="textSecondary">You are currently affiliated with:</Typography>
-            <br />
             <Typography variant='h6'>
-              {props.orgCount} organizations <Typography variant='body1'>and</Typography> {props.projCount} projects.
+              {props.orgCount} organizations <Typography display='inline' variant='body1'>and</Typography> {props.projCount} projects.
             </Typography>
+            <br />
+
+            {
+              props.projCountByOrg.length > 0 ?
+                <ChartDoughnut
+                  orgNames={props.orgNames}
+                  projNames={props.projNames}
+
+                  projCountByOrg={props.projCountByOrg}
+                  // backgroundColors={backgroundColors}
+                  backgroundColors={['red', 'orange', 'yellow', 'green']}
+                /> : null
+            }
+
+            <ChartHorizontalBar />
+
           </CardContent>
         </Card>
 
@@ -175,6 +205,8 @@ function Dashboard(props) {
               {props.issueCount} issues from your connections.
               {' '}
             </Typography>
+
+            <ChartRadar />
           </CardContent>
         </Card>
 
@@ -200,29 +232,32 @@ function Dashboard(props) {
             <br />
             {
               props.commentObjects.map(function (obj, ind) {
-                // let timeInMs = Date.parse(obj.timestamps.created_at);
-                // let prettyDate = new Date(timeInMs).toLocaleDateString;
-                // let prettyTime = new Date(timeInMs).toLocaleTimeString;
 
                 return (
                   <React.Fragment key={Math.random()}>
                     <Divider></Divider>
-                    <br></br>
-                    <Typography
-                      className={classes.pos} color="textSecondary"
-                    >
-                      {/* [ {dates[ind]}, {times[ind] }] - "{props.orgNames[ind]}"" company / {props.projNames[ind]} project / issue "{props.issueSubjects[ind]} */}
-                      [ {dates[ind]}, {times[ind]} ] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
+                    <CardActionArea>
+                      <br></br>
+                      <Typography
+                        className={classes.pos} color="textSecondary"
+                      >
+                        {/* [ {dates[ind]}, {times[ind] }] - "{props.orgNames[ind]}"" company / {props.projNames[ind]} project / issue "{props.issueSubjects[ind]} */}
+                        [ {dates[ind]}, {times[ind]} ] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
                       {/* {obj.issue} */}
-                      ":
+                        ":
                       </Typography>
 
-                    <Typography>
-                      {obj.commenterName} {obj.actionDescription[0]}
-                    </Typography>
-
-                    <Typography>"{obj.comment}"</Typography>
+                      <div className={classes.avatarRoot}>
+                        <Avatar alt={obj.commenterName} src={obj.avatar}> 
+                          {obj.displayName && obj.displayName !== 'Anonymous User' ? obj.commenterName : '?'}
+                        </Avatar>
+                        <Typography>
+                          <b>{obj.commenterName ? obj.commenterName : 'Anonymous User'}</b> {obj.actionDescription[0][0].toLowerCase() + obj.actionDescription[0].slice(1)}: <em>"{obj.comment}"</em>
+                        </Typography>
+                      </div>
                     <br />
+                    </CardActionArea>
+                    {/* <Typography>"{obj.comment}"</Typography> */}
                   </React.Fragment>
                 )
               })

@@ -122,13 +122,13 @@ class SubmitIssue extends Component {
         super(props);
         // State updater function to be passed down into the context provider per https://reactjs.org/docs/context.html
         this.state = {
-            userId: this.props.userId,
-            userName: this.props.name,
+            userId: '',// this.props.userId,
+            userName: '',//this.props.name,
             selectedDate: new Date(), // default is current date-time
             // .toLocaleDateString('en-US'),
 
-            // name: this.props.name,
-            // email: this.props.email,
+            name: '',
+            email: '',
             // type: 'Technical'
 
             // organization info
@@ -165,17 +165,13 @@ class SubmitIssue extends Component {
             // issue info
             issueSubject: '',
             issueDescription: '',
-            issueType: 'Technical',
+            issueType: '',
             issueURL: '',
             issueComment: '', // commit into array in DB
 
             issueId: '' // To be read from GET query
         }
     }
-
-    // const classes = useStyles();
-    // const theme = useTheme();
-
 
     //-------------------//
     // Handler functions //
@@ -212,7 +208,7 @@ class SubmitIssue extends Component {
     handleOrgSelect = event => {
         console.log('selected org target: ', event.target)
         // console.log(this.state.organizationNames.indexOf(event.target.value)) // check index by name
-        let ind = this.state.organizationNames.indexOf(event.target.value)
+        let ind = this.state.organizationNames.indexOf(event.target.value) // i.e. if chosen org name is in array, save its index.
         // console.log(this.state.organizationList[ind]) // shows the object at index
         // this.setState({org: event.target.value})
         // console.log(Object.keys(this.state.organizationList[ind])) // shows array containing keys from the object
@@ -221,8 +217,8 @@ class SubmitIssue extends Component {
         let selectedId = '', selectedOrgName = ''; // must initialize as string
         // If index was found, get the key. If not, keep blank.
         ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = ''
-        ind !== '' ? selectedOrgName = this.state.organizationNames[ind] : selectedOrgName = ''
-        console.log('selected org:', selectedId);
+        ind !== '' ? selectedOrgName = this.state.organizationNames[ind] : selectedOrgName = '' // Can be written to use value from selected menuitem
+        // console.log('selected org:', selectedId);
         this.setState({
             orgId: selectedId,
             orgName: selectedOrgName,
@@ -330,15 +326,33 @@ class SubmitIssue extends Component {
         })
     };
 
-    handleSubmit = async () => {
-        await this.createIssue();
-        await this.createComment();
-        this.props.isSignedIn
-            ? this.props.showDashboard()
-            : this.props.history.push({
-                pathname: '/',
-                state: { isSignedIn: false }
-            }); // redirect to LandingPage
+    handleSubmit = async () => { // works
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        (async () => {
+            // create issue, then comment
+            this.createIssue();
+            await delay(500);
+            this.createComment();
+            await delay(500);
+
+            // redirect to landing if authenticated; root if not
+            this.props.isSignedIn
+                ? this.props.showDashboard()
+                : this.props.history.push({
+                    pathname: '/',
+                    state: { isSignedIn: false }
+                });
+
+        })()
+
+
+        // this.props.isSignedIn
+        //     ? this.props.showDashboard()
+        //     : this.props.history.push({
+        //         pathname: '/',
+        //         state: { isSignedIn: false }
+        //     }); // redirect to LandingPage
 
     }
 
@@ -524,10 +538,9 @@ class SubmitIssue extends Component {
 
         // PRETTIFY DATE HERE? //
 
-        API.createIssue({
-            // this.state
-            reporter: this.props.userId, // ObjectId
-            reporterName: this.props.name, // displayName
+        let issueInput = {
+            // reporter: this.props.userId, // ObjectId. Can be missing for anonymous user.
+            // reporterName: this.props.name, // displayName. Can be missing for anonymous user.
 
             type: this.state.issueType,
             timing: this.state.selectedDate,
@@ -540,7 +553,7 @@ class SubmitIssue extends Component {
             description: this.state.issueDescription,
             url: this.state.issueURL,
             imageURL: this.state.imageURL,
-            status: this.state.status,
+            status: 'Open', //this.state.status;  If missing, treat as Open
             resolved: this.state.resolved,
 
             owner: this.state.owner, // ObjectId
@@ -553,53 +566,92 @@ class SubmitIssue extends Component {
             projectName: this.state.projName,
             versionName: this.state.verName,
             issueSubject: this.state.issueSubject
+        }
 
-        }).then((res) => {
-            this.setState({
-                ...this.state,
-                issueId: res.data._id
-            }
-                // ,    () => this.createComment()
-                , console.log('createIssue has run.', res)
-            )
-            // this.createComment() // save return issueId, then use it on new comment
-            // )
-        })
-        // .then(() => this.createComment())
+        if (this.props.isSignedIn) {
+            issueInput.reporter = this.props.userId; // ObjectId. Can be missing for anonymous user.
+            issueInput.reporterName = this.props.name; // displayName. Can be missing for anonymous user.
+        } else {
+            issueInput.reporterName = this.state.name; // if at all, typed name of non-auth user
+        }
+
+        API.createIssue(issueInput)
+            .then(res => {
+                this.setState({
+                    ...this.state,
+                    issueId: res.data._id
+                }, () => {
+                    console.log('createIssue has run.', res)
+                    // this.createComment(res.data._id); // save return issueId, then use it on new comment
+                })
+            })
     }
 
-    createComment = () => {
-        API.createComment({
+    createComment = (issueId) => {
+        // Query parameters
+        let commentInput = {
             organization: this.state.orgId, // ObjectId
             project: this.state.projId, // ObjectId
             version: this.state.verId, // ObjectId
-            issue: this.state.issueId, // ObjectId, returned at createIssue
-            commenter: this.props.userId, // ObjectId
+            issue: this.state.issueId, // ObjectId, returned by createIssue
+            // commenter: this.props.userId, // ObjectId. NOT REQUIRED to allow anonymity
 
             actionDescription: ['Reported issue'],
             comment: this.state.issueComment,
             visibility: 'Organization members and reporter',
             avatar: this.props.photoURL,
-            commenterName: this.props.name, // displayName
+            // commenterName: this.props.name, // displayName
 
             organizationName: this.state.orgName,
             projectName: this.state.projName,
             versionName: this.state.verName,
             issueSubject: this.state.issueSubject
+        }
 
-        })
+        // if (issueId) { // If passed an Id, use it.
+        //     commentInput.issue = issueId;
+        // } else {  // If not use Id in state.
+        //     commentInput.issue = this.state.issueId;
+        // }
+
+        // If authenticated user, use ID.
+        if (this.props.userId && this.props.userId.length > 0) {
+            commentInput.commenter = this.props.userId; // ObjectId
+            commentInput.commenterName = this.props.name; // displayName
+
+        } else { // If an external user, use typed name if available or default
+            commentInput.commenterName = this.state.name || 'Anonymous User';
+        }
+
+        API.createComment(commentInput)
             .then((res) => {
                 console.log('createComment has run.', res);
             })
-            .then(
-                this.props.showDashboard // forward to main view
-            )
     }
 
     //--------------------//
     //  Lifecyle Methods  //
     //--------------------//
     componentDidMount() {
+
+        if (this.props) {
+            this.setState({
+                ...this.state,
+                userId: this.props.userId,
+                userName: this.props.name,
+
+                // name: this.props.name, // used for anonymous user. review use case
+                email: this.props.email,
+
+                selectedDate: new Date(), // default is current date-time
+                disableProjSelect: true, // Boolean & string are both ok
+                disableVerSelect: 'true',
+                issueType: 'Technical'
+            })
+        } else {
+
+        }
+
         console.log('component did mount :', this.state);
         this.getAllOrgs() // adds to state the list of org objects and array of org names
     }
@@ -632,6 +684,8 @@ class SubmitIssue extends Component {
                                 defaultValue={this.props.name}
                                 margin="normal"
                                 variant="outlined"
+
+                                onChange={this.handleFieldChange.bind(this)}
                             />
                             <TextField
                                 id="email"
@@ -641,6 +695,8 @@ class SubmitIssue extends Component {
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
+
+                                onChange={this.handleFieldChange.bind(this)}
                             />
                         </React.Fragment>
                     }
@@ -754,7 +810,7 @@ class SubmitIssue extends Component {
                                             }
                                         >
                                             {proj}
-                                            {console.log('proj list at render:', this.state.projectList[i])}
+                                            {/* {console.log('proj list at render:', this.state.projectList[i])} */}
                                         </MenuItem>
                                     }) : <br />
                                 // 'None' should not be an option. Create org first if missing.
@@ -816,13 +872,13 @@ class SubmitIssue extends Component {
                                             }
                                         >
                                             {ver}
-                                            {console.log('ver list at render:', this.state.versionList[i])}
+                                            {/* {console.log('ver list at render:', this.state.versionList[i])} */}
                                         </MenuItem>
                                     }) : <br />
                                 // 'None' should not be an option. Create org first if missing.
                             }
                         </Select>
-                        {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
+                        {/* {console.log('Disable project selection at render is:', this.state.disableProjSelect)} */}
                     </FormControl>
                     <TextField
                         id="verId"

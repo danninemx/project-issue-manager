@@ -20,6 +20,11 @@ import 'date-fns';
 import CommentCard from '../../components/CommentCard'
 import Paper from '@material-ui/core/Paper';
 
+// Future scope: developer-only entry fields toggle
+// import FormGroup from '@material-ui/core/FormGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Switch from '@material-ui/core/Switch';
+
 import API from '../../utils/API';
 // import { minHeight } from '@material-ui/system';
 
@@ -100,6 +105,12 @@ const styles = theme => ({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         width: '100%',
+    },
+
+    wideTextField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: '55%',
     },
 })
 
@@ -217,6 +228,8 @@ class ManageIssue extends Component {
             imageURL: '',
             comment: '', // accept string & commit into Comment model's array
             reporterName: '',
+
+            developerMode: false, // If true, allow updates to restricted fields
 
             // also Id for org, proj & ver as ref
 
@@ -396,23 +409,23 @@ class ManageIssue extends Component {
     };
 
     handleIssueSelect = event => {
-        console.log('select issue event.target: ', event.target)
-        let ind = this.state.issueNames.indexOf(event.target.value) // get the index of selected item from array
-        let id = '';
-        let name = ''; // subject
-        let desc = '';
-        let timing = '';
-        let URL = '';
-        let ImageURL = '';
-        let Comment = ''; // ObjectId in Comment schema
-        let Reporter = '';
-        let owner = '';
-        let resolved = false;
-        let priority = '';
-        let targetRes = '';
-        let type = '';
-        let status = '';
-        let impact = '',
+        console.log('select issue event.target: ', event.target);
+        let ind = this.state.issueNames.indexOf(event.target.value); // get the index of selected item from array
+        let id = '',
+            name = '', // subject
+            desc = '',
+            timing = '',
+            URL = '',
+            ImageURL = '',
+            Comment = '', // ObjectId in Comment schema
+            Reporter = '',
+            owner = '',
+            resolved = false,
+            priority = '',
+            targetRes = '',
+            type = '',
+            status = '',
+            impact = '',
             reporterName = ''
 
         // If index was found, get the key, name and desc. For some reason not, keep blank.
@@ -426,13 +439,10 @@ class ManageIssue extends Component {
         ind !== -1 ? targetRes = this.state.issueTargetRes[ind] : targetRes = '';
 
         ind !== -1 ? type = this.state.issueTypes[ind] : type = '';
-        ind !== -1 ? status = this.state.issueStatus[ind] : status = '';
+        ind !== -1 ? status = this.state.issueStatus[ind] : status = 'Open';
         ind !== -1 ? name = this.state.issueNames[ind] : name = '';
         ind !== -1 ? desc = this.state.issueDesc[ind] : desc = '';
-        ind !== -1 ? timing = this.state.issueDates[ind]
-            // Date.parse
-            // new Date(this.state.issueDates[ind])  // convert string to Date object in ms unit
-            : timing = '';
+        ind !== -1 ? timing = this.state.issueDates[ind] : timing = '';
         ind !== -1 ? URL = this.state.issueURLs[ind] : URL = '';
         ind !== -1 ? ImageURL = this.state.issueImageURLs[ind] : ImageURL = '';
         ind !== -1 ? Comment = this.state.issueCommentIds[ind] : Comment = '';
@@ -463,6 +473,14 @@ class ManageIssue extends Component {
         },
             () => this.getAllComments())
     };
+
+    handleStatusSelect = event => {
+        // console.log('select status target: ', event.target)
+        this.setState({
+            ...this.state,
+            status: event.target.value
+        })
+    }
 
     // handleSubmit = () => {
     //     await 
@@ -946,7 +964,6 @@ class ManageIssue extends Component {
     // Comment functions //
     //-------------------//
 
-
     findCommenter = async (id) => {
         await API.findUserById(id)
             .then(res => {
@@ -966,10 +983,6 @@ class ManageIssue extends Component {
                 //     message: "No results. Please try another query."
                 // })
             );
-    }
-
-    findCommenterNames = () => {
-
     }
 
     getAllComments = async () => {
@@ -1002,8 +1015,7 @@ class ManageIssue extends Component {
                             projIds.push(obj.project);
                             verIds.push(obj.version);
                             issueIds.push(obj.issue);
-                            await commenterIds.push(obj.commenter);
-                            console.log('commenterIds:', commenterIds)
+                            await commenterIds.push(obj.commenter); // allows "undefined" from anonymous issue submit
 
                             actions.push(obj.actionDescription);
                             commentTexts.push(obj.comment);
@@ -1033,11 +1045,10 @@ class ManageIssue extends Component {
 
                     // for (let id of commenterIds) {
                     //     let val = this.findCommenter(id);
-
                     //     await commenterNames.push(val);
                     // }
 
-                    await console.log('commenterNames was filled!', commenterNames)
+                    console.log('commenterNames was filled!', commenterNames)
                     // commenterNames = await commenterIds.map(function (commenterId) {
                     //     this.findCommenter(commenterId)
                     // })
@@ -1051,7 +1062,7 @@ class ManageIssue extends Component {
                     //     commentAuthors: tempAuthors
                     // })
 
-                    // If blanks exist, this is remnant from relevant query
+                    // Blank ObjectId shouldn't exist, but if found, this is remnant from earlier test query.
                     objects.includes(undefined) ?
                         await this.setState({
                             commentOrgIds: [],
@@ -1099,7 +1110,6 @@ class ManageIssue extends Component {
             })
     }  // End of getAllComments function
 
-    // UPDATE THIS
     createComment = async () => { // works
 
         await API.createComment({
@@ -1144,16 +1154,16 @@ class ManageIssue extends Component {
     }
     // this.props.showDashboard // forward to main view
 
-
-    updateComment = async (id, data) => {
-        console.log(`update proj w/ ${id} and this data:`, data)
-        await API.updateComment(id, data)
-            .then(result => {
-                console.log('updateComment returned data: ', result.data)
-                return result
-            })
-            .catch(error => console.log('error occurred!', error));
-    }
+    // // 12/9/19 No use case at this time
+    // updateComment = async (id, data) => {
+    //     console.log(`update proj w/ ${id} and this data:`, data)
+    //     await API.updateComment(id, data)
+    //         .then(result => {
+    //             console.log('updateComment returned data: ', result.data)
+    //             return result
+    //         })
+    //         .catch(error => console.log('error occurred!', error));
+    // }
 
     // renderComments = async () => {
     //     // for (let i of this.state.commentFullObjects) {
@@ -1185,20 +1195,19 @@ class ManageIssue extends Component {
     //  Lifecyle Methods  //
     //--------------------//
     componentDidMount() {
-        // this.setState({
-        //     ...this.state,
-        //     userId: this.props.userId
-        // }, 
-        console.log('component did mount :', this.state)
-        // )
-        this.getAllOrgs() // adds to state the list of org objects and array of org names
+        this.setState({
+            ...this.state,
+            userId: this.props.userId,
+            developerMode: false, // If true, allow updates to restricted fields
+        },
+            () => {
+                console.log('component did mount :', this.state);
+                this.getAllOrgs() // adds to state the list of org objects and array of org names
+            })
     }
 
     componentDidUpdate() {
-        console.log('component did update :', this.state
-            // 'typeof this.state.selectedDate:', typeof this.state.selectedDate,
-            // 'typeof this.state.timing:', typeof this.state.timing,
-        );
+        console.log('component did update :', this.state);
     }
 
     render() {
@@ -1216,14 +1225,14 @@ class ManageIssue extends Component {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel
                                 // ref={inputLabel} 
-                                id="demo-simple-select-outlined-label-org"
+                                id="simple-select-outlined-label-org"
                                 required>
                                 Provider
                             </InputLabel>
                             <Select
-                                labelId="demo-simple-select-outlined-label-org-ManageIssue"
-                                id={"demo-simple-select-outlined-ManageIssue"}
-                                key={'demo-simple-select-outlined-ManageIssue'}
+                                labelId="simple-select-outlined-label-org-ManageIssue"
+                                id={"simple-select-outlined-ManageIssue"}
+                                key={'simple-select-outlined-ManageIssue'}
                                 placeholder='Provider Name'
                                 value={
                                     this.state.orgId !== '' ? this.state.orgId : '' // does not change display
@@ -1281,15 +1290,15 @@ class ManageIssue extends Component {
                         >
                             <InputLabel
                                 // ref={inputLabel} 
-                                id="demo-simple-select-outlined-label-proj-ManageIssue"
+                                id="simple-select-outlined-label-proj-ManageIssue"
                                 required>
                                 Project/Product
                         </InputLabel>
                             <Select
-                                labelId="demo-simple-select-outlined-label-proj-ManageIssue"
-                                // id={this.state.orgId || "demo-simple-select-outlined"}
-                                id={"demo-simple-select-outlined-proj-ManageIssue"}
-                                key={'demo-simple-select-outlined-proj-ManageIssue'}
+                                labelId="simple-select-outlined-label-proj-ManageIssue"
+                                // id={this.state.orgId || "simple-select-outlined"}
+                                id={"simple-select-outlined-proj-ManageIssue"}
+                                key={'simple-select-outlined-proj-ManageIssue'}
                                 placeholder='Project Name'
                                 // value={this.state.orgName}
                                 onChange={
@@ -1344,13 +1353,15 @@ class ManageIssue extends Component {
 
                     {/* Version */}
                     <div className={classes.grouping}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label-ver" required>
+                        <FormControl variant="outlined" className={classes.formControl}
+
+                        >
+                            <InputLabel id="simple-select-outlined-label-ver" required>
                                 Version/Specification
                         </InputLabel>
                             <Select
-                                labelId="demo-simple-select-outlined-label-ver"
-                                id={"demo-simple-select-outlined-ver"}
+                                labelId="simple-select-outlined-label-ver"
+                                id={"simple-select-outlined-ver"}
                                 placeholder='Version / Specification'
                                 // value={this.state.verName}
                                 onChange={
@@ -1396,12 +1407,12 @@ class ManageIssue extends Component {
                     {/* Issue */}
                     <div className={classes.grouping}>
                         <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label-issue" required>
+                            <InputLabel id="simple-select-outlined-label-issue" required>
                                 Issue
                             </InputLabel>
                             <Select
-                                labelId="demo-simple-select-outlined-label-issue"
-                                id={"demo-simple-select-outlined-issue"}
+                                labelId="simple-select-outlined-label-issue"
+                                id={"simple-select-outlined-issue"}
                                 placeholder='Issue'
                                 onChange={
                                     this.handleIssueSelect
@@ -1447,11 +1458,11 @@ class ManageIssue extends Component {
                         <TextField
                             id="subject"
                             // Enable update for developer+
+                            required
                             disabled={this.props.userType === 'Reporter' ? true : false}
                             fullWidth
                             multiline
                             label="Issue Subject"
-                            // placeholder="Any thoughts?"
                             value={this.state.subject}
                             // className={classes.textField}
                             margin="normal"
@@ -1481,7 +1492,7 @@ class ManageIssue extends Component {
                             disabled
                             label="Issue Type"
                             defaultValue={this.state.type}
-                            className={classes.textField}
+                            className={classes.wideTextField}
                             margin="normal"
                             variant="outlined"
                             onChange={this.handleFieldChange.bind(this)}
@@ -1503,29 +1514,49 @@ class ManageIssue extends Component {
                         // {this.state.timing} // naming seems to interfere. debug
                         handleDateChange={this.handleDateChange}
                     /> */}
+
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel id="simple-select-outlined-label-issue-status">
+                                Status
+                            </InputLabel>
+                            <Select
+                                labelId="simple-select-outlined-label-issue-status"
+                                id={"simple-select-outlined-issue-status"}
+                                placeholder='e.g. Resolved'
+                                onChange={this.handleStatusSelect}
+                                value={this.state.status}
+                            >
+                                {
+                                    this.state.issueStatusChoices ?
+                                        this.state.issueStatusChoices.map((status, i) => {
+                                            return <MenuItem
+                                                id={status}
+                                                key={Math.random()}
+                                                name={status}
+                                                value={status}
+                                                disabled={this.state.disableIssueSelect ? true : false}
+                                            >
+                                                {status}
+                                            </MenuItem>
+                                        }) : <br />
+                                    // 'None' should not be an option. Default is "Open".
+                                }
+                            </Select>
+                        </FormControl>
+
                         <TextField
                             id="url"
-                            fullWidth
+                            // fullWidth
                             label="URL"
                             // placeholder="Any thoughts?"
                             value={this.state.url}
-                            // className={classes.textField}
+                            className={classes.textField}
                             margin="normal"
                             variant="outlined"
                             onChange={this.handleFieldChange.bind(this)}
                             style={{ margin: 8 }}
                         />
-                        {/* <TextField
-                        id="imageURL" // excess separation?
-                        fullWidth
-                        label="Image URL"
-                        // placeholder="Any thoughts?"
-                        value={this.state.imageURL}
-                        // className={classes.textField}
-                        margin="normal"
-                        variant="outlined"
-                        onChange={this.handleFieldChange.bind(this)}
-                    /> */}
+
                         <TextField
                             id="comment"
                             fullWidth
@@ -1559,9 +1590,13 @@ class ManageIssue extends Component {
                                 className={classes.button}
                                 endIcon={<Icon>send</Icon>}
                                 onClick={
-                                    () => {
-                                        this.updateIssue();
-                                    }
+                                    this.updateIssue
+                                    //     this.state.issue.length > 0
+                                    //     ? async () => {
+                                    //         await this.updateIssue();
+                                    //         await this.createComment();
+                                    //     }
+                                    //     : this.createComment()
                                 }
                             > Submit
                                     </Button>

@@ -93,6 +93,8 @@ class DeveloperView extends Component {
             affiliatedProjNames: [],
             relatedIssueNames: [],
 
+            affiliatedProjCounts: [], // for charting
+
             relatedCommentObjects: []
         }
 
@@ -338,6 +340,7 @@ class DeveloperView extends Component {
                     if (org.member.includes(this.state.id)) {
                         userOrgList.push(org._id);
                         userOrgNames.push(org.name)
+                        // debugger;
                     }
                 }
                 this.setState({
@@ -361,17 +364,18 @@ class DeveloperView extends Component {
             .then(projects => {
                 // console.log('get all proj', projects);
 
-                let objects = [], names = [], descriptions = [], affiliatedProjIds = [], affiliatedProjNames = [];
+                let objects = [], names = [], descriptions = [], affiliatedProjIds = [], affiliatedProjNames = [], affiliatedProjCounts = [];
 
                 console.log('proj query:', projects.data)
                 for (let obj of projects.data) { // iterable array, so for-in does not work
 
                     for (let orgId of this.state.affiliatedOrgIds) {
                         // orgIds.includes(orgId) 
-                        console.log('obj shows:', obj.organization)
+                        // console.log('obj shows:', obj.organization)
                         if (orgId === obj.organization) {
                             affiliatedProjIds.push(obj._id);
                             affiliatedProjNames.push(obj.name);
+
 
                         }
                     }
@@ -386,7 +390,19 @@ class DeveloperView extends Component {
                 } // .map does not work since it may create "undefined" holes in output array
                 // .filter does not work since condition sits on same level as data to save
 
+                // for charting
+                for (let orgId of this.state.affiliatedOrgIds) {
 
+                    let count = 0;
+                    for (let obj of projects.data) {
+                        if (orgId === obj.organization) {
+                            count++;
+                        }
+                    }
+                    affiliatedProjCounts.push(count);
+                }
+
+                console.log('counts array:', affiliatedProjCounts);
 
                 objects.includes(undefined) ? // no longer need to check undefineds due to change above, but will leave for now
                     this.setState({
@@ -395,7 +411,9 @@ class DeveloperView extends Component {
                         projectNames: [],
                         projectDesc: [],
                         affiliatedProjIds: [],
-                        affiliatedProjNames: []
+                        affiliatedProjNames: [],
+
+                        affiliatedProjCounts: [],
                         // disableProjSelect: true // prevent proj pick due to lack of valid choice
                     },
                         console.log('No relevant project. ', objects, names, descriptions)
@@ -410,7 +428,9 @@ class DeveloperView extends Component {
                         projectDesc: descriptions,
 
                         affiliatedProjIds: affiliatedProjIds.reverse(),
-                        affiliatedProjNames: affiliatedProjNames.reverse()
+                        affiliatedProjNames: affiliatedProjNames.reverse(),
+
+                        affiliatedProjCounts: affiliatedProjCounts, // for charting
 
                         // disableProjSelect: false // enables project select
                     }
@@ -558,6 +578,8 @@ class DeveloperView extends Component {
                 orgNames={this.state.affiliatedOrgNames}
                 projNames={this.state.affiliatedProjNames}
                 issueSubjects={this.state.relatedIssueNames}
+
+                projCountByOrg={this.state.affiliatedProjCounts}
 
             />
         } else if (newView === 'Submit Issue') {

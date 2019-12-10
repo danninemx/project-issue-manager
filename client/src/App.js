@@ -385,7 +385,7 @@ class App extends Component {
                   {"Issue-O-Matic"}
                 </Typography>
                 <Typography variant="h5" component="h2" color="inherit" gutterBottom className={classes.h5}>
-                  {'Your work issues, from submission to resolution.'}
+                  {'Your project issues, from submission to resolution.'}
                 </Typography>
 
                 <div className={classes.buttonGroup}>

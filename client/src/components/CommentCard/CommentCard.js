@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     },
     avatar: {
-        display: 'inline-block',
+        // display: 'inline-block',
         marginRight: theme.spacing(2),
     },
     bigAvatar: {
@@ -63,7 +63,17 @@ const useStyles = makeStyles(theme => ({
 export default function CommentCard(props) {
     const classes = useStyles();
 
+    const dates = [], times = []; // timestamps
 
+    let timeInMs = Date.parse(props.createdAt);
+    let prettyDate = new Date(timeInMs).toLocaleDateString();
+    let prettyTime = new Date(timeInMs).toLocaleTimeString();
+
+    // console.log('time=', prettyTime)
+    // console.log('date=', prettyDate)
+    // dates.push(prettyDate);
+    // times.push(prettyTime);
+    // return ind; // simply avoids unhelpful msg
 
     return (
         <Card className={classes.card}>
@@ -80,22 +90,21 @@ export default function CommentCard(props) {
                                 src={props.photoURL}
                                 className={classes.avatar}
                             >
-                                {props.displayName}
+                                {props.displayName === 'Anonymous User' ? '?' : props.displayName}
                             </Avatar>
                             <Typography gutterBottom variant="h6" component="h2" display='inline'>{props.displayName}</Typography>
                         </div>
                         <div>
-                            <Typography>{props.createdAt}</Typography>
+                            {/* <Typography>{props.createdAt}</Typography> */}
+                            <Typography>{prettyDate}, {prettyTime}</Typography>
                         </div>
                     </div>
                     <Typography display='inline' variant="subtitle1" color="textSecondary" component="p">
                         {props.actionDesc}
-                        {/* Changed <span>XXXXXX</span> to <span className={classes.target}>YYYYYYY</span>. */}
                     </Typography>
                     {/* <Typography display='inline' variant="subtitle2" color="textSecondary" component="p">{'\xa0\xa0'}(+3 other changes)</Typography> */}
                     <Divider className={classes.divider} />
                     <Typography variant="body2" color="textSecondary" component="p"
-                    // className={classes.texts}
                     >
                         {props.comment}
                     </Typography>

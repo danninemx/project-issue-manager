@@ -6,7 +6,7 @@ const commentSchema = new Schema({
   project: { type: Schema.Types.ObjectId, ref: 'Project' },
   version: { type: Schema.Types.ObjectId, ref: 'Version' },
   issue: { type: Schema.Types.ObjectId, ref: 'Issue' },
-  commenter: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  commenter: { type: Schema.Types.ObjectId, ref: 'User' },
 
   // Dev input. Shared view
   // subject: { type: String, required: true }, //retired. too much separation
@@ -35,7 +35,8 @@ const commentSchema = new Schema({
   // timing: Date, // optional. for future scope? retired - too much separation.
   timestamps: {
     created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, required: false }
+    updated_at: { type: Date }
+    // updated_at: { type: Date, required: false }
   }, // auto generated, shared view
 
   commenterName: String,
