@@ -38,22 +38,36 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     width: '80vw',
+    // alignItems: 'flex-start', // removal matches card heights
 
-    alignItems: 'flex-start',
-
-    [theme.breakpoints.only('xs')]: {
-      width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      width: '85%',
       padding: 0,
       paddingTop: 60,
       paddingLeft: 0,
+    },
 
-    }
+    // [theme.breakpoints.only('xs')]: {
+    //   width: '100%',
+    //   padding: 0,
+    //   paddingTop: 60,
+    //   paddingLeft: 0,
+    // },
   },
   card: {
     // minWidth: "37vw",
     // maxWidth: 350,
     width: "35vw",
     margin: 15,
+
+    [theme.breakpoints.down('sm')]: {
+      // minWidth: 400,
+      width: '100%',
+      padding: 0,
+      // paddingTop: 60,
+      paddingLeft: 0,
+    },
+
     [theme.breakpoints.only('xs')]: {
       minWidth: 275,
       width: '100%',
@@ -63,6 +77,7 @@ const useStyles = makeStyles(theme => ({
     // "&:last-child": {
     //   marginTop: 25,
     // }
+
   },
   wideCard: {
     // minWidth: "90%",
