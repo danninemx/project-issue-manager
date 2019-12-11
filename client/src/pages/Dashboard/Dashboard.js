@@ -211,13 +211,11 @@ function Dashboard(props) {
               {props.orgCount} organizations <Typography display='inline' variant='body1'>and</Typography> {props.projCount} projects.
             </Typography>
             <br />
-
             {
               props.projCountByOrg.length > 0 ?
                 <ChartDoughnut
                   orgNames={props.orgNames}
                   projNames={props.projNames}
-
                   projCountByOrg={props.projCountByOrg}
                 // backgroundColors={backgroundColors} // does not load in time. Should try useEffect
                 // backgroundColors={['red', 'orange', 'yellow', 'green']}
@@ -236,17 +234,12 @@ function Dashboard(props) {
               Issue Summary
           </Typography>
             <br />
-            <Typography
-              // className={classes.pos} 
-              color="textSecondary">You currently have:</Typography>
-            <br />
+            <Typography className={classes.pos} color="textSecondary">Your network currently links you to:</Typography>
             <Typography variant='h6'>
-              {props.totalIssues} issues from your connection.
+              {props.totalIssues} open issues.{' '}
+              <Typography variant='h6' color='error' display='inline'>{props.totalNewIssues}</Typography><Typography display='inline'> are awaiting initial review.</Typography>
             </Typography>
-
-            <Typography>
-              <Typography variant='h6' color='error' display='inline'>{props.totalNewIssues} issues</Typography> are awaiting your review.
-            </Typography>
+            <br />
             {
               props.totalNewIssuesArray.length > 0 ?
                 <ChartRadar
