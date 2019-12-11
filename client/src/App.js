@@ -103,8 +103,9 @@ const useStyles = makeStyles(theme => ({
   content: {
     height: '100vh',
 
+    width: '70vw',
     opacity: '0.99',
-    backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.01), rgba(240,255,255,0.9), rgba(240,255,255,0.9), rgba(240,255,255,0.9), rgba(255,255,255,0.01))',
+    backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.01), rgba(240,255,255,0.99), rgba(240,255,255,1), rgba(240,255,255,1), rgba(240,255,255,0.99), rgba(255,255,255,0.01))',
 
     // paddingTop: theme.spacing(1) * 8,
     [theme.breakpoints.up('sm')]: {
@@ -155,11 +156,18 @@ const useStyles = makeStyles(theme => ({
   card: {
     minWidth: 275,
     // maxWidth: 350,
-    maxWidth: "50%",
-    margin: 15,
+    maxWidth: "38%",
+    margin: 25,
+    //15,
 
     flexGrow: 1,
     width: 400,
+    paddingTop: 15,
+    paddingRight: 25,
+    paddingBottom: 15,
+    paddingLeft: 25,
+
+    filter: 'drop-shadow(8px 9px 6px gray)',
 
     [theme.breakpoints.only('xs')]: {
       width: '100%',
@@ -295,7 +303,7 @@ class App extends Component {
         >
           <Toolbar disableGutters>
             {/* Appbar text */}
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={classes.title} style={{ marginLeft: 15 }}>
               Issue-O-Matic
           </Typography>
             <div style={{ flex: 1 }} />
@@ -340,6 +348,8 @@ class App extends Component {
                 left: '-50%',
                 width: '200%',
                 height: '200%',
+
+                filter: 'blur(3px)'
               }}
             >
 
@@ -409,7 +419,7 @@ class App extends Component {
                     variant="outlined"
                     color="primary"
                   >
-                    {'Log into Account'}
+                    {'Enter the Site'}
                   </Button>
                 </div>
               </div>
@@ -451,7 +461,7 @@ class App extends Component {
                       How do I start?
                   </Typography>
                     <br />
-                    <Typography color='textSecondary'>{'Simply sign in with your SNS or email.'}</Typography>
+                    <Typography color='textSecondary'>{'Sign in with your SNS/email to open an account.'}</Typography>
                     <br />
                     <Typography color="textSecondary">
                       {/* className={classes.pos}  */}
@@ -459,7 +469,7 @@ class App extends Component {
                       <br />
                       {' '}
                       <br />
-                      Customers may report an issue to begin.
+                      Customers may report an issue - even anonymously.
                       <br />
                     </Typography>
                   </CardContent>
