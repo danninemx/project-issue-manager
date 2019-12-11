@@ -236,7 +236,7 @@ function Dashboard(props) {
             <Typography className={classes.pos} color="textSecondary">Your network currently links you to:</Typography>
             <Typography variant='h6'>
               {props.totalIssues} open issues.{' '}
-              <Typography variant='h6' color='error' display='inline'>{props.totalNewIssues}</Typography><Typography display='inline'> are awaiting initial review.</Typography>
+              <Typography variant='inherit' color='error' display='inline'>{props.totalNewIssues}</Typography><Typography display='inline'> are awaiting initial review.</Typography>
             </Typography>
             <br />
             {
@@ -252,11 +252,9 @@ function Dashboard(props) {
         </Card>
 
 
-        <Card className={classes.wideCard}>
+        <Card className={classes.wideCard} key={Math.random()}>
           <CardContent>
-            <Typography variant="h5" component="h2">
-              Notifications
-          </Typography>
+            <Typography variant="h5" component="h2">Notifications</Typography>
             <br />
             {
               props.commentObjects.map(function (obj, ind) {
@@ -269,18 +267,18 @@ function Dashboard(props) {
                     {
                       // console.log('printing props.totalNewIssuesArray', props.totalNewIssuesArray)
                     }
-                    <Divider></Divider>
-                    <CardActionArea>
+                    <Divider key={Math.random()}></Divider>
+                    <CardActionArea key={Math.random()}>
                       <br></br>
-                      <Typography className={classes.pos} color="textSecondary">
+                      <Typography className={classes.pos} color="textSecondary" key={Math.random()}>
                         [ {dates[ind]}, {times[ind]} ] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
                       </Typography>
 
-                      <div className={classes.avatarRoot}>
-                        <Avatar alt={obj.commenterName} src={obj.avatar}>
+                      <div className={classes.avatarRoot} key={Math.random()}>
+                        <Avatar alt={obj.commenterName} src={obj.avatar} key={Math.random()}>
                           {obj.displayName && obj.displayName !== 'Anonymous User' ? obj.commenterName : '?'}
                         </Avatar>
-                        <Typography>
+                        <Typography key={Math.random()}>
                           <b>{obj.commenterName ? obj.commenterName : 'Anonymous User'}</b> {obj.actionDescription[0][0].toLowerCase() + obj.actionDescription[0].slice(1)}: <em>"{obj.comment}"</em>
                         </Typography>
                       </div>

@@ -14,7 +14,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import API from '../../utils/API'
+// import API from '../../utils/API'
 
 require('dotenv').config();
 // If running in non-production environment, load .env variables
