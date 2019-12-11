@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 export default function CommentCard(props) {
     const classes = useStyles();
 
-    const dates = [], times = []; // timestamps
+    // const dates = [], times = []; // timestamps // retired in favor of pretty
 
     let timeInMs = Date.parse(props.createdAt);
     let prettyDate = new Date(timeInMs).toLocaleDateString();

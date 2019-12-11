@@ -18,7 +18,7 @@ import OrganizationProfile from '../OrganizationProfile';
 import ProjectProfile from '../ProjectProfile';
 import ManageIssue from '../ManageIssue';
 
-import BottomAppBar from '../../components/BottomAppBar';
+// import BottomAppBar from '../../components/BottomAppBar';
 
 
 // Auth
@@ -98,7 +98,13 @@ class DeveloperView extends Component {
 
             affiliatedProjCounts: [], // for charting
 
-            relatedCommentObjects: []
+            relatedCommentObjects: [],
+
+            relatedIssueCountUnresolved: 0,
+            relatedIssueCountUnexamined: 0,
+
+            relatedUnresolvedIssueCountsByAffiliatedOrgId: [],
+            relatedUnexaminedIssueCountsByAffiliatedOrgId: []
         }
 
         // This allows the functions to be passed via props.
@@ -112,13 +118,6 @@ class DeveloperView extends Component {
     //-----------//
     // Functions //
     //-----------//
-
-    // test only
-    changeName = () => {
-        this.setState({ name: 'Super Dan' })
-        alert('name changed!')
-    }
-
     getUser = () => {
         API.findOneUser(
             this.props.email || this.state.email
@@ -171,53 +170,7 @@ class DeveloperView extends Component {
     }
 
     handleSubmitIssue = (key, val) => {
-        /*
-        let issue = {};
-        tempIssue = { ...this.state.issue }; // copy issue to prevent direct state update
-        console.log('copied state issue:', tempIssue)
-        if (this.state.issue.length) {
-            let keys = Object.keys(this.state.issue) // get array of keys in object
-            console.log("this issue's keys are ", keys) // array of strings            
-
-            // for (let ea in this.state.issue) { // iterate over key-value pairs in object and give value
-            // console.log('ea: ', ea) // object of key-val pairs
-            // this.handleUserSave(ea); // SAVE FULL OBJECT TO DB
-
-            for (let key in keys) { // iterate over key-value pairs in object and give value
-                // 'key' comes out ot be index num
-                console.log('For key ' + keys[key] + ', value is ', this.state.issue[keys[key]])
-                // console.log('ea[key]: ', ea[key])
-            }
-        }
-        */
-        // const keys = [
-        //     "type",
-        //     "organization",
-        //     "project",
-        //     "subject",
-        //     "description",
-        //     "comment",
-        //     "owner",
-
-        //     // optional in this version
-        //     "url",
-        //     "status",
-        //     "resolved",
-        //     "priority",
-        //     "targetResolutionDate",
-        //     "potentialImpact",
-        //     "image",
-        //     "partImpacted"
-        // ]
-
         this.setState({ [key]: val })
-        //Object.keys(this.state) // may not secure sequence
-
-        // this.setState({ arr }) // update state of "issue" with new variable "issue"
-        // this.setState({ comment: [1, 2, "3"] }) // works
-        // this.setState({ [key]: value })
-        // this.setState({testArr: arr})
-
     }
 
     // can write promise this way
@@ -253,33 +206,17 @@ class DeveloperView extends Component {
         // return nextView;
     }
 
-    // Call this to run API method saveUser
-    handleUserSave = (user) => {
-        API.createUser({
-            // "email": user[Object.keys(user)[0]],
-            // "firstName": user[Object.keys(user)[1]],
-            // "lastName": user[Object.keys(user)[2]],
-            // "photoURL": user[Object.keys(user)[3]],
-            // "submittedIssues": user[Object.keys(user)[4]],
-            // "userType": user[Object.keys(user)[5]],
-            // "affiliatedOrganization": user[Object.keys(user)[6]],
-            // "affiliatedProject": user[Object.keys(user)[7]]
-        })
-        // .then(() => this.getBooks());
+    // // Call this to run API method saveUser
+    // handleUserSave = (user) => {
+    //     API.createUser({
+    //         // "email": user[Object.keys(user)[0]],
+    //     })
+    //     // .then(() => this.getBooks());
 
-        // WILL NEED QUALIFIER LATER
-        // const user = this.state.users.find(user => user.email === email);
+    //     // WILL NEED QUALIFIER LATER
+    //     // const user = this.state.users.find(user => user.email === email);
 
-        // console.log(user[Object.keys(user)[0]]);
-        //     console.log(user[Object.keys(user)[1]]);
-        //     console.log(user[Object.keys(user)[2]]);
-        //     console.log(user[Object.keys(user)[3]]);
-        //     console.log(user[Object.keys(user)[4]]);
-        //     console.log(user[Object.keys(user)[5]]);
-        //     console.log(user[Object.keys(user)[6]]);
-        //     console.log(user[Object.keys(user)[7]])
-
-    };
+    // };
 
     checkNewUser = (authEmail) => {
         API.findOneUser(
@@ -343,7 +280,6 @@ class DeveloperView extends Component {
                     if (org.member.includes(this.state.id)) {
                         userOrgList.push(org._id);
                         userOrgNames.push(org.name)
-                        // debugger;
                     }
                 }
                 this.setState({
@@ -378,8 +314,6 @@ class DeveloperView extends Component {
                         if (orgId === obj.organization) {
                             affiliatedProjIds.push(obj._id);
                             affiliatedProjNames.push(obj.name);
-
-
                         }
                     }
 
@@ -404,9 +338,7 @@ class DeveloperView extends Component {
                     }
                     affiliatedProjCounts.push(count);
                 }
-
-                console.log('counts array:', affiliatedProjCounts);
-
+                // console.log('counts array:', affiliatedProjCounts);
                 objects.includes(undefined) ? // no longer need to check undefineds due to change above, but will leave for now
                     this.setState({
                         ...this.state,
@@ -456,30 +388,67 @@ class DeveloperView extends Component {
             .then(issues => {
                 // console.log('get all issues:', issues)
 
-                let objects = []; // ObjId-Subject pair?
+                let objects = [], // ObjId-Subject pair?
+                    relatedIssueIds = [],
+                    relatedIssueNames = [],
+                    relatedIssueCountUnresolved = 0, // for dashboard total issue count
+                    relatedIssueCountUnexamined = 0, // for dashboard total unexamined issue count
+                    relatedUnresolvedIssueCountsByAffiliatedOrgId = [],
+                    relatedUnexaminedIssueCountsByAffiliatedOrgId = [];
 
-                let relatedIssueIds = [], relatedIssueNames = [];
                 for (let obj of issues.data) { // iterable array, so for-in does not work
+                    // If issue is related to user, add to list for management and dashboard
                     if (this.state.affiliatedOrgIds.includes(obj.organization)) {
                         relatedIssueIds.push(obj._id);
                         relatedIssueNames.push(obj.subject);
-                    }
 
+                        relatedIssueCountUnresolved++;
+
+                        if (obj.status === undefined || obj.status === 'Open') {
+                            relatedIssueCountUnexamined++;
+                        }
+                    }
                 } // .map does not work since it may create "undefined" holes in output array
                 // .filter does not work since condition sits on same level as data to save
 
+                // for each affiliated org..
+                for (let affOrgId of this.state.affiliatedOrgIds) {
+                    let relevantTotalCount = 0, relevantNewCount = 0;
+
+                    for (let iss of issues.data) {
+                        if (iss.organization === affOrgId) { // if its ID matches this aff org Id..
+                            // +1 for each unresolved
+                            if (iss.status !== 'Resolved' && iss.status !== 'Closed') {
+                                relevantTotalCount++;
+                            }
+                            // +1 for each Open (unexamined)
+                            if (iss.status === 'Open'
+                                || iss.status === undefined) { // legacy rule protection
+                                relevantNewCount++;
+                            }
+                        }
+                    }
+                    relatedUnresolvedIssueCountsByAffiliatedOrgId.push(relevantTotalCount);
+                    relatedUnexaminedIssueCountsByAffiliatedOrgId.push(relevantNewCount);
+                }
+
                 // If blanks exist, this is remnant from relevant query
-                objects.includes(undefined) ?
+                objects.includes(undefined) ?  // This is not expected to occur
                     this.setState({
+                        ...this.state
                     },
-                        console.log('No relevant issues.'
-                        )
+                        console.log('No relevant issues.')
                     ) :
                     this.setState({
                         ...this.state,
                         relatedIssueIds: relatedIssueIds.reverse(),
-                        relatedIssueNames: relatedIssueNames.reverse()
+                        relatedIssueNames: relatedIssueNames.reverse(),
 
+                        relatedIssueCountUnresolved,
+                        relatedIssueCountUnexamined,
+
+                        relatedUnresolvedIssueCountsByAffiliatedOrgId,
+                        relatedUnexaminedIssueCountsByAffiliatedOrgId
                     },
                         () => {
                             console.log('Relevant issues found. Adding to state.');
@@ -498,7 +467,7 @@ class DeveloperView extends Component {
         })
             // .sort({ _id: -1 }) // descending order.
             .then(comments => {
-                console.log('get all comments:', comments);
+                // console.log('get all comments:', comments);
                 let commentObjects = []
                 for (let comment of comments.data) {
                     if (this.state.affiliatedOrgIds.includes(comment.organization)) {
@@ -547,23 +516,7 @@ class DeveloperView extends Component {
     }
 
     componentDidUpdate() {
-        // Keep using
         console.log('Did Update. State has :', this.state);
-
-        // console.log('Router passed these props :', this.props.location.state)
-        // this.state.isSignedIn
-        // ? () => { // If signed in, show state and proceed
-        //     console.log('checking router state', this.props.location.state)
-        //     console.log('main view ran auth. State:', this.state)
-        //     // this.checkNewUser(user.email) // Process new user
-        // }
-        // : () => {
-        //     console.log('You are NOT signed in.')
-        //     this.props.history.push({
-        //         pathname: '/',
-        //         state: { isSignedIn: false }
-        //     }); // redirect to LandingPage
-        // }
     }
 
     render() {
@@ -577,13 +530,21 @@ class DeveloperView extends Component {
                 projCount={this.state.affiliatedProjIds.length}
                 issueCount={this.state.relatedIssueIds.length}
                 commentObjects={this.state.relatedCommentObjects}
-
                 orgNames={this.state.affiliatedOrgNames}
+
                 projNames={this.state.affiliatedProjNames}
                 issueSubjects={this.state.relatedIssueNames}
 
                 projCountByOrg={this.state.affiliatedProjCounts}
 
+                totalIssues={this.state.relatedIssueCountUnresolved} // number
+                totalNewIssues={this.state.relatedIssueCountUnexamined}
+
+                totalIssuesArray={this.state.relatedUnresolvedIssueCountsByAffiliatedOrgId} // arr of nums
+                totalNewIssuesArray={this.state.relatedUnexaminedIssueCountsByAffiliatedOrgId}
+
+            // totalIssuesArray={}
+            // totalNewIssuesArray={}
             />
         } else if (newView === 'Submit Issue') {
             view = <SubmitIssue
@@ -635,20 +596,18 @@ class DeveloperView extends Component {
                 isSignedIn={this.state.isSignedIn}
                 showDashboard={this.showDashboard}
             />
+        } else {
+            view = <br />
         }
 
         return (
             <div>
-                {}
                 <React.Fragment>
-                    {/* {console.log('state in render', this.state)} */}
-                    {/* {this.seed()}  // this works but wont use now */}
                     {/* <BottomAppBar> */}
                     <Sidebar
                         activeView={this.state.activeView}
                         name={this.state.name}
                         userType={this.state.userType}
-                        changeName={this.changeName}
                         determineView={this.determineView}
                         showDashboard={this.showDashboard}
                         showSubmitIssue={this.showSubmitIssue}

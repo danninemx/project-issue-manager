@@ -19,7 +19,7 @@ class ChartDoughnut extends Component {
     }
 
     componentDidMount() {
-        console.log('chart received props:', this.props)
+        // console.log('chart received props:', this.props)
         this.setState({
             ...this.state,
             data: {

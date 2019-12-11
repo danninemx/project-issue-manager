@@ -16,11 +16,12 @@ class ChartRadar extends Component {
     }
 
     componentDidMount() {
-        console.log('chart received props:', this.props)
+        // console.log('chart received props:', this.props)
         this.setState({
             ...this.state,
             data: {
-                labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+                labels: this.props.orgNames,
+                // ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
                 datasets: [
                     {
                         label: 'Total Open',
@@ -30,7 +31,8 @@ class ChartRadar extends Component {
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
                         pointHoverBorderColor: 'rgba(179,181,198,1)',
-                        data: [65, 59, 90, 81, 56, 55, 40]
+                        data: this.props.totalIssueCounts
+                        // [65, 59, 90, 81, 56, 55, 40]
                     },
                     {
                         label: 'Unexamined',
@@ -40,7 +42,8 @@ class ChartRadar extends Component {
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
                         pointHoverBorderColor: 'rgba(255,99,132,1)',
-                        data: [28, 48, 40, 19, 96, 27, 100]
+                        data: this.props.totalNewIssueCounts
+                        // [28, 48, 40, 19, 96, 27, 100]
                     }
                 ]
 
@@ -49,6 +52,8 @@ class ChartRadar extends Component {
     }
 
     componentDidUpdate() {
+        // console.log('state did update:', this.state)
+        console.log('data for Total Open is now:', this.state.data.datasets[0].data)
 
     }
 

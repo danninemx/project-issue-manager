@@ -1,5 +1,5 @@
 //React
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Material UI
 // import Button from '@material-ui/core/Button';
@@ -20,7 +20,7 @@ import {
 // import Link from '@material-ui/core/Link';
 
 import ChartDoughnut from '../../components/ChartDoughnut'
-import ChartHorizontalBar from '../../components/ChartHorizontalBar'
+// import ChartHorizontalBar from '../../components/ChartHorizontalBar'
 import ChartRadar from '../../components/ChartRadar'
 
 // Other modules
@@ -38,6 +38,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     width: '80vw',
+
+    alignItems: 'flex-start',
 
     [theme.breakpoints.only('xs')]: {
       width: '100%',
@@ -91,8 +93,6 @@ const useStyles = makeStyles(theme => ({
   },
   pos: {
     marginBottom: 12,
-
-    // display: 'inline-block',
   },
 
   avatarRoot: {
@@ -141,6 +141,28 @@ function Dashboard(props) {
     return color;
   }
 
+  const totalIssueCountsArray = props.totalIssuesArray;
+
+  // const [state, setState] = useState(initialState);
+  const [totalIssueCounts, setTotalIssueCounts] = useState([]
+    // props.totalIssuesArray
+  );
+  const [totalNewIssueCounts, setTotalNewIssueCounts] = useState([]
+    // props.totalNewIssuesArray
+  );
+
+  useEffect(() => {
+    console.log('Dashboard received props:', props);
+    handleChange(props.totalIssuesArray, props.totalNewIssuesArray
+      // totalIssueCounts, totalNewIssueCounts
+    );
+  })
+
+  const handleChange = (total, totalNew) => {
+    setTotalIssueCounts(total);
+    setTotalNewIssueCounts(totalNew)
+  };
+
   return (
     <React.Fragment>
       {
@@ -153,12 +175,13 @@ function Dashboard(props) {
           // console.log('date=', prettyDate)
           dates.push(prettyDate);
           times.push(prettyTime);
-          return ind; // simply avoids unhelpful msg
+          return <></>; // simply avoids unhelpful msg
         })
       }
       {
         props.orgNames.map(function (val, ind) {
           backgroundColors.push(getRandomColor())
+          return <></>; // simply avoids unhelpful msg
         })
       }
       <div className={classes.cardsContent}>
@@ -181,12 +204,13 @@ function Dashboard(props) {
                   projNames={props.projNames}
 
                   projCountByOrg={props.projCountByOrg}
-                  // backgroundColors={backgroundColors}
-                  backgroundColors={['red', 'orange', 'yellow', 'green']}
-                /> : null
+                // backgroundColors={backgroundColors} // does not load in time. Should try useEffect
+                // backgroundColors={['red', 'orange', 'yellow', 'green']}
+                /> : <br />
+              // null
             }
 
-            <ChartHorizontalBar />
+            {/* <ChartHorizontalBar /> */}
 
           </CardContent>
         </Card>
@@ -202,11 +226,22 @@ function Dashboard(props) {
               color="textSecondary">You currently have:</Typography>
             <br />
             <Typography variant='h6'>
-              {props.issueCount} issues from your connections.
-              {' '}
+              {props.totalIssues} issues from your connection.
             </Typography>
 
-            <ChartRadar />
+            <Typography>
+              <Typography variant='h6' color='error' display='inline'>{props.totalNewIssues} issues</Typography> are awaiting your review.
+            </Typography>
+            {
+              props.totalNewIssuesArray.length > 0 ?
+                <ChartRadar
+                  orgNames={props.orgNames}
+                  totalIssueCounts={props.totalIssuesArray}
+                  totalNewIssueCounts={props.totalNewIssuesArray}
+                />
+                : <br />
+              // null
+            }
           </CardContent>
         </Card>
 
@@ -217,47 +252,34 @@ function Dashboard(props) {
               Notifications
           </Typography>
             <br />
-            {/* <Link
-              component="button"
-              variant="body1"
-              color="textPrimary"
-              onClick={() => {
-                console.log("Some accessibility message here...")
-                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
-                win.focus()
-              }}
-            >
-              {'DISPLAY AUTOMATED MESSAGES HERE (e.g. Like this)'}
-            </Link> */}
-            <br />
             {
               props.commentObjects.map(function (obj, ind) {
 
                 return (
                   <React.Fragment key={Math.random()}>
+                    {
+                      // console.log('printing props.totalIssuesArray', props.totalIssuesArray)
+                    }
+                    {
+                      // console.log('printing props.totalNewIssuesArray', props.totalNewIssuesArray)
+                    }
                     <Divider></Divider>
                     <CardActionArea>
                       <br></br>
-                      <Typography
-                        className={classes.pos} color="textSecondary"
-                      >
-                        {/* [ {dates[ind]}, {times[ind] }] - "{props.orgNames[ind]}"" company / {props.projNames[ind]} project / issue "{props.issueSubjects[ind]} */}
+                      <Typography className={classes.pos} color="textSecondary">
                         [ {dates[ind]}, {times[ind]} ] - Organization "{obj.organizationName}" / Project "{obj.projectName}" / Issue "{obj.issueSubject}"
-                      {/* {obj.issue} */}
-                        ":
                       </Typography>
 
                       <div className={classes.avatarRoot}>
-                        <Avatar alt={obj.commenterName} src={obj.avatar}> 
+                        <Avatar alt={obj.commenterName} src={obj.avatar}>
                           {obj.displayName && obj.displayName !== 'Anonymous User' ? obj.commenterName : '?'}
                         </Avatar>
                         <Typography>
                           <b>{obj.commenterName ? obj.commenterName : 'Anonymous User'}</b> {obj.actionDescription[0][0].toLowerCase() + obj.actionDescription[0].slice(1)}: <em>"{obj.comment}"</em>
                         </Typography>
                       </div>
-                    <br />
+                      <br />
                     </CardActionArea>
-                    {/* <Typography>"{obj.comment}"</Typography> */}
                   </React.Fragment>
                 )
               })

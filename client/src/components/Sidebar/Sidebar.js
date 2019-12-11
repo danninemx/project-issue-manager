@@ -118,83 +118,10 @@ const useStyles = makeStyles(theme => ({
 
 function Sidebar(props) {
 
-
-  // let user = {
-  //   name: '',
-  //   email: '',
-  //   photoUrl: '',
-  //   emailVerified: '',
-  //   uid: '', // The user's ID, unique to the Firebase project. Do NOT use
-  //   // this value to authenticate with your backend server, if
-  //   // you have one. Use User.getToken() instead.
-  //   idToken: ''
-  // }
-
-  // Get current user's info 
-
-  // firebase.auth().onAuthStateChanged(function (currentUser) {
-  //   if (currentUser) {
-  //     // User is signed in.
-  //     console.log('\n Sidebar sees user :', currentUser.displayName, currentUser.email, currentUser.photoURL, currentUser.emailVerified, currentUser.uid)
-  //     // user.name = currentUser.displayName;
-  //     // console.log('\n Saved user name initial: ', user.name);
-  //     // user.name = currentUser.displayName;
-  //     // console.log('\n Saved user name final: ', user.name);
-  //     // console.log(this.user.name); // this does not work
-
-  //     user.name = currentUser.displayName;
-  //     user.email = currentUser.email;
-  //     user.photoUrl = currentUser.photoURL;
-  //     user.emailVerified = currentUser.emailVerified;
-  //     user.idToken = currentUser.getIdToken();
-
-  //     console.log('\n Saved user info: ', user);
-  //   } else {
-  //     // No user is signed in.
-  //     console.log('\n There is no authenticated user right now.')
-  //   }
-  // })
-
-  // forcing synch
-  //     function setUserInfo () {
-  //       return new Promise(
-  //     )}
-
   const classes = useStyles();
   const theme = useTheme();
 
-  // const CustomLink = styled('link')({
-  //   textDecoration: NONAME,
-  //   color: 'primary',
-  // })
-
   const [open, setOpen] = React.useState(false);
-
-  // Keep using this
-  // console.log("\n Sidebar received these props : ", props); // Functional components use props, not this.props
-
-  // firebase.auth().onAuthStateChanged(currentUser => {currentUser.displayName} )
-
-  // console.log(' \n Sidebar sees this user outside of the firebase function :', user)
-  // On load, save user info
-  // let testuser = firebase.auth().currentUser;  //This returns null even if sign in
-  // console.log(testuser);
-  // let name, email, photoUrl, uid, emailVerified, idToken;
-
-  // console.log('\n current user: ', user)
-
-  // if (user != null) {
-  //   name = user.displayName;
-  //   email = user.email;
-  //   photoUrl = user.photoURL;
-  //   emailVerified = user.emailVerified;
-  //   uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-  //   // this value to authenticate with your backend server, if
-  //   // you have one. Use User.getToken() instead.
-  //   idToken = user.getIdToken();
-  // }
-
-  // console.log('\n Current user info: ', name, email, photoUrl, emailVerified, idToken)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -204,51 +131,7 @@ function Sidebar(props) {
     setOpen(false);
   };
 
-  // let routeChange = (newUrl) => {
-  //   this.history.push(newUrl);
-  // };
-  /*  
-    const handleClickEvent = (buttonText) => {
-      switch (buttonText) {
-        case 'Dashboard':
-          console.log('\n You clicked ', buttonText);
-          console.log('Sidebar sees props.history : ', props.history);
-          break;
-        case 'Submit Issue':
-          console.log('\n You clicked ', buttonText);
-          console.log('Sidebar sees props.history : ', props.history);
-  
-          // Per https://stackoverflow.com/questions/44121069/how-to-pass-params-with-history-push-link-redirect-in-react-router-v4
-          // props.history.push({
-          //   pathname: '/developerview',
-          //   state: { activeView: buttonText }
-          // }) 
-          // This did not work.
-  
-          // Alternative suggestion
-          // <Link to={{
-          //   pathname: '/template',
-          //   search: '?query=abc',
-          //   state: { detail: response.data }
-          // }}> My Link </Link> 
-  
-          // props.history.push("/developerview");
-          break;
-        case 'Review Issues':
-          console.log('\n You clicked ', buttonText);
-          console.log('Sidebar sees props.history : ', props.history);
-          break;
-        default:
-          console.log('What did you even click? ', buttonText);
-          console.log('Sidebar sees props.history : ', props.history);
-      }
-    }
-  */
-
-  // let testprint = 10000;
-  // console.log(props.context)
   return (
-
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -269,10 +152,7 @@ function Sidebar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.appBarHeading} noWrap>
-            {/* {props.name} */}
-            {props.activeView}
-          </Typography>
+          <Typography variant="h6" className={classes.appBarHeading} noWrap> {props.activeView} </Typography>
 
           <Toolbar disableGutters>
             <Typography variant="h6" className={classes.title}>
@@ -308,6 +188,7 @@ function Sidebar(props) {
           </Toolbar>
         </Toolbar>
       </AppBar>
+
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -386,87 +267,11 @@ function Sidebar(props) {
           }
 
         </List>
-
-
-        <Divider />
-
-        {/* 
-          {['Dashboard', 'Submit Issue', 'User Profile', 'Organization Profile', 'Project Profile'].map((text, index) => (
-            <ListItem button key={text}
-              // onClick={props.someFunction // This works.
-              onClick={
-                () => {
-                  // text === 'Submit Issue' ? props.showSubmitIssue() : props.showDashboard()
-                  switch (text) {
-                    case 'Dashboard':
-                      props.showDashboard()
-                      break;
-
-                    case 'Submit Issue':
-                      props.showSubmitIssue()
-                      break;
-
-                    case 'User Profile':
-                      props.showUserProfile()
-                      break;
-
-                    case 'Organization Profile':
-                      props.showOrganizationProfile()
-                      break;
-
-                    case 'Project Profile':
-                      props.showProjectProfile()
-                      break;
-
-                    default:
-                      console.log('I am Error')
-                  }
-                }
-
-                // onClick={props.changeName // This works.
-                // onClick={props.determineView // meh
-
-                // console.log(`\n Sidebar says you clicked ${text} `)
-                // text == 'Submit Issue' ? props.showSubmitIssue : alert('what?')
-
-                // let nextPath = '/' + text.split(' ').join('').trim().toLowerCase();
-                // console.log(`\n Sidebar says you clicked ${nextPath} `)
-                // (nextPath === '/submitissue') ? props.showSubmitIssue : false
-                // props.determineView(nextPath);
-
-                // onClick={() => console.log(props)
-                // () => {
-                // let nextPath = '/' + text.split(' ').join('').toLowerCase();
-                // console.log(`\n Sidebar says you clicked ${nextPath} `);
-
-                // props.history.push({
-                //   pathname: '/developerview',
-                //   state: { activeView: nextPath}
-                // });
-
-                // return <Redirect
-                //   to={{
-                //     pathname: "/developerview",
-                //     state: { activeView: nextPath }
-                //   }} />
-                // }
-              }
-            >
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
-        {/* </List> */}
         <Divider />
       </Drawer>
-
-      {/* <Link to={{
-          pathname: '/template',
-          search: '?query=abc',
-          state: { detail: response.data }
-        }}> My Link </Link>  */}
-
+      {/* {console.log('props.children:', props.children)} */}
       {props.children}
+
     </div>
 
   );

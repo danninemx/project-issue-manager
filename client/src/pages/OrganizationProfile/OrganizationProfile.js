@@ -164,8 +164,8 @@ class OrganizationProfile extends Component {
         })
     }
 
-    addUserAffiliation = () => {
-        alert('hi')
+    addUserAffiliation = () => { // This should add orgId to user schema
+        alert('future scope')
     }
 
     componentDidUpdate() {
