@@ -18,6 +18,7 @@ import Icon from '@material-ui/core/Icon';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Divider } from '@material-ui/core';
 
 import API from '../../utils/API';
 
@@ -68,6 +69,10 @@ const styles = theme => ({
         marginTop: theme.spacing(5),
         marginBottom: theme.spacing(15),
         width: 'inherit',
+    },
+
+    divider: {
+        margin: '20px 0 20px 0',
     },
 })
 
@@ -212,7 +217,7 @@ class UserProfile extends Component {
         })
     }
 
- 
+
     componentDidMount() {
         this.setState({
             ...this.state,
@@ -234,7 +239,11 @@ class UserProfile extends Component {
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                <div>
+                <Typography variant='body2'>Confirm the details and submit to create or update your profile. Asterisk(*) denotes required fields.</Typography>
+                <Divider className={classes.divider} />
+                </div>
+                
                 <div className={classes.grouping}>
                     <br />
                     {/* first and last name are computed, not entered */}

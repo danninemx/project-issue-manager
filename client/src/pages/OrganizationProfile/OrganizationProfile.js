@@ -18,6 +18,7 @@ import Icon from '@material-ui/core/Icon';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Divider } from '@material-ui/core';
 
 import API from '../../utils/API';
 
@@ -64,6 +65,10 @@ const styles = theme => ({
         marginTop: theme.spacing(5),
         marginBottom: theme.spacing(15),
         width: 'inherit',
+    },
+
+    divider: {
+        margin: '20px 0 20px 0',
     },
 })
 
@@ -176,7 +181,11 @@ class OrganizationProfile extends Component {
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <Typography variant='body2' style={{ marginBottom: 8 }}>Asterisk(*) denotes required fields.</Typography>
+                <div>
+                    <Typography variant='body2' style={{ marginBottom: 8 }}>Provide details about your organization and submit to save. This will be visible to <b>all users</b>.</Typography>
+                    <Divider className={classes.divider} />
+                </div>
+
                 <div className={classes.grouping}>
                     <br />
                     <TextField

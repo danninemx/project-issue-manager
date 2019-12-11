@@ -63,32 +63,32 @@ class SigninPage extends Component {
     }
     */
 
-    // *** USE THIS SOMEWHERE TO INITIATE NEW USER PROTOCOL *** //
-    checkNewUser = (authEmail) => {
-        API.findOneUser(
-            // If an email was passed, use it. If not use state.
-            authEmail || this.state.email
-        )
-            .then(res => {
-                // If user is found, save id to state. 
-                // If not, send user to user profile for user creation.
-                console.log('SigninPage is checking new user status.', res)
-                // res !== '' ? () => {
-                //     console.log('user found:', res.data)
-                //     // console.log('User found :', res.data[0]['_id']) // works
-                //     this.setState({ 'id': res.data[0]['_id'] })
-                // }
-                //     : () => {
-                //         console.log('User NOT found', res.data) // works
-                //         this.showUserProfile();
-                //     }
-            })
-            .catch(() =>
-                this.setState({
-                    message: "No results. Please try another query."
-                })
-            );
-    }
+    // *** Not in use. USE THIS SOMEWHERE TO INITIATE NEW USER PROTOCOL *** //
+    // checkNewUser = (authEmail) => {
+    //     API.findOneUser(
+    //         // If an email was passed, use it. If not use state.
+    //         authEmail || this.state.email
+    //     )
+    //         .then(res => {
+    //             // If user is found, save id to state. 
+    //             // If not, send user to user profile for user creation.
+    //             console.log('SigninPage is checking new user status.', res)
+    //             // res !== '' ? () => {
+    //             //     console.log('user found:', res.data)
+    //             //     // console.log('User found :', res.data[0]['_id']) // works
+    //             //     this.setState({ 'id': res.data[0]['_id'] })
+    //             // }
+    //             //     : () => {
+    //             //         console.log('User NOT found', res.data) // works
+    //             //         this.showUserProfile();
+    //             //     }
+    //         })
+    //         .catch(() =>
+    //             this.setState({
+    //                 message: "No results. Please try another query."
+    //             })
+    //         );
+    // }
     // state = { isSignedIn: false }; // signed out by default
 
     // Firebase UI signin configuration
@@ -158,7 +158,7 @@ class SigninPage extends Component {
                         , width: '100vw'
                         , textAlign: 'center',
                     }}>
-                    <Typography component="div" style={{ paddingTop: '2rem'}}
+                    <Typography component="div" style={{ paddingTop: '2rem' }}
                     >
                         <h3>Please sign in to proceed.</h3>
                         <h4>(If you do not have an account, one will be created for you.)</h4>
@@ -197,40 +197,3 @@ class SigninPage extends Component {
 }
 
 export default SigninPage;
-
-
-
-        // React and related libraries
-        // import React from 'react'
-// import {
-//     BrowserRouter as Router,
-//     Switch,
-//     Route,
-//     Link,
-//     Redirect,
-//     useHistory,
-//     useLocation
-// } from "react-router-dom";
-
-
-// function LoginPage() {
-//     let history = useHistory();
-//     let location = useLocation();
-
-//     let { from } = location.state || { from: { pathname: "/" } };
-//     let login = () => {
-//         authentication.authenticate(() => {
-//             history.replace(from);
-//         });
-//     };
-
-//     return (
-//         <div>
-//             <p>You must log in to view the page at {from.pathname}</p>
-//             <button onClick={login}>Log in</button>
-//         </div>
-//     );
-// }
-
-// export default LoginPage;
-// //   export default withRouter(withStyles(styles, { withTheme: true })(LoginPage))

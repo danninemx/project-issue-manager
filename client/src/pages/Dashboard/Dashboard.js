@@ -220,14 +220,13 @@ function Dashboard(props) {
                 // backgroundColors={backgroundColors} // does not load in time. Should try useEffect
                 // backgroundColors={['red', 'orange', 'yellow', 'green']}
                 /> : <br />
-              // null
             }
 
-            {/* <ChartHorizontalBar /> */}
 
           </CardContent>
         </Card>
 
+        {/* future scope: conditionally render horizontal bar instead when org count is below 3 */}
         <Card className={classes.card}>
           <CardContent>
             <Typography variant="h5" component="h2">
@@ -248,7 +247,6 @@ function Dashboard(props) {
                   totalNewIssueCounts={props.totalNewIssuesArray}
                 />
                 : <br />
-              // null
             }
           </CardContent>
         </Card>

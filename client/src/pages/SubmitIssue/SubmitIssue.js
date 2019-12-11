@@ -678,7 +678,7 @@ class SubmitIssue extends Component {
                 noValidate autoComplete="off"
             >
                 <div className={classes.grouping}>
-                    <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
+                    <Typography variant='body2'>Apply all filters, then submit the details. Asterisk(*) denotes required fields.</Typography>
                 </div>
 
                 <div className={classes.grouping}>
@@ -711,7 +711,7 @@ class SubmitIssue extends Component {
                     }
                 </div>
 
-                <Divider className={classes.divider} />
+                {/* <Divider className={classes.divider} /> */}
 
                 <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
@@ -949,9 +949,7 @@ class SubmitIssue extends Component {
                         // helperText="What seems to be the trouble?"
                         margin="normal"
                         onChange={this.handleFieldChange.bind(this)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        // InputLabelProps={{ shrink: true }}
                         variant="outlined"
                     />
                     <TextField

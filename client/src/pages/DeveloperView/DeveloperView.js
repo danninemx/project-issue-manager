@@ -219,16 +219,22 @@ class DeveloperView extends Component {
     // };
 
     checkNewUser = (authEmail) => {
-        API.findOneUser(
-            // If an email was passed, use it. If not use state.
-            authEmail || this.state.email
-        )
+        let emailAddress = '';
+        // If email was passed and is not blank, save it.
+        if (this.props.email && this.props.email !== '') {
+            emailAddress = this.props.email;
+        } else { emailAddress = this.state.email } // If not, use the address in state.
+
+        API.findOneUser(emailAddress)
             .then(res =>
                 // If user is found, save id to state. 
                 // If not, send user to user profile for user creation.
                 // console.log('checking new user status.', res)
                 res !== ''
-                    ? this.setState({ 'id': res.data[0]['_id'] }, console.log('user found:', res.data))
+                    ? this.setState({
+                        ...this.state,
+                        'id': res.data[0]['_id']
+                    }, console.log('user found:', res.data))
                     // console.log('User found :', res.data[0]['_id']) // works
                     : () => {
                         console.log('User NOT found', res.data) // works
@@ -237,6 +243,7 @@ class DeveloperView extends Component {
             )
             .catch(() =>
                 this.setState({
+                    ...this.state,
                     message: "No results. Please try another query."
                 })
             );
@@ -491,8 +498,9 @@ class DeveloperView extends Component {
     componentDidMount(props) {
         // check auth
         this.authenticate();
-        console.log('Did Mount. State =', this.state)
+        console.log('Did Mount. State:', this.state);
 
+        this.checkNewUser();
         /*
           let arr = new Array(10).fill(undefined).map((val, idx) => {
             let user = {

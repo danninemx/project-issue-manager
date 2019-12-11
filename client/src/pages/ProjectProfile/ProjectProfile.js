@@ -265,43 +265,38 @@ class ProjectProfile extends Component {
             })
     };
 
-    handleFormSubmit = (event) => {
+    handleFormSubmit = async (event) => {
+        const delay = ms => new Promise(res => setTimeout(res, ms));
 
         // Check if org ID is missing.
         this.state.orgId === ''
             // If missing, org was not selected; warn user.
             // ? this.enqueueSnackbar('You must choose an organiation first. \n If you see none, visit org profile to create one.')
-            ? console.log('choose org first. Visit org profile for creation')
-
-            // If org Id was found, check if proj ID was found.
-            : (async () => {
+            ? console.log('Choose org first. Visit org profile for creation')
+            : (() => {  // If org Id was found, check if proj ID was found.
                 this.state.projId !== ''// If proj ID is found, proj is in DB. Update it. Use ObjectId of org
-                    ? await this.updateProject(this.state.projId, {
+                    ? this.updateProject(this.state.projId, {
                         "name": this.state.projName,
                         "description": this.state.projDescription,
                         "organization": this.state.orgId
                     })
-                    :
-                    // (async function e() { return 'e' })().then( res => console.log(res + 'f') )
-
-                    // If projId is missing...
-                    (async () => {
-                        await this.createProj();  // first create proj anew to DB. wait until done.
-                    })()
+                    : // If projId is missing, create proj anew to DB..
+                    this.createProj();
             })()
-                .then( // After project process...
-                    // Check if version Id is missing.
-                    this.state.verId === ''
-                        ? this.createVer() // If verId is missing, create a new ver in DB.
-                        : // If found, version is in DB. Update it. Use ObjectId of proj
-                        this.updateVersion(this.state.verId, {
-                            "name": this.state.verName,
-                            "description": this.state.verDescription,
-                            "project": this.state.projId
-                        })
-                )
-                .then((() => this.props.showDashboard())) // Once updated, forward to main view
-                .catch(err => console.log(err))
+        await delay(500);
+
+        // Check if version Id is missing.
+        this.state.verId === '' || this.state.verId === undefined
+            ? this.createVer() // If verId is missing, create a new ver in DB.
+            : // If found, version is in DB. Update it. Use ObjectId of proj
+            this.updateVersion(this.state.verId, {
+                "name": this.state.verName,
+                "description": this.state.verDescription,
+                "project": this.state.projId
+            })
+
+        await delay(500);
+        this.props.showDashboard(); // Once updated, forward to main view
     }
 
 
@@ -337,20 +332,20 @@ class ProjectProfile extends Component {
                     // })
                 )
             })
-            .then(() => console.log('state after getAllOrg & getAllProj:', this.state))
+            // .then(() => console.log('state after getAllOrg & getAllProj:', this.state))
         // .then(() => this.getAllProj()) // query matching projects on org select
         // works but without parameters
     }
 
-    // NEEDS DUPLICATION PREVENTION
-    saveOrg = () => {
-        API.createOrganization({
-            name: this.state.orgName,
-            description: this.state.orgDescription,
-            url: this.state.orgUrl,
-            member: [this.props.id] // user Id
-        }).then(() => console.log('Org saved.'))
-    }
+    // // NEEDS DUPLICATION PREVENTION
+    // saveOrg = () => {
+    //     API.createOrganization({
+    //         name: this.state.orgName,
+    //         description: this.state.orgDescription,
+    //         url: this.state.orgUrl,
+    //         member: [this.props.id] // user Id
+    //     }).then(() => console.log('Org saved.'))
+    // }
 
     //-------------------//
     // Project functions //
@@ -363,7 +358,13 @@ class ProjectProfile extends Component {
             description: this.state.projDescription,
             organization: [this.state.orgId] // user Id
         })
-            .then((res) => console.log('Project saved.', res))
+            .then((res) => {
+                console.log('Project saved.', res.data);
+                this.setState({
+                    ...this.state,
+                    projId: res.data._id
+                })
+            })
             .catch(error => console.log(error))
             .then(() => this.getAllProj()) // refresh proj list
     }
@@ -521,9 +522,13 @@ class ProjectProfile extends Component {
 
         return (
             <form className={classes.container} noValidate autoComplete="off" >
-                <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
-                    <br />
-                    {/* Organization */}
+                <div>
+                    <Typography variant='body2'>Apply filters to load a project or version's details. If unavailable, you can provide the name to create it.</Typography>
+                    <Typography variant='body2'>Asterisk(*) denotes required fields.</Typography>
+                    <Divider className={classes.divider} />
+                </div>
+
+                {/* Organization */}
                 <div className={classes.grouping}>
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel

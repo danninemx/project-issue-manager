@@ -1216,7 +1216,7 @@ class ManageIssue extends Component {
             <Paper className={classes.topContainer}>
                 <form className={classes.containerOne} noValidate autoComplete="off" >
                     <div className={classes.grouping}>
-                        <Typography variant='body2' className={classes.textField}>Asterisk(*) denotes required fields.</Typography>
+                        <Typography variant='body2'>Apply filters to load an issue, and submit when ready to update it. Asterisk(*) denotes required fields.</Typography>
                     </div>
                     <Divider className={classes.divider} />
 
@@ -1459,7 +1459,7 @@ class ManageIssue extends Component {
                             id="subject"
                             // Enable update for developer+
                             required
-                            disabled={this.props.userType === 'Reporter' ? true : false}
+                            disabled={(this.props.userType === 'Reporter' || this.props.userType === 'User') ? true : false} // legacy protection
                             fullWidth
                             multiline
                             label="Issue Subject"
@@ -1482,9 +1482,9 @@ class ManageIssue extends Component {
                             style={{ margin: 8 }}
                             margin="normal"
                             onChange={this.handleFieldChange.bind(this)}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            // InputLabelProps={{
+                            //     shrink: true,
+                            // }}
                             variant="outlined"
                         />
                         <TextField
