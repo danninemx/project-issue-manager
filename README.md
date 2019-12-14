@@ -29,6 +29,8 @@ Primary benefits include:
 
 Project management and feedback implementation are hard and expensive. Simplify it.
 
+<p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
+
 ---
 
 ## Instructions <a name="instructions"></a>
@@ -37,13 +39,13 @@ Project management and feedback implementation are hard and expensive. Simplify 
 
 #### 1. Sign into your account
 
-Sign in using your SNS account or email address. For new users, one will be automatically generated using your email address.
+Sign in using your SNS or email address. For new users, an account will be auto-generated using the email address.
 
 After signup, set up your User Profile so your customers and coworkers know who you are.
 
 ##### (Optional)
 
-If supplying your own dedicated server, clone the repository as below and be sure to utilize the new URL with your customers and coworkers.
+If you prefer to deploy this app to your own server, clone the repository as below.
 
 ```
 git clone https://github.com/danninemx/project-issue-manager.git
@@ -55,13 +57,6 @@ npm start # or yarn run start
 
 Using the Profile tabs, provide or update details about your organizations, projects, and specifications.
 
-<!-- **[ Creating Organization ]**
-
-<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-organization-profile-screenshot01.png" alt="issue-o-matic organization profile"
-> </p> -->
-
-<!-- **[ Creating Project & Specification ]** -->
-
 <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-project-profile-screenshot01.png" alt="issue-o-matic project profile"
 > </p>
 
@@ -69,7 +64,7 @@ Using the Profile tabs, provide or update details about your organizations, proj
 
 Share the deployed link with relevant parties and seek their feedback.
 
-(If you chose to deploy this app on your own server, be sure to share that URL.)
+(If you chose to deploy this app on your own server, be sure to share that URL with your customers and coworkers.)
 
 #### 4. Update status through to resolution
 
