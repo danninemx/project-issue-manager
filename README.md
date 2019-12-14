@@ -4,8 +4,8 @@
 
 - [Overview](#overview)
 - [Instructions](#instructions)
-  - [Customers](#guide-customer)
   - [Developers](#guide-developer)
+  - [Customers](#guide-customer)
 - [Technologies](#technologies)
 - [Future Development](#future)
 - [Developer](#team)
@@ -86,7 +86,7 @@ Then using the "Manage Issues" page:
 
 ---
 
-### For Customers (Non-Developer) <a name="guide-customer"></a>
+### For Customers <a name="guide-customer"></a>
 
 #### 1. Submit your issue or feedback
 
