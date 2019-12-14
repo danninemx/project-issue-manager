@@ -18,7 +18,8 @@
 
 It helps bootstrapping developers and SMB project teams acquire developer & customer feedback and track implementation progress through QA & UAT stages as well as post-production.
 
-[image here]
+<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-screenshot01.png" alt="issue-o-matic screenshot 1"
+> </p>
 
 Primary benefits include:
 
@@ -40,7 +41,7 @@ Visit the site and click "REPORT AN ISSUE" to submit your feedback.
 
 You may do this anonymously, but signing up will allow you to track the status of your issues.
 
-<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-screenshot01.png" alt="issue-o-matic screenshot 1"
+<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-submit-issue-external-screenshot01.png" alt="issue-o-matic submit issue"
 > </p>
 
 #### 2. Review issue on site
@@ -70,12 +71,12 @@ After signup, set up your User Profile so your customers and coworkers know who 
 
 Using the Profile tabs, provide or update details about your organizations, projects, and specifications.
 
-[Organization Profile]
+<!-- **[ Creating Organization ]**
 
 <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-organization-profile-screenshot01.png" alt="issue-o-matic organization profile"
-> </p>
+> </p> -->
 
-[Project & Specification Profile]
+<!-- **[ Creating Project & Specification ]** -->
 
 <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-project-profile-screenshot01.png" alt="issue-o-matic project profile"
 > </p>
