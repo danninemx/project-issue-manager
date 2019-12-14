@@ -18,6 +18,8 @@
 
 It helps bootstrapping developers and SMB project teams acquire developer & customer feedback and track implementation progress through QA & UAT stages as well as post-production.
 
+<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-screenshot01.png" alt="issue-o-matic screenshot 1" height="640"> </p>
+
 Primary benefits include:
 
 1. No IT knowledge required to use
@@ -36,15 +38,14 @@ Skip the complex setup; jump straight to QA & User Acceptance Testing.
 
 <p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
 
-#### 1. Visitor submits an issue submission form
+#### 1. Submit your issue or feedback
 
-Visit the deployed site, to be shared by the developer.
+Visit the deployed site, as advised by your developer.
 
-A new visitor can submit an issue anonymously to a listed organization and leave.
+You may submit an issue anonymously to a listed organization.
+Signup will also allow you to follow the status of your issue.
+
 This will create a tracker on the backend and notify the organization.
-
-Upon submission, visitor will be prompted to sign up for progress updates.
-If agreed, visitor is taken to signup and subsequently to the issues dashboard.
 
 Visitors that have already signed up can log in to submit another tracked issue or check progress on one.
 
@@ -61,10 +62,10 @@ During or after the implementation of resolution, the developer would communicat
 ### For Developers <a name="guide-developer"></a>
 
 <p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
+
 #### 1. Create a developer account
 
-Sign in with your email address.
-
+Sign in with your SNS account or email address.
 If you do not yet have an account, one will be automatically generated using your email address.
 
 #### 2. Set up project details on the platform
