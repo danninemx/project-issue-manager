@@ -83,19 +83,25 @@ Using the Profile tabs, provide or update details about your organizations, proj
 
 #### 3. Request issues or feedback from customers or coworkers
 
-Analyze, Learn and Repeat.
+Share the deployed link with relevant parties and seek their feedback.
 
-The dashboard will continue to provide a high-level issue summary,
+(If you chose to deploy this app on your own server, be sure to share that URL.)
 
 #### 4. Update status through to resolution
 
 Watch the Dashboard for notifications on new issues and updates.
+
+<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-dashboard-screenshot01.png" alt="issue-o-matic dashboard"
+> </p>
 
 Using the "Manage Issues" page:
 
 1. Assess reported issue
 2. Identify owner and implement solutions
 3. Close the issue on tracker
+
+<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-manage-issue-screenshot01.png" alt="issue-o-matic manage issue"
+> </p>
 
 <p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
 
