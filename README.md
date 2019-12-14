@@ -1,8 +1,6 @@
-# Issue-O-Matic
+# <a href="https://issue-manager.herokuapp.com">Issue-O-Matic</a> <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-logo-horizontal.png/" alt="Issue-O-Matic logo" align="right" height="100"> <a name="top"></a>
 
-# <a href="https://issue-manager.herokuapp.com">Issue-O-Matic</a> <img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-logo-original.png/" alt="Issue-O-Matic logo" align="right" height="100"> <a name="top"></a>
-
-## Plans
+## Table of Contents <a name="toc"></a>
 
 - [Overview](#overview)
 - [Instructions](#instructions)
@@ -65,19 +63,11 @@ During or after the implementation of resolution, the developer would communicat
 <p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
 #### 1. Create a developer account
 
-Developer
+Sign in with your email address.
 
-visits the company dashboard.
-
-A new developer from a new organization can create an account for both the organization and him/herself.
-
-All other developers can simply log in.
-
-When an issue is submitted to an organization, it opens an issue ticket and notifies the main user(s) by email.
+If you do not yet have an account, one will be automatically generated using your email address.
 
 #### 2. Set up project details on the platform
-
-assigns and addresses issue.
 
 Developers will process the submitted issue through its lifecycle in the following general sequence:
 
