@@ -18,10 +18,9 @@
 
 It helps bootstrapping developers and SMB project teams acquire developer & customer feedback and track implementation progress through QA & UAT stages as well as post-production.
 
-<p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-recording.png" alt="issue-o-matic recording"
-> </p>
-<!-- <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-screenshot01.png" alt="issue-o-matic screenshot 1"
-> </p> -->
+---
+
+## <p align="center"><img src="https://github.com/danninemx/project-issue-manager/blob/master/client/src/images/issue-recording.gif" alt="issue-o-matic recording"> </p>
 
 Primary benefits include:
 
