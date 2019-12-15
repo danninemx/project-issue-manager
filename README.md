@@ -114,20 +114,22 @@ If signed in, you will be notified of the developers' updates to your issues dur
 
 ## Technologies <a name="technologies"></a>
 
-ch| [Chart.js](https://www.npmjs.com/package/chart.js) | Analytics |
-| [Firebase SDK](https://firebase.google.com/docs/auth?authuser=0) | Authentication |
-| [Heroku](https://heroku.com) | Hosting |
-| [Heroku Add-on: mLab MongoDB](https://elements.heroku.com/addons/mongolab) | Database |
-| [Material UI](https://material-ui.com/) | Frontend |
-| [Node.js](https://nodejs.org/en/) | JavaScript runtime environment |
-| [NPM: Axios](https://www.npmjs.com/package/axios) | API call |
-| [NPM: Express](https://www.npmjs.com/package/express) | Server |
-| [NPM: If-Env](https://www.npmjs.com/package/if-env) | Server |
-| [NPM: Mongoose](https://www.npmjs.com/package/mongoose) | Database |
-| [NPM: React-Chartjs-2](https://www.npmjs.com/package/react-chartjs-2) | Analytics |
-| [NPM: Set-Value](https://www.npmjs.com/package/set-value) | Server |
-| [React](https://github.com/facebookincubator/create-react-app) | Rendering |
-| [React Router](https://www.npmjs.com/package/react-router-dom) | Routing |
+| Technology/Dependency Used                                                 | Purpose                        |
+| -------------------------------------------------------------------------- | ------------------------------ |
+| [Chart.js](https://www.npmjs.com/package/chart.js)                         | Analytics                      |
+| [Firebase SDK](https://firebase.google.com/docs/auth?authuser=0)           | Authentication                 |
+| [Heroku](https://heroku.com)                                               | Hosting                        |
+| [Heroku Add-on: mLab MongoDB](https://elements.heroku.com/addons/mongolab) | Database                       |
+| [Material UI](https://material-ui.com/)                                    | Frontend                       |
+| [Node.js](https://nodejs.org/en/)                                          | JavaScript runtime environment |
+| [NPM: Axios](https://www.npmjs.com/package/axios)                          | API call                       |
+| [NPM: Express](https://www.npmjs.com/package/express)                      | Server                         |
+| [NPM: If-Env](https://www.npmjs.com/package/if-env)                        | Server                         |
+| [NPM: Mongoose](https://www.npmjs.com/package/mongoose)                    | Database                       |
+| [NPM: React-Chartjs-2](https://www.npmjs.com/package/react-chartjs-2)      | Analytics                      |
+| [NPM: Set-Value](https://www.npmjs.com/package/set-value)                  | Server                         |
+| [React](https://github.com/facebookincubator/create-react-app)             | Rendering                      |
+| [React Router](https://www.npmjs.com/package/react-router-dom)             | Routing                        |
 
 <p align='right'><a href='#top'><sup>[Back to Top]</sup></a></p>
 
