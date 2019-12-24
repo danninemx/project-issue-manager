@@ -296,7 +296,7 @@ class ManageIssue extends Component {
     }
 
     handleDateChange = date => {
-        console.log('handleDateChange got date:', date)
+        // console.log('handleDateChange got date:', date)
         this.setState({
             ...this.state,
             // timing: date
@@ -317,7 +317,7 @@ class ManageIssue extends Component {
         // If index was found, get the key. If not, keep blank.
         ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = '';
         ind !== '' ? selectedOrgName = this.state.organizationNames[ind] : selectedOrgName = '';
-        console.log('selected org:', selectedId);
+        // console.log('selected org:', selectedId);
         this.setState({
             ...this.state,
             orgId: selectedId,
@@ -363,12 +363,12 @@ class ManageIssue extends Component {
     };
 
     handleProjSelect = event => {
-        console.log('select proj target: ', event.target)
+        // console.log('select proj target: ', event.target)
         let ind = this.state.projectNames.indexOf(event.target.value) // index of selected item in array
         let selectedId = Object.keys(this.state.projectList[ind])[0]; // ObjectId from DB
         let selectedName = this.state.projectNames[ind]; // Name from DB
         let selectedDesc = this.state.projectDesc[ind]; // Description from DB
-        console.log('selected proj:', selectedId)
+        // console.log('selected proj:', selectedId)
         this.setState({
             ...this.state,
             projId: selectedId,
@@ -386,7 +386,7 @@ class ManageIssue extends Component {
     };
 
     handleVerSelect = event => {
-        console.log('select ver target: ', event.target)
+        // console.log('select ver target: ', event.target)
         let ind = this.state.versionNames.indexOf(event.target.value) // get the index of selected item from array
         let selectedId = '';
         let selectedName = '';
@@ -395,7 +395,7 @@ class ManageIssue extends Component {
         ind !== -1 ? selectedId = Object.keys(this.state.versionList[ind])[0] : selectedId = ''
         ind !== -1 ? selectedName = this.state.versionNames[ind] : selectedName = ''
         ind !== -1 ? selectedDesc = this.state.versionDesc[ind] : selectedDesc = ''
-        ind !== -1 ? console.log('selected vers:', selectedId) : console.log('Version index not found.')
+        // ind !== -1 ? console.log('selected vers:', selectedId) : console.log('Version index not found.')
 
         this.setState({
             ...this.state,
@@ -409,7 +409,7 @@ class ManageIssue extends Component {
     };
 
     handleIssueSelect = event => {
-        console.log('select issue event.target: ', event.target);
+        // console.log('select issue event.target: ', event.target);
         let ind = this.state.issueNames.indexOf(event.target.value); // get the index of selected item from array
         let id = '',
             name = '', // subject
@@ -430,7 +430,7 @@ class ManageIssue extends Component {
 
         // If index was found, get the key, name and desc. For some reason not, keep blank.
         ind !== -1 ? id = Object.keys(this.state.issueList[ind])[0] : id = '';
-        ind !== -1 ? console.log('selected issue Id:', id) : console.log('Issue index not found.');
+        // ind !== -1 ? console.log('selected issue Id:', id) : console.log('Issue index not found.');
 
         ind !== -1 ? Reporter = this.state.issueReporters[ind] : Reporter = '';
         ind !== -1 ? owner = this.state.issueOwners[ind] : owner = '';
@@ -627,7 +627,8 @@ class ManageIssue extends Component {
             description: this.state.orgDescription,
             url: this.state.orgUrl,
             member: [this.props.id] // user Id
-        }).then(() => console.log('Org saved.'))
+        })
+        // .then(() => console.log('Org saved.'))
     }
 
     //-------------------//
@@ -635,22 +636,22 @@ class ManageIssue extends Component {
     //-------------------//
 
     createProj = () => {  // works
-        console.log('creating new project')
+        // console.log('creating new project')
         API.createProject({
             name: this.state.projName,
             description: this.state.projDescription,
             organization: [this.state.orgId] // user Id
         })
-            .then((res) => console.log('Project saved.', res))
+            // .then((res) => console.log('Project saved.', res))
             .catch(error => console.log(error))
             .then(() => this.getAllProj()) // refresh proj list
     }
 
     updateProject = async (id, data) => { // works
-        console.log(`update proj w/ ${id} and this data:`, data)
+        // console.log(`update proj w/ ${id} and this data:`, data)
         await API.updateProject(id, data)
             .then(result => {
-                console.log('updateProject returned data: ', result.data)
+                // console.log('updateProject returned data: ', result.data)
                 return result
             })
             .catch(error => console.log('error occurred!', error));
@@ -684,8 +685,8 @@ class ManageIssue extends Component {
                         projectNames: [],
                         projectDesc: [],
                         disableProjSelect: true // prevent proj pick due to lack of valid choice
-                    },
-                        console.log('No relevant project. ', objects, names, descriptions)
+                    }
+                        // , console.log('No relevant project. ', objects, names, descriptions)
                         // console.log('No relevant project. ', o2, n2)
                     ) :
                     // If relevant projects are found, add list to state and enable project selection
@@ -697,7 +698,7 @@ class ManageIssue extends Component {
                         projectDesc: descriptions,
                         disableProjSelect: false // enables project select
                     }
-                        , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
+                        // , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
                         // , console.log('Relevant projects found. Adding to state:', o2, n2)
                     )
 
@@ -722,10 +723,10 @@ class ManageIssue extends Component {
     }
 
     updateVersion = async (id, data) => { // works
-        console.log(`update version w/ ${id} and this data:`, data)
+        // console.log(`update version w/ ${id} and this data:`, data)
         await API.updateVersion(id, data)
             .then(result => {
-                console.log('updateVersion returned data: ', result.data)
+                // console.log('updateVersion returned data: ', result.data)
                 return result
             })
             .catch(error => console.log(error));
@@ -757,8 +758,8 @@ class ManageIssue extends Component {
                         versionNames: [],
                         versionDesc: [],
                         disableVerSelect: true // prevent select due to lack of valid choice
-                    },
-                        console.log('No relevant version. ', objects, names, descriptions)
+                    }
+                        // , console.log('No relevant version. ', objects, names, descriptions)
                     ) :
                     // If relevant result is found, add list to state and enable selection
                     this.setState({
@@ -766,14 +767,15 @@ class ManageIssue extends Component {
                         versionNames: names,
                         versionDesc: descriptions,
                         disableVerSelect: false // enables select
-                    }, console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
+                    }
+                        // , console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
                     )
             })
     }
 
     getOneVer = () => {
         API.findOneVersion(this.state.verId)
-            .then(ver => console.log('get one ver', ver))
+        // .then(ver => console.log('get one ver', ver))
     }
 
     //-----------------//
@@ -786,7 +788,7 @@ class ManageIssue extends Component {
             // project: this.state.projId // may work but below logic is for unfiltered data
         })
             .then(issues => {
-                console.log('get all issues:', issues)
+                // console.log('get all issues:', issues)
                 let reporters = []
                     , owners = []
                     , resolved = []
@@ -817,7 +819,7 @@ class ManageIssue extends Component {
 
                 for (let obj of issues.data) { // iterable array, so for-in does not work
                     if (obj.version === this.state.verId) {
-                        console.log('pushing object to State issue arrays', obj);
+                        // console.log('pushing object to State issue arrays', obj);
                         reporters.push(obj.reporter);
                         owners.push(obj.owner);
                         resolved.push(obj.resolved);
@@ -838,7 +840,7 @@ class ManageIssue extends Component {
                         reporterNames.push(obj.reporterName); // displayNames
 
                         objects.push({ [obj._id]: obj.subject })
-                        console.log('issue object is now == ', objects) // key is issue ObjectId : value is issue subject
+                        // console.log('issue object is now == ', objects) // key is issue ObjectId : value is issue subject
                         fullObjects.push(obj); // full issue object
 
                         // names.push(obj.subject); // save subjects separately
@@ -877,10 +879,8 @@ class ManageIssue extends Component {
                         issueReporterNames: [],
 
                         disableIssueSelect: true // prevent select due to lack of valid choice
-                    },
-                        console.log('No relevant issues.'
-                            // , objects, names, descriptions, dates, URLs, comments, fullObjects
-                        )
+                    }
+                        // , console.log('No relevant issues.')
                     ) :
                     // If relevant result is found, add list to state and enable selection
                     this.setState({
@@ -914,9 +914,8 @@ class ManageIssue extends Component {
                         // issueCommentIds: comments,
 
 
-                    }, console.log('Relevant issues found. Adding to state.'
-                        // , objects, names, descriptions, dates, URLs, comments, fullObjects
-                    )
+                    }
+                        // , console.log('Relevant issues found. Adding to state.')
                     )
             })
     }
@@ -951,10 +950,7 @@ class ManageIssue extends Component {
             // displayNames(reporterName) does not change.
 
         }).then((res) => {
-            // this.setState({
-            //     ...this.state,
-            //     issueId: res.data._id})
-            console.log('updateIssue has run.', res);
+            // console.log('updateIssue has run.', res);
             this.createComment();
         })
 
@@ -967,7 +963,7 @@ class ManageIssue extends Component {
     findCommenter = async (id) => {
         await API.findUserById(id)
             .then(res => {
-                console.log('findCommenter returned :', res.data)
+                // console.log('findCommenter returned :', res.data)
                 return res.data.displayName
                 // let tempCommenters = this.state.commentAuthors;
                 // tempCommenters.push(res.data.displayName);
@@ -990,7 +986,7 @@ class ManageIssue extends Component {
             // project: this.state.projId // may work but below logic is for unfiltered data
         })
             .then(comments => {
-                console.log('get all comments:', comments)
+                // console.log('get all comments:', comments)
 
                 let orgIds = [], projIds = [], verIds = [], // issueIds is above
                     issueIds = [], // ObjectIds from Comment schema
@@ -1041,14 +1037,14 @@ class ManageIssue extends Component {
                     } // .map does not work since it may create "undefined" holes in output array
                     // .filter does not work since condition sits on same level as data to save
 
-                    console.log('commenterIds after:', commenterIds);
+                    // console.log('commenterIds after:', commenterIds);
 
                     // for (let id of commenterIds) {
                     //     let val = this.findCommenter(id);
                     //     await commenterNames.push(val);
                     // }
 
-                    console.log('commenterNames was filled!', commenterNames)
+                    // console.log('commenterNames was filled!', commenterNames)
                     // commenterNames = await commenterIds.map(function (commenterId) {
                     //     this.findCommenter(commenterId)
                     // })
@@ -1079,8 +1075,8 @@ class ManageIssue extends Component {
 
                             commentAuthors: [],
                             commentfullObjects: []
-                        },
-                            console.log('No relevant comments.', fullObjects)
+                        }
+                            // , console.log('No relevant comments.', fullObjects)
                         ) :
                         // If relevant result is found, add list to state and enable selection
                         await this.setState({
@@ -1098,12 +1094,12 @@ class ManageIssue extends Component {
 
                             commentAuthors: commenterNames,
                             commentFullObjects: fullObjects // the only one that matters
-                        },
-                            () => {
-                                this.state.commentFullObjects.length > 0
-                                    ? console.log('Relevant comments found and added to state:', fullObjects)
-                                    : console.log('No comments found.')
-                            }
+                        }
+                            // ,() => {
+                            //         this.state.commentFullObjects.length > 0
+                            //             ? console.log('Relevant comments found and added to state:', fullObjects)
+                            //             : console.log('No comments found.')
+                            //     }
                         )
                 })()
 
@@ -1136,7 +1132,7 @@ class ManageIssue extends Component {
 
         })
             .then((res) => {
-                console.log('createComment has run.', res);
+                // console.log('createComment has run.', res);
                 this.getAllComments();
                 // Query relevant comments & display.
                 // await API.getComments()
@@ -1201,13 +1197,13 @@ class ManageIssue extends Component {
             developerMode: false, // If true, allow updates to restricted fields
         },
             () => {
-                console.log('component did mount :', this.state);
+                // console.log('component did mount :', this.state);
                 this.getAllOrgs() // adds to state the list of org objects and array of org names
             })
     }
 
     componentDidUpdate() {
-        console.log('component did update :', this.state);
+        // console.log('component did update :', this.state);
     }
 
     render() {
@@ -1258,7 +1254,9 @@ class ManageIssue extends Component {
                                                 {org}
                                             </MenuItem>
                                         })
-                                        : () => console.log('state during MenuItem render', this.state)
+                                        : () => console.log(
+                                            // 'state during MenuItem render', this.state
+                                        )
                                     // None should not be an option. Create org first if missing.
                                 }
                             </Select>
@@ -1578,7 +1576,7 @@ class ManageIssue extends Component {
                                 endIcon={<RotateLeftIcon>Reset Form</RotateLeftIcon>}
                                 onClick={
                                     () => {
-                                        console.log('clicked reset while state is', this.state)
+                                        // console.log('clicked reset while state is', this.state)
                                         this.clearState()
                                     }
                                 }

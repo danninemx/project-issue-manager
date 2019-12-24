@@ -123,7 +123,7 @@ class DeveloperView extends Component {
             this.props.email || this.state.email
         )
             .then(res => {
-                console.log('getUser returned :', res.data)
+                // console.log('getUser returned :', res.data)
                 res.data // If user data was returned, add to state.
                     ? this.setState({
                         ...this.state,
@@ -131,7 +131,9 @@ class DeveloperView extends Component {
                     },
                         this.getUserOrgs() // use the id to get affiliated orgs
                     )
-                    : console.log('Email not found in DB!', res.data)
+                    : console.log('Email not found in DB!'
+                        // , res.data
+                    )
             })
             .catch(() =>
                 this.setState({
@@ -234,10 +236,12 @@ class DeveloperView extends Component {
                     ? this.setState({
                         ...this.state,
                         'id': res.data[0]['_id']
-                    }, console.log('user found:', res.data))
+                    }
+                        // , console.log('user found:', res.data)
+                    )
                     // console.log('User found :', res.data[0]['_id']) // works
                     : () => {
-                        console.log('User NOT found', res.data) // works
+                        // console.log('User NOT found', res.data) // works
                         this.showUserProfile();
                     }
             )
@@ -263,7 +267,7 @@ class DeveloperView extends Component {
                 idToken: user.getIdToken()
             },
                 () => {
-                    console.log('Authentication complete. Calling getUser...')
+                    // console.log('Authentication complete. Calling getUser...')
                     this.getUser()
                 }
             )
@@ -312,7 +316,7 @@ class DeveloperView extends Component {
 
                 let objects = [], names = [], descriptions = [], affiliatedProjIds = [], affiliatedProjNames = [], affiliatedProjCounts = [];
 
-                console.log('proj query:', projects.data)
+                // console.log('proj query:', projects.data)
                 for (let obj of projects.data) { // iterable array, so for-in does not work
 
                     for (let orgId of this.state.affiliatedOrgIds) {
@@ -357,8 +361,8 @@ class DeveloperView extends Component {
 
                         affiliatedProjCounts: [],
                         // disableProjSelect: true // prevent proj pick due to lack of valid choice
-                    },
-                        console.log('No relevant project. ', objects, names, descriptions)
+                    }
+                        // , console.log('No relevant project. ', objects, names, descriptions)
                         // console.log('No relevant project. ', o2, n2)
                     ) :
                     // If relevant projects are found, add list to state and enable project selection
@@ -443,8 +447,8 @@ class DeveloperView extends Component {
                 objects.includes(undefined) ?  // This is not expected to occur
                     this.setState({
                         ...this.state
-                    },
-                        console.log('No relevant issues.')
+                    }
+                        // , console.log('No relevant issues.')
                     ) :
                     this.setState({
                         ...this.state,
@@ -458,7 +462,7 @@ class DeveloperView extends Component {
                         relatedUnexaminedIssueCountsByAffiliatedOrgId
                     },
                         () => {
-                            console.log('Relevant issues found. Adding to state.');
+                            // console.log('Relevant issues found. Adding to state.');
                             this.getAllComments();
                         }
                     )
@@ -498,7 +502,7 @@ class DeveloperView extends Component {
     componentDidMount(props) {
         // check auth
         this.authenticate();
-        console.log('Did Mount. State:', this.state);
+        // console.log('Did Mount. State:', this.state);
 
         this.checkNewUser();
         /*
@@ -524,7 +528,7 @@ class DeveloperView extends Component {
     }
 
     componentDidUpdate() {
-        console.log('Did Update. State has :', this.state);
+        // console.log('Did Update. State has :', this.state);
     }
 
     render() {
