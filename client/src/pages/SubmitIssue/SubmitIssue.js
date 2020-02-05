@@ -481,7 +481,7 @@ class SubmitIssue extends Component {
             description: this.state.verDescription,
             project: [this.state.projId] // project Id as ref
         })
-            .then(res => console.log('Version saved.', res))
+            // .then(res => console.log('Version saved.', res))
             .catch(error => console.log(error))
     }
 
@@ -489,7 +489,7 @@ class SubmitIssue extends Component {
         console.log(`update version w/ ${id} and this data:`, data)
         await API.updateVersion(id, data)
             .then(result => {
-                console.log('updateVersion returned data: ', result.data)
+                // console.log('updateVersion returned data: ', result.data)
                 return result
             })
             .catch(error => console.log(error));
@@ -521,8 +521,8 @@ class SubmitIssue extends Component {
                         versionNames: [],
                         versionDesc: [],
                         disableVerSelect: true // prevent select
-                    },
-                        console.log('No relevant version. ', objects, names, descriptions)
+                    }
+                        // ,console.log('No relevant version. ', objects, names, descriptions)
                     ) :
                     // If relevant result is found, add list to state and enable selection
                     this.setState({
@@ -530,7 +530,8 @@ class SubmitIssue extends Component {
                         versionNames: names,
                         versionDesc: descriptions,
                         disableVerSelect: false // enables select
-                    }, console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
+                    }
+                        // , console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
                     )
             })
     }
