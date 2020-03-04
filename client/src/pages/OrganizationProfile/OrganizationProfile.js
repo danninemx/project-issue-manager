@@ -164,7 +164,7 @@ class OrganizationProfile extends Component {
             email: this.state.email,
             member: [this.props.id]
         }).then((res) => {
-            console.log('Org saved.', res);
+            // console.log('Org saved.', res);
             // this.props.showDashboard(); // done via handler
         })
     }
@@ -174,7 +174,7 @@ class OrganizationProfile extends Component {
     }
 
     componentDidUpdate() {
-        console.log('component did update :', this.state);
+        // console.log('component did update :', this.state);
     }
 
     render() {
@@ -266,7 +266,7 @@ class OrganizationProfile extends Component {
                         onClick={
                             // this.props.handleSubmitIssue(this.state.testArr) // causes loop SA
                             () => {
-                                console.log('clicked reset while state is', this.state)
+                                // console.log('clicked reset while state is', this.state)
                                 // this.props.handleSubmitIssue()
                                 this.clearState()
                             }

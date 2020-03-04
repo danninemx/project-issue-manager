@@ -183,9 +183,9 @@ function ReviewIssue() {
               variant="body1"
               color="textPrimary"
               onClick={() => {
-                console.log("Some accessibility message here...")
-                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank')
-                win.focus()
+                // console.log("Some accessibility message here...");
+                let win = window.open('https://github.com/danninemx/project-issue-manager', '_blank');
+                win.focus();
               }}
             >
               {'DISPLAY AUTOMATED MESSAGES HERE (e.g. Like this)'}

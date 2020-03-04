@@ -21,7 +21,7 @@ class Saved extends Component {
   getSavedBooks = () => {
     API.getSavedBooks()
       .then(res => {
-        console.log(`\n getSavedBooks returned : ${res}`);
+        // console.log(`\n getSavedBooks returned : ${res}`);
         this.setState({
           books: res.data
         })

@@ -167,7 +167,7 @@ function Dashboard(props) {
   );
 
   useEffect(() => {
-    console.log('Dashboard received props:', props);
+    // console.log('Dashboard received props:', props);
     handleChange(props.totalIssuesArray, props.totalNewIssuesArray
       // totalIssueCounts, totalNewIssueCounts
     );

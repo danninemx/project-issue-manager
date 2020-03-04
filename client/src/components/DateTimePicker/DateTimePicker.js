@@ -16,7 +16,7 @@ export default function DateTimePicker(props) {
     const { handleDateChange } = props;
 
     useEffect(() => {
-        console.log(' Picker received props', props);
+        // console.log(' Picker received props', props);
         handleDateChange(selectedDate);
     }, [selectedDate, handleDateChange])
 

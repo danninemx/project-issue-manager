@@ -305,7 +305,7 @@ class ManageIssue extends Component {
     };
 
     handleOrgSelect = event => {
-        console.log('selected org target: ', event.target)
+        // console.log('selected org target: ', event.target)
         // console.log(this.state.organizationNames.indexOf(event.target.value)) // check index by name
         let ind = this.state.organizationNames.indexOf(event.target.value)
         // console.log(this.state.organizationList[ind]) // shows the object at index

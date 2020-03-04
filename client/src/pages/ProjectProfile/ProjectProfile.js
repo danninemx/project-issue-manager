@@ -148,7 +148,7 @@ class ProjectProfile extends Component {
     }
 
     handleOrgSelect = event => {
-        console.log('selected org target: ', event.target)
+        // console.log('selected org target: ', event.target)
         // console.log(this.state.organizationNames.indexOf(event.target.value)) // check index by name
         let ind = this.state.organizationNames.indexOf(event.target.value)
         // console.log(this.state.organizationList[ind]) // shows the object at index
@@ -159,7 +159,7 @@ class ProjectProfile extends Component {
         let selectedId = ''; // must initialize as string
         // If index was found, get the key. If not, keep blank.
         ind !== '' ? selectedId = Object.keys(this.state.organizationList[ind])[0] : selectedId = ''
-        console.log('selected org:', selectedId);
+        // console.log('selected org:', selectedId);
         this.setState({
             orgId: selectedId,
 
@@ -178,7 +178,7 @@ class ProjectProfile extends Component {
     };
 
     handleProjSelect = event => {
-        console.log('select proj target: ', event.target)
+        // console.log('select proj target: ', event.target)
         let ind = this.state.projectNames.indexOf(event.target.value) // index of selected item in array
         // console.log('step1', this.state.projectList[ind]) // the object at index
         // console.log('step2', Object.keys(this.state.projectList[ind])) // array containing the keys from the object
@@ -188,7 +188,7 @@ class ProjectProfile extends Component {
         let selectedId = Object.keys(this.state.projectList[ind])[0]; // ObjectId from DB
         let selectedName = this.state.projectNames[ind]; // Name from DB
         let selectedDesc = this.state.projectDesc[ind]; // Description from DB
-        console.log('selected proj:', selectedId)
+        // console.log('selected proj:', selectedId)
         this.setState({
             projId: selectedId,
             projName: selectedName,
@@ -203,7 +203,7 @@ class ProjectProfile extends Component {
     };
 
     handleVerSelect = event => {
-        console.log('select ver target: ', event.target)
+        // console.log('select ver target: ', event.target)
         let ind = this.state.versionNames.indexOf(event.target.value) // get the index of selected item from array
         // console.log(this.state.versionList[ind]) // shows the object at index
         // console.log(Object.keys(this.state.versionList[ind])) // shows array containing just the key from the object
@@ -213,10 +213,21 @@ class ProjectProfile extends Component {
         let selectedName = '';
         let selectedDesc = '';
         // If index was found, get the key, name and desc. For some reason not, keep blank.
-        ind !== -1 ? selectedId = Object.keys(this.state.versionList[ind])[0] : selectedId = ''
-        ind !== -1 ? selectedName = this.state.versionNames[ind] : selectedName = ''
-        ind !== -1 ? selectedDesc = this.state.versionDesc[ind] : selectedDesc = ''
-        ind !== -1 ? console.log('selected vers:', selectedId) : console.log('Version index not found.')
+        // ind !== -1 ? selectedId = Object.keys(this.state.versionList[ind])[0] : selectedId = ''
+        // ind !== -1 ? selectedName = this.state.versionNames[ind] : selectedName = ''
+        // ind !== -1 ? selectedDesc = this.state.versionDesc[ind] : selectedDesc = ''
+        ind !== -1 ? () => {
+            selectedId = Object.keys(this.state.versionList[ind])[0];
+            selectedName = this.state.versionNames[ind];
+            selectedDesc = this.state.versionDesc[ind];
+            // console.log('selected vers:', selectedId);
+         } 
+         : () => {
+             selectedId = '';
+             selectedName = '';
+             selectedDesc = '';
+             console.log('Version index not found.');
+         }
 
         this.setState({
             verId: selectedId,
@@ -261,7 +272,7 @@ class ProjectProfile extends Component {
             () => { // callback inside setState guarantees sync ops
                 this.getAllOrgs() // reset org list to all (applicable, eventually)
                 // this.getAllProj() // reset proj list to all. Called at end of getAllOrgs.
-                console.log('state cleared')
+                // console.log('state cleared')
             })
     };
 
@@ -306,7 +317,7 @@ class ProjectProfile extends Component {
     getAllOrgs = () => {
         API.getOrgs() // works if {} is omitted
             .then(orgs => { // hits w no params for query
-                console.log('API getOrgs returned: ', orgs.data);
+                // console.log('API getOrgs returned: ', orgs.data);
                 let objects = orgs.data.map(obj => {
                     return { [obj._id]: obj.name } // orgId : orgName
                 })
@@ -352,14 +363,13 @@ class ProjectProfile extends Component {
     //-------------------//
 
     createProj = () => {  // works
-        console.log('creating new project')
         API.createProject({
             name: this.state.projName,
             description: this.state.projDescription,
             organization: [this.state.orgId] // user Id
         })
             .then((res) => {
-                console.log('Project saved.', res.data);
+                // console.log('Project saved.', res.data);
                 this.setState({
                     ...this.state,
                     projId: res.data._id
@@ -370,10 +380,10 @@ class ProjectProfile extends Component {
     }
 
     updateProject = async (id, data) => { // works
-        console.log(`update proj w/ ${id} and this data:`, data)
+        // console.log(`update proj w/ ${id} and this data:`, data)
         await API.updateProject(id, data)
             .then(result => {
-                console.log('updateProject returned data: ', result.data)
+                // console.log('updateProject returned data: ', result.data)
                 return result
             })
             .catch(error => console.log('error occurred!', error));
@@ -385,7 +395,7 @@ class ProjectProfile extends Component {
             { // organization: this.state.orgId // non func
             })
             .then(projects => {
-                console.log('get all proj', projects);
+                // console.log('get all proj', projects);
 
                 let objects = [];
                 let names = [];
@@ -407,7 +417,7 @@ class ProjectProfile extends Component {
                         projectDesc: [],
                         disableProjSelect: true // prevent proj pick
                     },
-                        console.log('No relevant project. ', objects, names, descriptions)
+                        // console.log('No relevant project. ', objects, names, descriptions)
                         // console.log('No relevant project. ', o2, n2)
                     ) :
                     // If relevant projects are found, add list to state and enable project selection
@@ -418,12 +428,11 @@ class ProjectProfile extends Component {
                         projectDesc: descriptions,
                         disableProjSelect: false // enables project select
                     }
-                        , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
-                        // , console.log('Relevant projects found. Adding to state:', o2, n2)
+                        // , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
                     )
 
             })
-            .then(() => console.log('state after getAllProj, filtered :', this.state))
+            // .then(() => console.log('state after getAllProj, filtered :', this.state))
             .then(this.getAllVers()) // query matching versions on proj select // works?
             .catch(err => console.log(err));
     }
@@ -443,10 +452,10 @@ class ProjectProfile extends Component {
     }
 
     updateVersion = async (id, data) => { // works
-        console.log(`update version w/ ${id} and this data:`, data)
+        // console.log(`update version w/ ${id} and this data:`, data)
         await API.updateVersion(id, data)
             .then(result => {
-                console.log('updateVersion returned data: ', result.data)
+                // console.log('updateVersion returned data: ', result.data)
                 return result
             })
             .catch(error => console.log(error));
@@ -457,7 +466,7 @@ class ProjectProfile extends Component {
             // project: this.state.projId // seems to work but below logic is for unfiltered data
         })
             .then(versions => {
-                console.log('get all vers', versions)
+                // console.log('get all vers', versions);
                 let objects = [];
                 let names = [];
                 let descriptions = [];
@@ -478,23 +487,24 @@ class ProjectProfile extends Component {
                         versionNames: [],
                         versionDesc: [],
                         disableVerSelect: true // prevent select
-                    },
-                        console.log('No relevant version. ', objects, names, descriptions)
-                    ) :
-                    // If relevant result is found, add list to state and enable selection
+                    }
+                    // , console.log('No relevant version. ', objects, names, descriptions)
+                    )
+                    : // If relevant result is found, add list to state and enable selection
                     this.setState({
                         versionList: objects,
                         versionNames: names,
                         versionDesc: descriptions,
                         disableVerSelect: false // enables select
-                    }, console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
+                    }
+                    // , console.log('Relevant versions found. Adding to state:', objects, names, descriptions)
                     )
             })
     }
 
     getOneVer = () => {
         API.findOneVersion(this.state.verId)
-            .then(ver => console.log('get one ver', ver))
+            // .then(ver => console.log('get one ver', ver))
     }
 
 
@@ -506,13 +516,13 @@ class ProjectProfile extends Component {
     }
 
     componentDidUpdate() {
-        console.log('component did update :', this.state);
+        // console.log('component did update :', this.state);
+
         // // prevState test did not work
         // this.state.orgId !== prevState.orgId ?
         //     () => {
         //         console.log('new orgId detected:', this.state.orgId)
         //         this.getAllProj()
-
         //     }
         //     : null // query matching projects on org select
     }
@@ -568,7 +578,9 @@ class ProjectProfile extends Component {
                                             {org}
                                         </MenuItem>
                                     })
-                                    : () => console.log('state during MenuItem render', this.state)
+                                    : () => { 
+                                        // console.log('state during MenuItem render', this.state) 
+                                    }
                                 // None should not be an option. Create org first if missing.
                             }
                         </Select>
@@ -634,7 +646,7 @@ class ProjectProfile extends Component {
                                             }
                                         >
                                             {proj}
-                                            {console.log('proj list at render:', this.state.projectList[i])}
+                                            {/* {console.log('proj list at render:', this.state.projectList[i])} */}
                                         </MenuItem>
                                     }) : <br />
                                 // 'None' should not be an option. Create org first if missing.
@@ -728,13 +740,13 @@ class ProjectProfile extends Component {
                                             }
                                         >
                                             {ver}
-                                            {console.log('ver list at render:', this.state.versionList[i])}
+                                            {/* {console.log('ver list at render:', this.state.versionList[i])} */}
                                         </MenuItem>
                                     }) : <br />
                                 // 'None' should not be an option. Create org first if missing.
                             }
                         </Select>
-                        {console.log('Disable project selection at render is:', this.state.disableProjSelect)}
+                        {/* {console.log('Disable project selection at render is:', this.state.disableProjSelect)} */}
                     </FormControl>
 
                     <TextField
@@ -797,8 +809,8 @@ class ProjectProfile extends Component {
                         onClick={
                             // this.props.handleSubmitIssue(this.state.testArr) // causes infinite loop
                             () => {
-                                console.log('form reset while state is:', this.state)
-                                this.clearState()
+                                // console.log('form reset while state is:', this.state);
+                                this.clearState();
                             }
                         }
                     > Reset Form

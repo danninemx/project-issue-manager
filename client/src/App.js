@@ -502,11 +502,11 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    console.log('did mount. State: ', this.state);
+    // console.log('did mount. State: ', this.state);
   }
 
   componentDidUpdate = () => {
-    console.log('did update. State: ', this.state);
+    // console.log('did update. State: ', this.state);
   }
 
   render() {
