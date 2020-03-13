@@ -10,7 +10,6 @@ import {
 // import { Helmet } from 'react-helmet' // manages document head
 
 // Pages
-// import LandingPage from "./pages/LandingPage"; // absorbed it here
 import SubmitIssue from "./pages/SubmitIssue";
 import Dashboard from "./pages/Dashboard";
 // import NoMatch from "./pages/NoMatch";
@@ -33,7 +32,6 @@ import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone';
 // Styling
 import "./App.css";
 import bgvideo from './utils/bgvideo.mp4';
-// import bgvideo from 'https://www.dropbox.com/s/nih1jqgvw29bjh0/bgvideo.mp4'; // no good
 
 // // Hashing. Later when I have to register a new user.
 // import bcrypt from 'bcrypt';
@@ -102,12 +100,10 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100vh',
-
     width: '70vw',
     opacity: '0.99',
     backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.01), rgba(240,255,255,0.99), rgba(240,255,255,1), rgba(240,255,255,1), rgba(240,255,255,0.99), rgba(255,255,255,0.01))',
 
-    // paddingTop: theme.spacing(1) * 8,
     [theme.breakpoints.up('sm')]: {
       paddingTop: theme.spacing(1)
     }
@@ -155,11 +151,8 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     minWidth: 275,
-    // maxWidth: 350,
     maxWidth: "38%",
     margin: 25,
-    //15,
-
     flexGrow: 1,
     width: 400,
     paddingTop: 15,
@@ -191,16 +184,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
+
   constructor() {
     super();
 
-    // Bind the this context to the handler function
     this.handler = this.handler.bind(this);
-    // this.handleSignIn = this.handleSignIn.bind(this);
 
-    // Set default auth state of false
     this.state = {
       isAuthenticated: false,
     };
@@ -211,16 +200,13 @@ class App extends Component {
       ...this.state,
       isAuthenticated: true
     })
-    alert('Welcome, user!');
   }
-
 
   handleSignIn() {
     this.setState({
       ...this.state,
       isAuthenticated: true
     })
-    alert('Welcome, user!');
   }
 
   handleSignOut() {
@@ -234,17 +220,6 @@ class App extends Component {
       <Route
         {...rest}
         render={children}
-      // ({ location }) => fakeAuth.isAuthenticated ? (
-      //   children
-      // ) : (
-      //   <Redirect
-      //     to={{
-      //       pathname: "/login",
-      //       state: { from: location }
-      //     }}
-      // />
-      // )
-      // }
       />
     );
   }
@@ -268,9 +243,7 @@ class App extends Component {
       );
   }
 
-  LandingPage = ({
-    // classes, 
-    history, theme }) => {
+  LandingPage = ({ history, theme }) => {
     const classes = useStyles();
     const isAuthorised = () => {
       try {
@@ -299,7 +272,7 @@ class App extends Component {
         <title>Bug Tracker</title>
       </Helmet> */}
 
-        <AppBar position="sticky"// position="static"
+        <AppBar position="sticky"
         >
           <Toolbar disableGutters>
             {/* Appbar text */}
@@ -341,7 +314,8 @@ class App extends Component {
 
             <div className="videoContainer"
               style={{
-                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', // fallback
+                // fallback
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
 
                 position: 'fixed',
                 top: '-50%',
@@ -364,14 +338,6 @@ class App extends Component {
                   minHeight: '50%',
                   minWidth: '50%',
                 }}
-              // style={{ // works in standalone
-              //   position: 'fixed',
-              //   right: '0',
-              //   bottom: '0',
-              //   minWidth: '100%',
-              //   minHeight: '100%',
-              //   zIndex: '-99'
-              // }}
               >
                 <source src={bgvideo} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -442,18 +408,7 @@ class App extends Component {
                       {`Simple, fast -- and completely free.`}
                     </Typography>
                   </CardContent>
-                  {/* <CardActions>
-                    <Button
-                      size="small"
-                      onClick={() => {
-                        history.push('/signinpage')
-                      }}
-                    >
-                      Get started
-                  </Button>
-                  </CardActions> */}
                 </Card>
-                {/* End of  */}
 
                 <Card className={classes.card}>
                   <CardContent>
@@ -464,7 +419,6 @@ class App extends Component {
                     <Typography color='textSecondary'>{'Sign in with your SNS/email to open an account.'}</Typography>
                     <br />
                     <Typography color="textSecondary">
-                      {/* className={classes.pos}  */}
                       {'Setup takes < 5 minutes.'}
                       <br />
                       {' '}
