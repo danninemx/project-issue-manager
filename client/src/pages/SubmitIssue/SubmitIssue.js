@@ -199,7 +199,7 @@ class SubmitIssue extends Component {
     }
 
     handleDateChange = date => {
-        console.log('received date:', date)
+        // console.log('received date:', date)
         this.setState({
             ...this.state,
             selectedDate: date
@@ -207,7 +207,7 @@ class SubmitIssue extends Component {
     };
 
     handleTimeChange = time => {
-        console.log('received time:', time)
+        // console.log('received time:', time)
         this.setState({
             ...this.state,
             selectedTime: time
@@ -215,7 +215,7 @@ class SubmitIssue extends Component {
     };
 
     handleOrgSelect = event => {
-        console.log('selected org target: ', event.target)
+        // console.log('selected org target: ', event.target)
         // console.log(this.state.organizationNames.indexOf(event.target.value)) // check index by name
         let ind = this.state.organizationNames.indexOf(event.target.value) // i.e. if chosen org name is in array, save its index.
         // console.log(this.state.organizationList[ind]) // shows the object at index
@@ -247,12 +247,12 @@ class SubmitIssue extends Component {
     };
 
     handleProjSelect = event => {
-        console.log('select proj target: ', event.target)
+        // console.log('select proj target: ', event.target)
         let ind = this.state.projectNames.indexOf(event.target.value) // index of selected item in array
         let selectedId = Object.keys(this.state.projectList[ind])[0]; // ObjectId from DB
         let selectedName = this.state.projectNames[ind]; // Name from DB
         let selectedDesc = this.state.projectDesc[ind]; // Description from DB
-        console.log('selected proj:', selectedId)
+        // console.log('selected proj:', selectedId)
         this.setState({
             projId: selectedId,
             projName: selectedName,
@@ -267,7 +267,7 @@ class SubmitIssue extends Component {
     };
 
     handleVerSelect = event => {
-        console.log('select ver target: ', event.target)
+        // console.log('select ver target: ', event.target)
         let ind = this.state.versionNames.indexOf(event.target.value) // get the index of selected item from array
         let selectedId = '';
         let selectedName = '';
@@ -371,7 +371,7 @@ class SubmitIssue extends Component {
     getAllOrgs = () => {
         API.getOrgs() // works if {} is omitted
             .then(orgs => { // hits w no params for query
-                console.log('API getOrgs returned: ', orgs.data);
+                // console.log('API getOrgs returned: ', orgs.data);
                 let objects = orgs.data.map(obj => {
                     return { [obj._id]: obj.name } // orgId : orgName
                 })
@@ -383,7 +383,6 @@ class SubmitIssue extends Component {
                     organizationNames: names
                 })
             })
-            .then(() => console.log('state after getAllOrg & getAllProj:', this.state))
     }
 
     // NEEDS DUPLICATION PREVENTION
@@ -393,7 +392,7 @@ class SubmitIssue extends Component {
             description: this.state.orgDescription,
             url: this.state.orgUrl,
             member: [this.props.id] // user Id
-        }).then(() => console.log('Org saved.'))
+        }).then(() => console.log('Organization saved.'))
     }
 
     //-------------------//
