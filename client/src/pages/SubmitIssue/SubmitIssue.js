@@ -276,7 +276,7 @@ class SubmitIssue extends Component {
         ind !== -1 ? selectedId = Object.keys(this.state.versionList[ind])[0] : selectedId = ''
         ind !== -1 ? selectedName = this.state.versionNames[ind] : selectedName = ''
         ind !== -1 ? selectedDesc = this.state.versionDesc[ind] : selectedDesc = ''
-        ind !== -1 ? console.log('selected vers:', selectedId) : console.log('Version index not found.')
+        // ind !== -1 ? console.log('selected vers:', selectedId) : console.log('Version index not found.')
 
         this.setState({
             verId: selectedId,
@@ -400,22 +400,21 @@ class SubmitIssue extends Component {
     //-------------------//
 
     createProj = () => {  // works
-        console.log('creating new project')
         API.createProject({
             name: this.state.projName,
             description: this.state.projDescription,
             organization: [this.state.orgId] // user Id
         })
-            .then((res) => console.log('Project saved.', res))
-            .catch(error => console.log(error))
+            // .then((res) => console.log('Project saved.', res))
             .then(() => this.getAllProj()) // refresh proj list
+            .catch(error => console.log(error))
     }
 
     updateProject = async (id, data) => { // works
-        console.log(`update proj w/ ${id} and this data:`, data)
+        // console.log(`update proj w/ ${id} and this data:`, data)
         await API.updateProject(id, data)
             .then(result => {
-                console.log('updateProject returned data: ', result.data)
+                // console.log('updateProject returned data: ', result.data)
                 return result
             })
             .catch(error => console.log('error occurred!', error));
@@ -427,7 +426,7 @@ class SubmitIssue extends Component {
             { // organization: this.state.orgId // non func
             })
             .then(projects => {
-                console.log('get all proj', projects);
+                // console.log('get all proj', projects);
 
                 let objects = [];
                 let names = [];
@@ -449,8 +448,7 @@ class SubmitIssue extends Component {
                         projectDesc: [],
                         disableProjSelect: true // prevent proj pick
                     },
-                        console.log('No relevant project. ', objects, names, descriptions)
-                        // console.log('No relevant project. ', o2, n2)
+                        // console.log('No relevant project. ', objects, names, descriptions)
                     ) :
                     // If relevant projects are found, add list to state and enable project selection
                     // objects.length > 0 && names.length > 0 ?
@@ -460,8 +458,7 @@ class SubmitIssue extends Component {
                         projectDesc: descriptions,
                         disableProjSelect: false // enables project select
                     }
-                        , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
-                        // , console.log('Relevant projects found. Adding to state:', o2, n2)
+                        // , console.log('Relevant projects found. Adding to state:', objects, names, descriptions)
                     )
 
             })
