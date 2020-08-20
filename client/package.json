@@ -9,7 +9,7 @@
     "@material-ui/pickers": "^3.2.7",
     "@material-ui/styles": "^4.6.0",
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "chart.js": "^2.9.3",
     "express-session": "^1.17.0",
     "firebase": "^7.4.0",
