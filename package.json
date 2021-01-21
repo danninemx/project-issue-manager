@@ -30,6 +30,6 @@
     "if-env": "^1.0.4",
     "mongoose": ">=5.7.5",
     "set-value": "^3.0.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   }
 }
